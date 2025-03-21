@@ -1,0 +1,28 @@
+## Overall setup
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "FourCIPP"
+version = "0.1"
+authors = [{name = "FourCIPP Authors"}]
+description = "A streamlined Python Parser for 4C input files"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+requires-python = "==3.12.*"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[project.optional-dependencies]
+dev = ["pre-commit", "pytest", "pytest-cov"]
+
+## Tools
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p pytest_cov --cov-report=term --cov-report=html --cov-fail-under=90 --cov=src/fourcipp/"
