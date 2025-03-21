@@ -2,6 +2,10 @@
   FourCIPP 🐍
 </h1>
 
+> 🚧 Early Development Disclaimer 🚧
+>
+>This project is in its early stages of development and is not yet stable or production-ready. Features, functionality, and APIs may change frequently without notice. Use at your own risk. Contributions and feedback are welcome!
+
 FourCIPP (**FourC** **I**nput **P**ython **P**arser) holds a Python Parser to simply interact with [4C](https://www.4c-multiphysics.org/) YAML input files. This tool provides a streamlined approach to data handling for third party tools.
 
 FourCIPP utilizes the `4C_metadata.yaml` file to ensure that projects remain up-to-date and consistent with the latest features. FourCIPP aims to enhance the efficiency of 4C data processing while promoting the use of YAML in project workflows.
