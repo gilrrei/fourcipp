@@ -19,6 +19,17 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""Init file."""
+from pathlib import Path
 
-from fourcipp.utils.configuration import CONFIG
+import ruamel.yaml
+
+_YAML = ruamel.yaml.YAML()
+
+
+def load_4C_yaml(path_to_input_file):
+    """Load 4C yaml input files.
+
+    Args:
+        path_to_input_file (str): Path to input file
+    """
+    return _YAML.load(Path(path_to_input_file))

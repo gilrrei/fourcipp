@@ -1,0 +1,7 @@
+profiles:
+  default:
+    4C_metadata_path: null
+    json_schema_path: null
+  testing:
+    4C_metadata_path: /home/user/4C/build/4C_metadata.yaml
+    json_schema_path: /home/user/4C/build/4C_schema.json

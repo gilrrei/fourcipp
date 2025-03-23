@@ -19,6 +19,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""Init file."""
+import pathlib
 
-from fourcipp.utils.configuration import CONFIG
+from fourcipp.reader import _YAML
+
+CONFIG_FILE = pathlib.Path(__file__).parents[1] / "config.yaml"
+CONFIG = _YAML.load(CONFIG_FILE)
