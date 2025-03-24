@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 import pathlib
 
-from fourcipp.reader import _YAML
+from fourcipp.reader import load_yaml
 
 CONFIG_FILE = pathlib.Path(__file__).parents[1] / "config.yaml"
-CONFIG = _YAML.load(CONFIG_FILE)
+CONFIG = load_yaml(CONFIG_FILE)

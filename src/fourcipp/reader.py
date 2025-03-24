@@ -23,13 +23,13 @@ from pathlib import Path
 
 import ruamel.yaml
 
-_YAML = ruamel.yaml.YAML()
+load_yaml = ruamel.yaml.YAML()
 
 
-def load_4C_yaml(path_to_input_file):
+def load_yaml(path_to_input_file):
     """Load 4C yaml input files.
 
     Args:
         path_to_input_file (str): Path to input file
     """
-    return _YAML.load(Path(path_to_input_file))
+    return load_yaml.load(Path(path_to_input_file))

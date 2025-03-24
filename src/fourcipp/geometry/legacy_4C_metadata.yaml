@@ -1,0 +1,153 @@
+# These are the specifications for the legacy sections that currently can be extracted from the metadata file
+- name: FLUID DOMAIN
+  type: group
+  specs:
+    - name: LOWER_BOUND
+      type: vector
+      size: 3
+      value_type:
+        type: int
+      required: true
+    - name: UPPER_BOUND
+      type: vector
+      size: 3
+      value_type:
+        type: int
+      required: true
+    - name: INTERVALS
+      type: vector
+      size: 3
+      value_type:
+        type: int
+      required: true
+    - name: ROTATION
+      type: vector
+      size: 3
+      value_type:
+        type: double
+      required: true
+    - name: ELEMENTS
+      type: string
+      required: true
+    - name: PARTITION
+      type: enum
+      required: true
+      choices:
+        - name: "auto"
+        - name: "structured"
+- name: STRUCTURE DOMAIN
+  type: group
+  specs:
+    - name: LOWER_BOUND
+      type: vector
+      size: 3
+      value_type:
+        type: int
+      required: true
+    - name: UPPER_BOUND
+      type: vector
+      size: 3
+      value_type:
+        type: int
+      required: true
+    - name: INTERVALS
+      type: vector
+      size: 3
+      value_type:
+        type: int
+      required: true
+    - name: ROTATION
+      type: vector
+      size: 3
+      value_type:
+        type: double
+      required: true
+    - name: ELEMENTS
+      type: string
+      required: true
+    - name: PARTITION
+      type: enum
+      required: true
+      choices:
+        - name: "auto"
+        - name: "structured"
+- name: NODE COORDS
+  type: selection
+  selector: type
+  choices:
+    - name: NODE
+      spec:
+        - type: all_of
+          specs:
+            - name: node_type
+              type: string
+              required: true
+              positional: 0
+            - name: node_id
+              type: int
+              required: true
+              positional: 1
+            - name: COORD
+              type: vector
+              size: 3
+              value_type:
+                type: double
+              required: true
+    - name: FNODE # Not done
+      spec:
+        - type: all_of
+          specs:
+            - name: node_type
+              type: string
+              required: true
+              positional: 0
+            - name: node_id
+              type: int
+              required: true
+              positional: 1
+            - name: COORD
+              type: vector
+              size: 3
+              value_type:
+                type: double
+              required: true
+            - name: FIBER1
+              type: vector
+              size: 3
+              value_type:
+                type: double
+              required: false
+            - name: FIBER2
+              type: vector
+              size: 3
+              value_type:
+                type: double
+              required: false
+            - name: FIBER3
+              type: vector
+              size: 3
+              value_type:
+                type: double
+              required: false
+    - name: CP
+      spec:
+        - type: all_of
+          specs:
+            - name: node_type
+              type: string
+              required: true
+              positional: 0
+            - name: node_id
+              type: int
+              required: true
+              positional: 1
+            - name: COORD
+              type: vector
+              size: 3
+              value_type:
+                type: double
+              required: true
+            - name: weight
+              type: double
+              required: true
+              positional: -1

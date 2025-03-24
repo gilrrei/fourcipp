@@ -19,81 +19,52 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-from functools import partial
 
 from fourcipp import CONFIG
-from fourcipp.reader import load_4C_yaml
-from fourcipp.utils.metadata import METADATA_TO_PYTHON
-
-SUPPORTED_TYPES_ELEMENTS = list(METADATA_TO_PYTHON.keys()) + ["vector"]
+from fourcipp.reader import load_yaml
 
 
-def _left_pop(line_list, n_entries):
-    entries = line_list[:n_entries]
-    del line_list[:n_entries]
-    return entries
-
-
-def _extract_entry(line_list, entry_type):
-    return entry_type(_left_pop(line_list, 1)[0])
-
-
-def _extract_vector(line_list, entry_type, size):
-    return [entry_type(e) for e in _left_pop(line_list, size)]
-
-
-def _entry_casting_factory(spec):
-    if spec["type"] in METADATA_TO_PYTHON:
-        return partial(_extract_entry, entry_type=METADATA_TO_PYTHON[spec["type"]])
-    elif spec["type"] == "vector":
-        value_type = METADATA_TO_PYTHON[spec["value_type"]["type"]]
-        return partial(_extract_vector, entry_type=value_type, size=spec["size"])
-    else:
-        raise NotImplementedError(f"Entry type {spec['type']} not supported.")
-
-
-def _elements_casting_factory(fourc_metadata):
-    if fourc_metadata["type"] in SUPPORTED_TYPES_ELEMENTS:
-        return {fourc_metadata["name"]: _entry_casting_factory(fourc_metadata)}
-
-    # Supported collections
-    if fourc_metadata["type"] in ["all_of", "group", "one_of"]:
-        specs = {}
-        for spec_i in fourc_metadata["specs"]:
-            specs.update(_elements_casting_factory(spec_i))
-
-        if fourc_metadata["type"] == "group":
-            return {fourc_metadata["name"]: specs}
-        else:
-            return specs
-    else:
-        raise NotImplementedError(f"Entry type {fourc_metadata['type']} not supported.")
+from fourcipp.legacy_io.inline_dat import (
+    inline_dat_read,
+    casting_factory,
+    get_line_list,
+)
 
 
 DEFAULT_METADATA = CONFIG["profiles"]["default"]["4C_metadata_path"]
 if DEFAULT_METADATA is not None:
-    _ELEMENTS = _elements_casting_factory(
-        load_4C_yaml(DEFAULT_METADATA)["legacy_element_specs"]
+    _ELEMENT_CASTING = casting_factory(
+        load_yaml(DEFAULT_METADATA)["legacy_element_specs"]
     )
 else:
-    _ELEMENTS = None
+    _ELEMENT_CASTING = None
+
+positional_casting = {
+    0: {"name": "id", "function": int},
+    1: {"name": "type", "function": str},
+    2: {"name": "cell_type", "function": str},
+}
 
 
-def read_element(line, elements_data=_ELEMENTS):
-    line_list = [l.strip() for l in line.split("#")[0].split() if l.strip()]
+def read_element(line, elements_casting=_ELEMENT_CASTING):
+    line_list = get_line_list(line)
+
+    # First entry is always the element id starting from 1
     element_id = int(line_list.pop(0))
+
+    # Second entry is always the element type
     element_type = line_list.pop(0)
+
+    # Third entry is the cell type
     cell_type = line_list.pop(0)
-    data = elements_data[element_type][cell_type]
+
+    element_parameter_casting = elements_casting[element_type][cell_type]
 
     element = {
         "id": element_id,
         "type": element_type,
-        "cell": {"type": cell_type, "nodes": data[cell_type](line_list)},
-    }
-
-    while line_list:
-        key = line_list.pop(0)
-        element[key] = data[key](line_list)
+        "cell_type": cell_type,
+        "connectivity": element_parameter_casting[cell_type](line_list),
+    } | inline_dat_read(line_list, element_parameter_casting)
 
     return element
