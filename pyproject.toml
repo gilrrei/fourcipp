@@ -7,10 +7,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "FourCIPP"
 version = "0.1"
-authors = [{name = "FourCIPP Authors"}]
+authors = [{ name = "FourCIPP Authors" }]
 description = "A streamlined Python Parser for 4C input files"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 
 requires-python = "==3.12.*"
 dynamic = ["dependencies"]
@@ -19,7 +19,7 @@ dynamic = ["dependencies"]
 dependencies = { file = ["requirements.txt"] }
 
 [project.optional-dependencies]
-dev = ["pre-commit", "pytest", "pytest-cov"]
+dev = ["pre-commit", "pytest", "pytest-cov", "pip-tools"]
 
 ## Tools
 
