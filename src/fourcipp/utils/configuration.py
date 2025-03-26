@@ -19,14 +19,44 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""FourCIPP."""
+"""Configuration utils."""
+
+import pathlib
 
 from loguru import logger
 
-from fourcipp.utils.configuration import set_profile
+from fourcipp.utils.yaml_io import load_yaml
 
-# Disable FourCIPP logging by default if desired enable it in your own project
-logger.disable("fourcipp")
+CONFIG_FILE = pathlib.Path(__file__).parents[1] / "config.yaml"
 
-# Load the config
-CONFIG = set_profile()
+
+def set_profile(profile="default"):
+    """Set config profile.
+
+    Args:
+        profile (str, optional): Default is used if nothing is provided.
+
+    Returns:
+        dict: user config.
+    """
+    logger.debug(f"Reading config profile {profile}")
+
+    CONFIG = load_yaml(CONFIG_FILE)
+
+    if profile == "default" and CONFIG["profiles"][profile] is None:
+        profile = "testing"
+        logger.debug("Setting testing config as a default config was not provided.")
+
+    metadata = CONFIG["profiles"][profile]["4C_metadata_path"]
+    if metadata is not None:
+        metadata = load_yaml(pathlib.Path(metadata))
+
+    CONFIG["4C_metadata"] = metadata
+
+    schema = CONFIG["profiles"][profile]["json_schema_path"]
+    if schema is not None:
+        schema = load_yaml(pathlib.Path(schema))
+
+    CONFIG["json_schema"] = schema
+
+    return CONFIG

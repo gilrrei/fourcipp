@@ -19,14 +19,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""FourCIPP."""
+"""YAML io."""
 
-from loguru import logger
+from pathlib import Path
 
-from fourcipp.utils.configuration import set_profile
+import ruamel.yaml
 
-# Disable FourCIPP logging by default if desired enable it in your own project
-logger.disable("fourcipp")
+_YAML = ruamel.yaml.YAML()
 
-# Load the config
-CONFIG = set_profile()
+
+def load_yaml(path_to_input_file):
+    """Load 4C yaml input files.
+
+    Args:
+        path_to_input_file (str): Path to input file
+    """
+    return _YAML.load(Path(path_to_input_file))

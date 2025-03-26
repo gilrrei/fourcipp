@@ -1,0 +1,5 @@
+profiles:
+  default: null
+  testing: # Paths in 4C docker image
+    4C_metadata_path: /home/user/4C/build/4C_metadata.yaml
+    json_schema_path: /home/user/4C/build/4C_schema.json

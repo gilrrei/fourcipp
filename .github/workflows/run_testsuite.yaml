@@ -1,0 +1,37 @@
+name: Testsuite
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  run_pytest:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/4c-multiphysics/4c:main
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up virtual environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          conda-remove-defaults: true
+          activate-environment: fourcipp
+          python-version: 3.12
+      - name: Install requirements
+        shell: bash -el {0}
+        run: |
+          conda activate fourcipp
+          pip install -e .[dev]
+      - name: Run run_pytest
+        run: pytest --color=yes

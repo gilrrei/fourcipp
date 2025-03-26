@@ -19,14 +19,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""FourCIPP."""
+"""Metadata utils."""
 
-from loguru import logger
+import pathlib
 
-from fourcipp.utils.configuration import set_profile
-
-# Disable FourCIPP logging by default if desired enable it in your own project
-logger.disable("fourcipp")
-
-# Load the config
-CONFIG = set_profile()
+METADATA_TO_PYTHON = {
+    "int": int,
+    "double": float,
+    "string": str,
+    "bool": bool,
+    "path": pathlib.Path,
+}
