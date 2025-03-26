@@ -86,6 +86,19 @@ def _extract_vector(line_list, entry_type, size):
     return [entry_type(e) for e in _left_pop(line_list, size)]
 
 
+def _extract_all(line_list, entry_type):
+    """Extract all the entries from a line list.
+
+    Args:
+        line_list (list): List to extract the entries
+        entry_type (callable): Function to cast the string into the desired object
+
+    Returns:
+        list: Casted vector object
+    """
+    return [entry_type(e) for e in _left_pop(line_list, len(line_list))]
+
+
 def _extract_enum(line_list, choices):
     """Extract enum entry from a line list.
 
