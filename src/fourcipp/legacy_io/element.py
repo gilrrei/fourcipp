@@ -32,8 +32,6 @@ _ELEMENT_CASTING = None
 if CONFIG["4C_metadata"] is not None:
     _ELEMENT_CASTING = casting_factory(CONFIG["4C_metadata"]["legacy_element_specs"])
 
-from loguru import logger
-
 
 def read_element(line, elements_casting=_ELEMENT_CASTING):
     """Read a element line.
@@ -60,12 +58,13 @@ def read_element(line, elements_casting=_ELEMENT_CASTING):
 
     element = {
         "id": element_id,
-        "type": element_type,
-        "cell_type": cell_type,
-        "connectivity": element_parameter_casting[cell_type](line_list),
-    } | inline_dat_read(line_list, element_parameter_casting)
-
-    logger.info("hello")
+        "cell": {
+            "type": cell_type,
+            "connectivity": element_parameter_casting[cell_type](line_list),
+        },
+        "data": {"type": element_type}
+        | inline_dat_read(line_list, element_parameter_casting),
+    }
     return element
 
 
@@ -80,12 +79,14 @@ def write_element(element):
     """
     line = " ".join(
         [
-            to_dat_string(element.pop("id")),
-            to_dat_string(element.pop("type")),
-            to_dat_string(element.pop("cell_type")),
-            to_dat_string(element.pop("connectivity")),
+            to_dat_string(element["id"]),
+            to_dat_string(element["data"]["type"]),
+            to_dat_string(element["cell"]["type"]),
+            to_dat_string(element["cell"]["connectivity"]),
         ]
     )
-    for k, v in element.items():
+    for k, v in element["data"].items():
+        if k == "type":
+            continue
         line += " " + k + " " + to_dat_string(v)
     return line
