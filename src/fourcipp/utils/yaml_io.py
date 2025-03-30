@@ -21,17 +21,29 @@
 # THE SOFTWARE.
 """YAML io."""
 
-from pathlib import Path
+import json
+import pathlib
 
-import ruamel.yaml
-
-_YAML = ruamel.yaml.YAML()
+import ryml
 
 
-def load_yaml(path_to_input_file):
-    """Load 4C yaml input files.
+def load_yaml(path_to_yaml_file):
+    """Load yaml files.
+
+    rapidyaml is the fastest yaml parsing library we could find. Since it returns custom objects we
+    use the library to emit the objects to json and subsequently read it in using the json library.
+    This is still two orders of magnitude faster compared to other yaml libraries.
 
     Args:
-        path_to_input_file (str): Path to input file
+        path_to_yaml_file (str): Path to yaml file
+
+    Returns:
+        dict: Loaded data
     """
-    return _YAML.load(Path(path_to_input_file))
+
+    data = json.loads(
+        ryml.emit_json(
+            ryml.parse_in_arena(pathlib.Path(path_to_yaml_file).read_bytes())
+        )
+    )
+    return data
