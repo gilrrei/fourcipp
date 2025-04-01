@@ -162,12 +162,12 @@ def casting_factory(fourc_metadata):
         raise NotImplementedError(f"Entry type {fourc_metadata['type']} not supported.")
 
 
-def inline_dat_read(line_list, dat_casting):
+def inline_dat_read(line_list, keyword_casting):
     """Read inline dat to dict.
 
     Args:
         line_list (list): List to extract the entries
-        dat_casting (dict): Dict with the casting
+        keyword_casting (dict): Dict with the casting
 
     Returns:
         dict: Entry as dict
@@ -175,6 +175,9 @@ def inline_dat_read(line_list, dat_casting):
     entry = {}
     while line_list:
         key = line_list.pop(0)
-        entry[key] = dat_casting[key](line_list)
+        # Raises Error if an entry was provided twice
+        if key in entry:
+            raise KeyError(f"The entry {key} was provided already: {entry}")
+        entry[key] = keyword_casting[key](line_list)
 
     return entry

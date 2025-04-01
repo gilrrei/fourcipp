@@ -23,13 +23,16 @@
 
 import pytest
 
+from fourcipp import CONFIG
 from fourcipp.legacy_io.particle import read_particle, write_particle
+
+from .utils import reference_value_from_group
 
 
 @pytest.fixture(name="reference_particle")
 def fixture_reference_particle_line():
     """Reference particle."""
-    return "TYPE phase1 POS 1.2   1.0 0.1 RAD 2.0 RIGIDCOLOR 2"
+    return reference_value_from_group(CONFIG["4C_metadata"]["legacy_particle_specs"])
 
 
 def test_particle_read_and_write(reference_particle):
