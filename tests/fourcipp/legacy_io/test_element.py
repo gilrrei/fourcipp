@@ -26,12 +26,10 @@ import pytest
 from fourcipp import CONFIG
 from fourcipp.legacy_io.element import (
     read_element,
-    to_dat_string,
     write_element,
 )
 
-# This map is used to generate elements from the metadata file
-_TESTING_MAP = {"int": 4, "double": 2.11, "string": "text", "bool": True}
+from .utils import reference_value_from_group
 
 
 def inline_element_from_spec(group, element_type):
@@ -44,28 +42,34 @@ def inline_element_from_spec(group, element_type):
     Returns:
         str: inline element
     """
-    element_id = 42
 
     # Add additional whitespaces to check the reader
-    line = f"{element_id}   {element_type} "
+    return f"42  {element_type} " + reference_value_from_group(group)
 
-    for parameter in group["specs"]:
-        line += " " + parameter["name"]
-        entry = None
-        if parameter["type"] in _TESTING_MAP:
-            entry = _TESTING_MAP[parameter["type"]]
-        elif parameter["type"] == "vector":
-            entry = [_TESTING_MAP[parameter["value_type"]["type"]]] * parameter["size"]
-        elif parameter["type"] == "enum":
-            entry = parameter["choices"][0]["name"]
-        else:
-            raise ValueError(
-                f"Could not create testing element from {parameter['type']}"
-            )
 
-        line += " " + to_dat_string(entry)
+def inline_element_from_cell(cell_spec, element_type):
+    """Generate inline element cell example.
 
-    return line
+    Args:
+        spec (dict): Spec of the cell element combo
+        element_type (str): Name of element
+
+    Returns:
+        list: List of example elements
+    """
+    cells = []
+
+    if (
+        len(cell_spec["specs"]) == 1
+        and (spec := cell_spec["specs"][0])["type"] == "one_of"
+    ):
+        for one_of_branch in spec["specs"]:
+            cells.append(inline_element_from_spec(one_of_branch, element_type))
+    else:
+        for spec in cell_spec["specs"]:
+            cells.append(inline_element_from_spec(spec, element_type))
+
+    return cells
 
 
 def generate_elements_from_metadatafile():
@@ -78,13 +82,15 @@ def generate_elements_from_metadatafile():
 
     elements = []
     for element in data:
-        element_type = element["name"]
-        if element["specs"][0]["type"] == "one_of":
-            for cell in element["specs"][0]["specs"]:
-                elements.append(inline_element_from_spec(cell, element_type))
-        else:
-            elements.append(inline_element_from_spec(element["specs"][0], element_type))
+        element_type = element.get("name", "")
 
+        # Positional parameters are handled differently
+        if element_type.startswith("_positional_"):
+            continue
+
+        # Loop over all elements
+        for ele in element["specs"]:
+            elements.extend(inline_element_from_cell(ele, ele["name"]))
     return elements
 
 
