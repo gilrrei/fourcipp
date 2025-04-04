@@ -144,7 +144,9 @@ def _read_d_topology(line_list):
         dict: Topology entry as a dict
     """
     node_id = _extract_entry(line_list, entry_type=int)
-    d_type = _extract_enum(line_list, choices=["DNODE", "DLINE", "DSURFACE", "DVOL"])
+    d_type = _extract_enum(
+        line_list, choices=["DNODE", "DLINE", "DSURFACE", "DSURF", "DVOLUME", "DVOL"]
+    )
     d_id = _extract_entry(line_list, entry_type=int)
 
     d_topology = {
