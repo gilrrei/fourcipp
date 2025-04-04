@@ -34,4 +34,4 @@ jobs:
           conda activate fourcipp
           pip install -e .[dev]
       - name: Run run_pytest
-        run: pytest --color=yes
+        run: pytest --color=yes -v

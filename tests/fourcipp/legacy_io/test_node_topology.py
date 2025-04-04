@@ -55,3 +55,10 @@ def test_dtopology_read_and_write(line):
 def test_domain_read_and_write(line):
     """Test CORNER, EDGE, SIDE, VOLUME read and write."""
     assert line.split() == write_node_topology(read_node_topology(line)).split()
+
+
+def test_read_node_topology_error():
+    """Test node topology error."""
+    unknown_node = "NOPE something"
+    with pytest.raises(ValueError, match="Unknown type"):
+        read_node_topology(unknown_node)

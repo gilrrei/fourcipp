@@ -30,3 +30,10 @@ logger.disable("fourcipp")
 
 # Load the config
 CONFIG = set_profile()
+
+DESCRIPTION_SECTION = CONFIG["4C_metadata"]["metadata"]["description_section_name"]
+SECTIONS = [section["name"] for section in CONFIG["4C_metadata"]["sections"]] + [
+    DESCRIPTION_SECTION
+]
+LEGACY_SECTIONS = list(CONFIG["4C_metadata"]["legacy_string_sections"])
+ALL_SECTIONS = sorted(SECTIONS + LEGACY_SECTIONS)

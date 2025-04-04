@@ -24,6 +24,7 @@
 import json
 import pathlib
 
+import ruamel.yaml
 import ryml
 
 
@@ -47,3 +48,32 @@ def load_yaml(path_to_yaml_file):
         )
     )
     return data
+
+
+def dump_yaml(data, path_to_yaml_file, sort_keys=False):
+    """Dump yaml to file.
+
+    Args:
+        data (dict): Data to dump.
+        path_to_yaml_file (str): Yaml file path
+        sort_keys (bool): If true sort the sections by section name
+    """
+    # Ignore alias or anchors in dumps
+    ruamel.yaml.representer.RoundTripRepresenter.ignore_aliases = lambda x, y: True
+
+    # Currently using ruamel.yaml, will probably change in the future
+    YAML = ruamel.yaml.YAML()
+
+    # Some nice settings
+    YAML.indent(mapping=2, sequence=4, offset=2)
+
+    # Avoid wrapping of long lines
+    YAML.width = 4096
+
+    # Sort keys
+    if sort_keys:
+        data = {key: data[key] for key in sorted(data.keys())}
+
+    # Dump it
+    with open(path_to_yaml_file, "w", encoding="utf-8") as f:
+        YAML.dump(data, f)

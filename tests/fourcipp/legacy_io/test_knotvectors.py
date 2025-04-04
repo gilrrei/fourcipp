@@ -43,6 +43,7 @@ def fixture_reference_knotvector_lines():
         "1.0",
         "1.0",
         "1.0",
+        "",
         "NUMKNOTS                              8",
         "DEGREE                                2",
         "TYPE                                  Interpolated",
@@ -88,3 +89,53 @@ def test_knotvectors_read_and_write(reference_knotvector_lines):
     lines = write_knotvectors(read_knotvectors(reference_knotvector_lines))
     for k in range(len(reference_knotvector_lines)):
         assert reference_knotvector_lines[k].split() == lines[k].split()
+
+
+def test_wrong_knotvectors_dimension_mismatch():
+    """Test knotvectors with mismatching dimension."""
+    invalid_knotvectors = [
+        "NURBS_DIMENSION                       2",
+        "BEGIN                                 NURBSPATCH",
+        "ID                                    1",
+        "NUMKNOTS                              7",
+        "DEGREE                                2",
+        "TYPE                                  Interpolated",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.5",
+        "1.0",
+        "1.0",
+        "1.0",
+        "END                                NURBSPATCH",
+    ]
+
+    with pytest.raises(ValueError, match="Expected 2 knot vectors, got 1"):
+        read_knotvectors(invalid_knotvectors)
+
+
+def test_unknown_keyword():
+    """Test unknown keyword."""
+    invalid_knotvectors = [
+        "NURBS_DIMENSION                       2",
+        "BEGIN                                 NURBSPATCH",
+        "ID                                    1",
+        "unknown_keyword 1",
+        "NUMKNOTS                              1",
+        "DEGREE                                2",
+        "TYPE                                  Interpolated",
+        "0.0",
+        "END                                NURBSPATCH",
+    ]
+    with pytest.raises(ValueError, match="Could not read line"):
+        read_knotvectors(invalid_knotvectors)
+
+
+def test_invalid_line_list_length():
+    """Test invalid line_list length."""
+    invalid_knotvectors = [
+        "NURBS_DIMENSION                       2",
+        "too many entries",
+    ]
+    with pytest.raises(ValueError, match="Could not read line"):
+        read_knotvectors(invalid_knotvectors)

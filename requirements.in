@@ -1,3 +1,5 @@
 rapidyaml
 jsonschema
 loguru
+ruamel.yaml
+jsonschema-rs

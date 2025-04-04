@@ -144,7 +144,7 @@ def _read_d_topology(line_list):
         dict: Topology entry as a dict
     """
     node_id = _extract_entry(line_list, entry_type=int)
-    d_type = line_list.pop(0)
+    d_type = _extract_enum(line_list, choices=["DNODE", "DLINE", "DSURFACE", "DVOL"])
     d_id = _extract_entry(line_list, entry_type=int)
 
     d_topology = {
@@ -173,7 +173,7 @@ def read_node_topology(line):
 
     if entry_type in ["CORNER", "EDGE", "SIDE", "VOLUME"]:
         return _read_domain_topology(line_list, entry_type)
-    _
+
     raise ValueError(f"Unknown type {entry_type}")
 
 

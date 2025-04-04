@@ -19,35 +19,21 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""Test node reader and writer."""
+"""Validation utils."""
 
-import pytest
-
-from fourcipp.legacy_io.node import read_node, write_node
+import jsonschema_rs
 
 
-@pytest.mark.parametrize(
-    "node_line",
-    [
-        "NODE 5 COORD 0.0 0.1 0.2",
-        "CP 5 COORD 0.0 0.1 0.2 0.3",
-        "FNODE 5 COORD 0.0 0.1 0.2 CIR 1.1 1.2 1.3 TAN 1.1 1.2 1.3 RAD 1.1 1.2 1.3 HELIX 1.4 TRANS 1.4 FIBER1 1.1 1.2 1.3 FIBER2 1.1 1.2 1.3",
-    ],
-)
-def test_node_read_and_write(node_line):
-    """Test nodes read and write."""
-    assert node_line.split() == write_node(read_node(node_line)).split()
+def validate_using_json_schema(data, json_schema):
+    """Validate data using a JSON schema.
 
+    Args:
+        data (dict): Data to validate
+        json_schema (dict): Schema for validation
 
-def test_unknown_node_read():
-    """Test unknown node read."""
-    unknown_node = "NOPE 5 COORD 0.0 0.1 0.2"
-    with pytest.raises(ValueError, match="Unknown node type"):
-        read_node(unknown_node)
-
-
-def test_unknown_node_write():
-    """Test unknown node write."""
-    unknown_node = {"id": 5, "COORD": [0.0, 0.1, 0.2], "data": {"type": "NOPE"}}
-    with pytest.raises(ValueError, match="Unknown node type"):
-        write_node(unknown_node)
+    Returns:
+        bool: True if successful
+    """
+    validator = jsonschema_rs.validator_for(json_schema)
+    validator.validate(data)
+    return True
