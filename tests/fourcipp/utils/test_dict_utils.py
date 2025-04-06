@@ -24,7 +24,17 @@
 import numpy as np
 import pytest
 
-from fourcipp.utils.dict_utils import compare_nested_dicts_or_lists
+from fourcipp.utils.dict_utils import (
+    _get_dict,
+    change_default,
+    compare_nested_dicts_or_lists,
+    get_entry,
+    make_default_explicit,
+    make_default_implicit,
+    remove,
+    rename_parameter,
+    replace_value,
+)
 
 
 @pytest.mark.parametrize(
@@ -173,3 +183,484 @@ def test_compare_with_custom_function_failure():
 
     with pytest.raises(AssertionError, match="Custom compare"):
         compare_nested_dicts_or_lists(obj, reference_obj, custom_compare=custom_compare)
+
+
+@pytest.fixture(name="nested_input_dict")
+def fixture_nested_input_dict():
+    """Nested dict feature."""
+    nested_input_dict = {
+        "a": {
+            "b": [
+                {
+                    "c": 1,
+                    "d": {"e": {"g": [5, 1]}, "h": [{"a": 5}, {"b": 5}], "f": 2},
+                    "i": 4,
+                },
+                {
+                    "c": 2,
+                    "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                    "i": 5,
+                },
+                {"c": 1, "d": {"e": {"g": [7, 3]}, "h": [{"a": 7}, {"b": 1}], "f": 2}},
+            ],
+            "f": 3,
+        }
+    }
+    return nested_input_dict
+
+
+@pytest.mark.parametrize(
+    "keys,value",
+    [
+        (
+            ("a"),
+            [
+                {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": 5}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                            "i": 5,
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": 1}],
+                                "f": 2,
+                            },
+                        },
+                    ],
+                    "f": 3,
+                }
+            ],
+        ),
+        (
+            ("a", "b"),
+            [
+                [
+                    {
+                        "c": 1,
+                        "d": {"e": {"g": [5, 1]}, "h": [{"a": 5}, {"b": 5}], "f": 2},
+                        "i": 4,
+                    },
+                    {
+                        "c": 2,
+                        "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                        "i": 5,
+                    },
+                    {
+                        "c": 1,
+                        "d": {"e": {"g": [7, 3]}, "h": [{"a": 7}, {"b": 1}], "f": 2},
+                    },
+                ]
+            ],
+        ),
+        (("a", "b", "c"), [1, 2, 1]),
+        (("a", "b", "d", "h", "b"), [5, 1]),
+    ],
+)
+def test_get_entry(nested_input_dict, keys, value):
+    """Test get entry."""
+    data = get_entry(nested_input_dict, keys)
+    for i, entry in enumerate(data):
+        assert entry == value[i]
+
+
+@pytest.mark.parametrize(
+    "keys",
+    [
+        ("not existing"),  # first not exists
+        ("a", "b", "d", "h", "b"),  # does not exist but not in every entry of the list
+        ("a", "not existing"),  # does not exist in the last key
+    ],
+)
+def test_get_entry_not_optional(nested_input_dict, keys):
+    """Test get entry without optional setting."""
+    with pytest.raises(KeyError):
+        for _ in get_entry(nested_input_dict, keys, optional=False):
+            pass
+
+
+@pytest.mark.parametrize(
+    "keys, value",
+    [
+        (("a"), {}),
+        (("a", "b"), {"a": {"f": 3}}),
+        (
+            ("a", "b", "d", "h", "b"),
+            {
+                "a": {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                            "i": 5,
+                        },
+                        {
+                            "c": 1,
+                            "d": {"e": {"g": [7, 3]}, "h": [{"a": 7}, {}], "f": 2},
+                        },
+                    ],
+                    "f": 3,
+                }
+            },
+        ),
+    ],
+)
+def test_remove(nested_input_dict, keys, value):
+    """Test remove parameter."""
+    remove(nested_input_dict, keys)
+    assert nested_input_dict == value
+
+
+@pytest.mark.parametrize(
+    "keys, value",
+    [
+        (("a"), {"a": "new_value"}),
+        (("a", "b"), {"a": {"f": 3, "b": "new_value"}}),
+        (
+            ("a", "b", "d", "h", "b"),
+            {
+                "a": {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": "new_value"}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                            "i": 5,
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": "new_value"}],
+                                "f": 2,
+                            },
+                        },
+                    ],
+                    "f": 3,
+                }
+            },
+        ),
+    ],
+)
+def test_replace_value(nested_input_dict, keys, value):
+    """Test replace value."""
+    replace_value(nested_input_dict, keys, "new_value")
+    assert nested_input_dict == value
+
+
+@pytest.mark.parametrize(
+    "keys, value",
+    [
+        (
+            ("a", "j"),
+            {
+                "a": {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": 5}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                            "i": 5,
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": 1}],
+                                "f": 2,
+                            },
+                        },
+                    ],
+                    "f": 3,
+                    "j": "default",
+                }
+            },
+        ),
+        (
+            ("a", "b", "i"),
+            {
+                "a": {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": 5}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                            "i": 5,
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": 1}],
+                                "f": 2,
+                            },
+                            "i": "default",
+                        },
+                    ],
+                    "f": 3,
+                }
+            },
+        ),
+    ],
+)
+def test_make_default_explicit(nested_input_dict, keys, value):
+    """Test make default explicit."""
+    make_default_explicit(nested_input_dict, keys, "default")
+    assert nested_input_dict == value
+
+
+@pytest.mark.parametrize(
+    "keys, value, default",
+    [
+        (
+            ("a", "f"),
+            {
+                "a": {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": 5}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                            "i": 5,
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": 1}],
+                                "f": 2,
+                            },
+                        },
+                    ],
+                }
+            },
+            3,
+        ),
+        (
+            ("a", "b", "i"),
+            {
+                "a": {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": 5}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": 1}],
+                                "f": 2,
+                            },
+                        },
+                    ],
+                    "f": 3,
+                },
+            },
+            5,
+        ),
+    ],
+)
+def test_make_default_implicit(nested_input_dict, keys, value, default):
+    """Test make default implicit."""
+    make_default_implicit(nested_input_dict, keys, default)
+    assert nested_input_dict == value
+
+
+@pytest.mark.parametrize(
+    "keys, value, old_default, new_default",
+    [
+        (
+            ("a", "b", "i"),
+            {
+                "a": {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": 5}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": 1}],
+                                "f": 2,
+                            },
+                            "i": 3,
+                        },
+                    ],
+                    "f": 3,
+                }
+            },
+            3,
+            5,
+        )
+    ],
+)
+def test_make_change_default(nested_input_dict, keys, value, old_default, new_default):
+    """Test change default."""
+    change_default(nested_input_dict, keys, old_default, new_default)
+    assert nested_input_dict == value
+
+
+@pytest.mark.parametrize(
+    "keys, value",
+    [
+        (
+            ("a", "b"),
+            {
+                "a": {
+                    "new_name": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": 5}],
+                                "f": 2,
+                            },
+                            "i": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                            "i": 5,
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": 1}],
+                                "f": 2,
+                            },
+                        },
+                    ],
+                    "f": 3,
+                }
+            },
+        ),
+        (
+            ("a", "b", "i"),
+            {
+                "a": {
+                    "b": [
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [5, 1]},
+                                "h": [{"a": 5}, {"b": 5}],
+                                "f": 2,
+                            },
+                            "new_name": 4,
+                        },
+                        {
+                            "c": 2,
+                            "d": {"e": {"g": [6, 2]}, "h": [{"a": 6}], "f": 2},
+                            "new_name": 5,
+                        },
+                        {
+                            "c": 1,
+                            "d": {
+                                "e": {"g": [7, 3]},
+                                "h": [{"a": 7}, {"b": 1}],
+                                "f": 2,
+                            },
+                        },
+                    ],
+                    "f": 3,
+                }
+            },
+        ),
+    ],
+)
+def test_rename_parameter(nested_input_dict, keys, value):
+    """Test renaming parameter."""
+    rename_parameter(nested_input_dict, keys, "new_name")
+    assert nested_input_dict == value
+
+
+@pytest.mark.parametrize("nested_dict", [{"a": "string"}, {"a": ["string"]}])
+def test_get_dict_failure(nested_dict):
+    """Test _get_dict failure."""
+    with pytest.raises(TypeError):
+        for _ in _get_dict(nested_dict, ("a")):
+            pass
+
+
+def test_get_dict_optional(nested_input_dict):
+    """Test _get_dict one of the keys does not exist."""
+    result = "some value"
+    for entry in _get_dict(nested_input_dict, ("a", "not_existing", "b")):
+        result = entry
+    # assert if nothing changed
+    assert result == "some value"

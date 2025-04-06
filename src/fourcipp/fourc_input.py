@@ -32,16 +32,9 @@ from fourcipp.legacy_io import (
     interpret_legacy_section,
 )
 from fourcipp.utils.dict_utils import compare_nested_dicts_or_lists
+from fourcipp.utils.not_set import NotSet, check_if_set
 from fourcipp.utils.validation import validate_using_json_schema
 from fourcipp.utils.yaml_io import dump_yaml, load_yaml
-
-
-# Allows to use None as default
-class _NotSet:
-    """Not set object."""
-
-
-_NOTSET = _NotSet()
 
 
 class UnknownSectionException(Exception):
@@ -184,7 +177,7 @@ class FourCInput:
                 f"Section '{key}' not set. Did out mean '{difflib.get_close_matches(key.upper(), ALL_SECTIONS, n=1, cutoff=0.3)[0]}'? The set sections are:\n - {'\n - '.join(self.get_section_names())}"
             )
 
-    def pop(self, key, default_value=_NOTSET):
+    def pop(self, key, default_value=NotSet):
         """Pop entry.
 
         Args:
@@ -194,16 +187,19 @@ class FourCInput:
         Returns:
             obj: Desired section or default value
         """
+        # Section is set
         if key in self._sections:
             return self._sections.pop(key)
         elif key in self._legacy_sections:
             return self._legacy_sections.pop(key)
+        # Section is not set
         else:
-            # Check section is known
+            # Known section
             if key in self.known_sections:
-                if not isinstance(default_value, _NotSet):
+                # Default value was provided
+                if check_if_set(default_value):
                     return default_value
-                # Known but not set
+                # Default value was not provided
                 else:
                     raise UnknownSectionException(
                         f"Section '{key}' not set. Did out mean '{difflib.get_close_matches(key.upper(), self.get_section_names(), n=1, cutoff=0.3)[0]}'?"
