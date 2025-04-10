@@ -59,15 +59,11 @@ def inline_element_from_cell(cell_spec, element_type):
     """
     cells = []
 
-    if (
-        len(cell_spec["specs"]) == 1
-        and (spec := cell_spec["specs"][0])["type"] == "one_of"
-    ):
-        for one_of_branch in spec["specs"]:
+    if cell_spec["type"] == "one_of":
+        for one_of_branch in cell_spec["specs"]:
             cells.append(inline_element_from_spec(one_of_branch, element_type))
     else:
-        for spec in cell_spec["specs"]:
-            cells.append(inline_element_from_spec(spec, element_type))
+        cells.append(inline_element_from_spec(cell_spec, element_type))
 
     return cells
 
@@ -81,16 +77,17 @@ def generate_elements_from_metadatafile():
     data = CONFIG["4C_metadata"]["legacy_element_specs"]["specs"]
 
     elements = []
-    for element in data:
-        element_type = element.get("name", "")
+    for element_groups in data:
+        for element in element_groups["specs"]:
+            element_type = element.get("name", "")
 
-        # Positional parameters are handled differently
-        if element_type.startswith("_positional_"):
-            continue
+            # Positional parameters are handled differently
+            if element_type.startswith("_positional_"):
+                continue
 
-        # Loop over all elements
-        for ele in element["specs"]:
-            elements.extend(inline_element_from_cell(ele, ele["name"]))
+            # Loop over all elements
+            for ele in element["specs"]:
+                elements.extend(inline_element_from_cell(ele, element["name"]))
     return elements
 
 

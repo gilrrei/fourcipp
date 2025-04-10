@@ -65,6 +65,18 @@ def fixture_fourc_input(section_names, dummy_data):
     return fourc_input
 
 
+@pytest.fixture(name="fourc_input_with_legacy_section")
+def fixture_fourc_input_with_legacy_section(fourc_input):
+    """Input object with a legacy section."""
+    # Copy the input
+    new_input = fourc_input.copy()
+
+    # Add a legacy section
+    new_input["DNODE-NODE TOPOLOGY"] = ["NODE 1 DNODE 1"]
+
+    return new_input
+
+
 @pytest.fixture(name="fourc_input_2")
 def fixture_fourc_input_2(section_names_2, dummy_data):
     """Second input object."""
@@ -319,3 +331,30 @@ def test_roundtrip_test(fourc_file, tmp_path):
         raise Exception(
             f"Input file failed for {fourc_file}.\n\n4C command: {command}\n\nOutput: {tmp_path / 'output.log'}"
         )
+
+
+def test_extract_header_sections(fourc_input, fourc_input_with_legacy_section):
+    """Test the header extraction."""
+
+    # Extract the header
+    header = fourc_input_with_legacy_section.extract_header()
+
+    assert header == fourc_input
+
+
+def test_load_from_yaml(fourc_input_with_legacy_section, tmp_path):
+    """Test load from yaml file."""
+    path_to_yaml = tmp_path / "fourc_input.4C.yaml"
+    fourc_input_with_legacy_section.dump(path_to_yaml)
+
+    assert fourc_input_with_legacy_section == FourCInput.from_4C_yaml(path_to_yaml)
+
+
+def test_load_from_yaml_header_only(
+    fourc_input, fourc_input_with_legacy_section, tmp_path
+):
+    """Test load from yaml file using header only."""
+    path_to_yaml = tmp_path / "fourc_input.4C.yaml"
+    fourc_input_with_legacy_section.dump(path_to_yaml)
+
+    assert fourc_input == FourCInput.from_4C_yaml(path_to_yaml, header_only=True)
