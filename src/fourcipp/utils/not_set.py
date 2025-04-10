@@ -41,3 +41,22 @@ def check_if_set(obj):
     """
     # Check if object is not of type _NotSet, i.e. it has a value
     return not isinstance(obj, _NotSet)
+
+
+def pop_arguments(key, default=NotSet):
+    """Create arguments for the pop method.
+
+    We need this utility since pop is not implemented using kwargs, instead the default is checked
+     via the number of arguments.
+
+    Args:
+        key (str): Key to pop the value for
+        default (obj): Default value to return in case of the pop value.
+
+    Returns:
+        tuple: Arguments for pop
+    """
+    if check_if_set(default):
+        return (key, default)
+    else:
+        return (key,)
