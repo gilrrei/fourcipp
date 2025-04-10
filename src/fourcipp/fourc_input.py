@@ -80,16 +80,21 @@ class FourCInput:
                 self.__setitem__(k, v)
 
     @classmethod
-    def from_4C_yaml(cls, input_file_path):
+    def from_4C_yaml(cls, input_file_path, header_only=False):
         """Load 4C yaml file.
 
         Args:
-            input_file_path (str): Path to yaml file.
+            input_file_path (str): Path to yaml file
+            header_only (bool): Only extract header, i.e., all sections except the legacy ones
 
         Returns:
             FourCInputFile: Initialised object
         """
-        return cls(load_yaml(input_file_path))
+        data = load_yaml(input_file_path)
+        if header_only:
+            for section in LEGACY_SECTIONS:
+                data.pop(section, None)
+        return cls(data)
 
     @property
     def inlined(self):
@@ -388,3 +393,11 @@ class FourCInput:
             raise TypeError(f"Can not compare types {type(self)} and {type(other)}")
 
         return self.sections == other.sections
+
+    def extract_header(self):
+        """Extract the header sections, i.e., all non-legacy sections.
+
+        Returns:
+            FourCInput: Input with only the non-legacy sections
+        """
+        return FourCInput(sections=self._sections)
