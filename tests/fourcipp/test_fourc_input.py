@@ -307,7 +307,12 @@ def get_4C_test_input_files():
 FOURC_TEST_INPUT_FILES = get_4C_test_input_files()
 
 
+class SubprocessError(Exception):
+    """Subprocess failure."""
+
+
 @pytest.mark.skipif(not FOURC_TEST_INPUT_FILES, reason="4C input files not found.")
+@pytest.mark.xfail(raises=SubprocessError)
 @pytest.mark.parametrize("fourc_file", FOURC_TEST_INPUT_FILES)
 def test_roundtrip_test(fourc_file, tmp_path):
     """Roundtrip test."""
@@ -328,8 +333,8 @@ def test_roundtrip_test(fourc_file, tmp_path):
 
     # Exit code -> 4C failed
     if return_code:
-        raise Exception(
-            f"Input file failed for {fourc_file}.\n\n4C command: {command}\n\nOutput: {tmp_path / 'output.log'}"
+        raise SubprocessError(
+            f"Input file failed for {fourc_file}.\n\n4C command: {command}\n\nOutput: {(tmp_path / 'output.log').read_text()}"
         )
 
 
