@@ -18,6 +18,9 @@ dynamic = ["dependencies"]
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
 
+[tool.setuptools.package-data]
+"fourcipp.config" = ["*.json", "*.yaml"]
+
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "pip-tools"]
 
