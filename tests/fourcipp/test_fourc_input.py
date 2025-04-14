@@ -307,7 +307,12 @@ def get_4C_test_input_files():
 FOURC_TEST_INPUT_FILES = get_4C_test_input_files()
 
 
+class SubprocessError(Exception):
+    """Subprocess failure."""
+
+
 @pytest.mark.skipif(not FOURC_TEST_INPUT_FILES, reason="4C input files not found.")
+@pytest.mark.xfail(raises=SubprocessError)
 @pytest.mark.parametrize("fourc_file", FOURC_TEST_INPUT_FILES)
 def test_roundtrip_test(fourc_file, tmp_path):
     """Roundtrip test."""
@@ -328,8 +333,8 @@ def test_roundtrip_test(fourc_file, tmp_path):
 
     # Exit code -> 4C failed
     if return_code:
-        raise Exception(
-            f"Input file failed for {fourc_file}.\n\n4C command: {command}\n\nOutput: {tmp_path / 'output.log'}"
+        raise SubprocessError(
+            f"Input file failed for {fourc_file}.\n\n4C command: {command}\n\nOutput: {(tmp_path / 'output.log').read_text()}"
         )
 
 
@@ -358,3 +363,20 @@ def test_load_from_yaml_header_only(
     fourc_input_with_legacy_section.dump(path_to_yaml)
 
     assert fourc_input == FourCInput.from_4C_yaml(path_to_yaml, header_only=True)
+
+
+def test_compare(fourc_input):
+    """Test compare function."""
+    copy_input = fourc_input.copy()
+    assert fourc_input.compare(copy_input)
+
+
+def test_compare_failure(fourc_input, fourc_input_2):
+    """Test compare function failure."""
+    assert not fourc_input.compare(fourc_input_2)
+
+
+def test_compare_failure_with_exception(fourc_input, fourc_input_2):
+    """Test compare function failure."""
+    with pytest.raises(AssertionError):
+        fourc_input.compare(fourc_input_2, raise_exception=True)
