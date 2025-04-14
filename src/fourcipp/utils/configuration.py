@@ -27,7 +27,7 @@ from loguru import logger
 
 from fourcipp.utils.yaml_io import load_yaml
 
-CONFIG_FILE = pathlib.Path(__file__).parents[1] / "config.yaml"
+CONFIG_FILE = pathlib.Path(__file__).parents[1] / "config" / "config.yaml"
 
 
 def set_profile(profile="default"):

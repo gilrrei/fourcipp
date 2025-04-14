@@ -1,0 +1,7 @@
+profiles:
+  default: # Nightly updated metadata and schema file in fourcipp
+    4C_metadata_path: src/fourcipp/config/4C_metadata.yaml
+    json_schema_path: src/fourcipp/config/4C_schema.json
+  testing: # Paths in 4C docker image
+    4C_metadata_path: /home/user/4C/build/4C_metadata.yaml
+    json_schema_path: /home/user/4C/build/4C_schema.json
