@@ -11,9 +11,11 @@ authors = [{ name = "FourCIPP Authors" }]
 description = "A streamlined Python Parser for 4C input files"
 readme = "README.md"
 license = { file = "LICENSE" }
-
 requires-python = "==3.12.*"
 dynamic = ["dependencies"]
+
+[project.scripts]
+fourcipp-switch-profile = "fourcipp.utils.configuration:change_profile_cli"
 
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
