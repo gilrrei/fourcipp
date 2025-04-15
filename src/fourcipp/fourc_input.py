@@ -135,6 +135,9 @@ class FourCInput:
             key (str): Section name
             value (dict): Section entry
         """
+        # Warn if complete section is overwritten
+        if key in self.sections:
+            logger.warning(f"Section {key} was overwritten.")
         # Nice sections
         if is_section_known(key):
             self._sections[key] = value
@@ -212,6 +215,22 @@ class FourCInput:
                     f"'{difflib.get_close_matches(key.upper(), ALL_SECTIONS, n=1, cutoff=0.3)[0]}'?"
                     " Call FourCInputFile.known_sections for a complete list."
                 )
+
+    def add(self, sections):
+        """Add multiple sections from dict or FourCInput.
+
+        Args:
+            sections (dict, FourCInput): Sections to be updated
+        """
+        if isinstance(sections, dict):
+            for k, v in sections.items():
+                self[k] = v
+        elif isinstance(sections, FourCInput):
+            self.join(sections)
+        else:
+            raise TypeError(
+                f"Cannot add object of type {type(sections)} to FourCInput."
+            )
 
     @property
     def sections(self):

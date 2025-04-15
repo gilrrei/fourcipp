@@ -382,3 +382,21 @@ def test_compare_failure_with_exception(fourc_input, fourc_input_2):
     """Test compare function failure."""
     with pytest.raises(AssertionError):
         fourc_input.compare(fourc_input_2, raise_exception=True)
+
+
+def test_add_dict(fourc_input_combined, fourc_input, section_names_2, dummy_data):
+    """Test adding dict."""
+    fourc_input.add({k: dummy_data for k in section_names_2})
+    assert fourc_input_combined == fourc_input
+
+
+def test_add_fourc_input(fourc_input_combined, fourc_input, fourc_input_2):
+    """Test adding FourCInput."""
+    fourc_input.add(fourc_input_2)
+    assert fourc_input_combined == fourc_input
+
+
+def test_add_failure(fourc_input):
+    """Test adding failure."""
+    with pytest.raises(TypeError, match="Cannot add object of type"):
+        fourc_input.add("not a valid type")
