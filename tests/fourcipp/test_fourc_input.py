@@ -311,7 +311,9 @@ class SubprocessError(Exception):
     """Subprocess failure."""
 
 
-@pytest.mark.skipif(not FOURC_TEST_INPUT_FILES, reason="4C input files not found.")
+@pytest.mark.skipif(
+    CONFIG["profile"] != "4C_docker_main", reason="Not using docker config."
+)
 @pytest.mark.xfail(raises=SubprocessError)
 @pytest.mark.parametrize("fourc_file", FOURC_TEST_INPUT_FILES)
 def test_roundtrip_test(fourc_file, tmp_path):

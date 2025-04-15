@@ -33,5 +33,11 @@ jobs:
         run: |
           conda activate fourcipp
           pip install -e .[dev]
-      - name: Run run_pytest
-        run: pytest --color=yes -v
+      - name: Run pytest using 4C_docker_main config
+        run: |
+          fourcipp-switch-profile 4C_docker_main
+          pytest --color=yes -v
+      - name: Run pytest using default config
+        run: |
+          fourcipp-switch-profile default
+          pytest --color=yes -v

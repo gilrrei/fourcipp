@@ -19,23 +19,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""FourCIPP."""
+"""Test configuration utils."""
 
-from loguru import logger
+import pytest
 
-from fourcipp.utils.configuration import load_config, profile_description
+from fourcipp.utils.configuration import _change_profile, list_profiles
 
-# Disable FourCIPP logging by default if desired enable it in your own project
-logger.disable("fourcipp")
 
-# Load the config
-CONFIG = load_config()
-
-DESCRIPTION_SECTION = CONFIG["4C_metadata"]["metadata"]["description_section_name"]
-SECTIONS = [section["name"] for section in CONFIG["4C_metadata"]["sections"]] + [
-    DESCRIPTION_SECTION
-]
-LEGACY_SECTIONS = list(CONFIG["4C_metadata"]["legacy_string_sections"])
-ALL_SECTIONS = sorted(SECTIONS + LEGACY_SECTIONS)
-
-logger.info(profile_description())
+def test_change_profile_failure():
+    """Test for change profile failure."""
+    with pytest.raises(Exception, match="Profile"):
+        _change_profile("non-existing")

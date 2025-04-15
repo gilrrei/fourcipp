@@ -21,42 +21,108 @@
 # THE SOFTWARE.
 """Configuration utils."""
 
+import argparse
 import pathlib
+import sys
 
 from loguru import logger
 
-from fourcipp.utils.yaml_io import load_yaml
+from fourcipp.utils.yaml_io import dump_yaml, load_yaml
 
-CONFIG_FILE = pathlib.Path(__file__).parents[1] / "config" / "config.yaml"
+CONFIG_PACKAGE = pathlib.Path(__file__).parents[1] / "config"
+CONFIG_FILE = CONFIG_PACKAGE / "config.yaml"
+
+CONFIG = load_yaml(CONFIG_FILE)
 
 
-def set_profile(profile="default"):
+def load_config():
     """Set config profile.
 
     Args:
-        profile (str, optional): Default is used if nothing is provided.
+        profile (str): Config profile to be set.
 
     Returns:
         dict: user config.
     """
+
+    profile = CONFIG["profile"]
     logger.debug(f"Reading config profile {profile}")
 
-    CONFIG = load_yaml(CONFIG_FILE)
+    config = {"profile": profile}
 
-    if profile == "default" and CONFIG["profiles"][profile] is None:
-        profile = "testing"
-        logger.debug("Setting testing config as a default config was not provided.")
+    def load_yaml_for_config(config_data_name):
+        """Load data from paths in config."""
+        data = CONFIG["profiles"][profile][config_data_name + "_path"]
 
-    metadata = CONFIG["profiles"][profile]["4C_metadata_path"]
-    if metadata is not None:
-        metadata = load_yaml(pathlib.Path(metadata))
+        if data is not None:
+            if not pathlib.Path(data).is_absolute():
+                # Assumption: Path is relative to FourCIPP config package
+                data = CONFIG_PACKAGE / data
 
-    CONFIG["4C_metadata"] = metadata
+            config[config_data_name + "_path"] = data
+            config[config_data_name] = load_yaml(data)
+        else:
+            logger.warning(f"Config path {config_data_name}_path was not set.")
 
-    schema = CONFIG["profiles"][profile]["json_schema_path"]
-    if schema is not None:
-        schema = load_yaml(pathlib.Path(schema))
+    load_yaml_for_config("4C_metadata")
+    load_yaml_for_config("json_schema")
 
-    CONFIG["json_schema"] = schema
+    return config
 
-    return CONFIG
+
+def list_profiles():
+    """List all config profiles.
+
+    Returns:
+        str: Fancy listing of profiles
+    """
+    profiles = [f"\t{k}: {v['description']}" for k, v in CONFIG["profiles"].items()]
+    return "\n" + "\n".join(profiles)
+
+
+def profile_description():
+    """Config profile description.
+
+    Returns:
+        str: Fancy description
+    """
+    string = f"FourCIPP\n\n  with config profile {CONFIG['profile']}:"
+    for k, v in CONFIG["profiles"][CONFIG["profile"]].items():
+        string += f"\n   - {k}: {v}"
+    string += "\n"
+    return string
+
+
+def _change_profile(profile):
+    """Change config profile.
+
+    Args:
+        profile (str): Profil name to set
+    """
+    if profile not in CONFIG["profiles"]:
+        raise Exception(
+            f"Profile {profile} is not known provided. Known profiles are: {list_profiles()}"
+        )
+    CONFIG["profile"] = profile
+    logger.info(f"Changing to config profile '{profile}'")
+    dump_yaml(CONFIG, CONFIG_FILE)
+
+
+def change_profile_cli():
+    """Change Config profile using CLI."""
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "profile",
+        help=f"FourCIPP config profile",
+        type=str,
+    )
+    logger.enable("fourcipp")
+    logger.remove()
+    logger.add(sys.stdout, format="{message}")
+
+    logger.info(profile_description())
+    args = parser.parse_args()
+
+    if "profile" in args:
+        _change_profile(args.profile)
