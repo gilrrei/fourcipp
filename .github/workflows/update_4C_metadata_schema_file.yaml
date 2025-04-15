@@ -2,10 +2,7 @@ name: Update 4C metadata and schema file
 
 on:
   schedule:
-    - cron: '0 5 * * *' # run each night at 5AM. Current nightly 4C test should be completed by then
-
-permissions:
-  contents: write
+    - cron: "0 5 * * *" # run each night at 5AM. Current nightly 4C test should be completed by then
 
 jobs:
   update-4C-metadata-schema-file:
@@ -15,9 +12,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT_4C_BOT_MERGE_TO_MAIN }}
       - name: Pull latest metadata file from 4C
         uses: dawidd6/action-download-artifact@v9
         with:
+          repo: 4C-multiphysics/4C
           github_token: ${{ secrets.ORGANIZATION_TOKEN }}
           workflow: nightly_tests.yml
           workflow_conclusion: completed
@@ -26,6 +26,7 @@ jobs:
       - name: Pull latest schema file from 4C
         uses: dawidd6/action-download-artifact@v9
         with:
+          repo: 4C-multiphysics/4C
           github_token: ${{ secrets.ORGANIZATION_TOKEN }}
           workflow: nightly_tests.yml
           workflow_conclusion: completed
@@ -71,7 +72,7 @@ jobs:
         shell: bash -el {0}
         run: |
           conda activate fourcipp
-          SKIP=no-commit-to-branch pre-commit run --all-files
+          SKIP=no-commit-to-branch pre-commit run --all-files || SKIP=no-commit-to-branch pre-commit run --all-files
       # Commit and push changes
       - name: Get 4C hash for commit message
         if: env.metadata_file_changed == 'true'
@@ -80,10 +81,8 @@ jobs:
         if: env.metadata_file_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: |
-            Nightly update 4C metadata and schema file
-
-            Corresponding 4C commit hash: ${{ env.fourc_commit_hash }}
+          commit_message: "Nightly update of 4C metadata and schema file (4C commit hash: ${{ env.fourc_commit_hash }})"
           branch: main
-          commit_options: '--no-verify'
-          commit_user_name: Nightly 4C metadata update
+          push_options: --force
+          commit_options: "--no-verify"
+          commit_user_name: "4C-Bot"
