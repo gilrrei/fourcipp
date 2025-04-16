@@ -85,4 +85,6 @@ jobs:
           branch: main
           push_options: --force
           commit_options: "--no-verify"
-          commit_user_name: "4C-Bot"
+          commit_user_name: 4C-Bot
+          commit_user_email: 207683181+4C-Bot@users.noreply.github.com
+          commit_author: 4C-Bot <207683181+4C-Bot@users.noreply.github.com>
