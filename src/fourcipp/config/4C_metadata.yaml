@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 1aa72b668e9b39ed752b9be8bdc11a9481948040
+  commit_hash: 3bd0fd400b055077b63824944752f09e41a975f7
   version: 2025.2.0-dev
   description_section_name: TITLE
 sections:
@@ -110,6 +110,36 @@ sections:
         description: "number of linear solver used for ale problems..."
         required: false
         default: -1
+  - name: ALE GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization ALE
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
   - name: ARTERIAL DYNAMIC
     type: group
     required: false
@@ -172,6 +202,36 @@ sections:
           - name: "field_by_condition"
           - name: "field_by_function"
           - name: "zero_field"
+  - name: ARTERY GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization ARTERY
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
   - name: BEAM CONTACT
     type: group
     required: false
@@ -16990,15 +17050,6 @@ sections:
         description: "One step theta option for time discretization of continuity eq. and pressure"
         required: false
         default: Cont_normal_Press_normal
-      - name: GEOMETRY
-        type: enum
-        description: "How the geometry is specified"
-        required: false
-        default: "full"
-        choices:
-          - name: "box"
-          - name: "file"
-          - name: "full"
       - name: NONLINITER
         type: enum
         choices:
@@ -18274,6 +18325,36 @@ sections:
         description: "Set solver number for l2-projection."
         required: false
         default: -1
+  - name: FLUID GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization FLUID
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
   - name: FLUID NEUMANN INFLOW LINE CONDITIONS
     type: list
     required: false
@@ -21371,6 +21452,36 @@ sections:
         description: "the problem is pure lubrication"
         required: false
         default: false
+  - name: LUBRICATION GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization LUBRICATION
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
   - name: MATERIALS
     type: list
     required: false
@@ -30333,6 +30444,36 @@ sections:
         description: "smallest omega allowed for Aitken relaxation"
         required: false
         default: 0.1
+  - name: PERIODIC BOUNDINGBOX GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization PERIODIC BOUNDINGBOX
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
   - name: POROELASTICITY DYNAMIC
     type: group
     required: false
@@ -30716,7 +30857,7 @@ sections:
         default: 1e-06
       - name: INITIALFIELD
         type: enum
-        description: "Initial Field for transport problem"
+        description: "Initial Field for the porofluid problem"
         required: false
         default: "zero_field"
         choices:
@@ -30912,7 +31053,7 @@ sections:
         default: true
       - name: COUPALGO
         type: enum
-        description: "Coupling strategies for poro multiphase solvers"
+        description: "Coupling strategies for porofluid-elasticity solvers"
         required: false
         default: "twoway_partitioned"
         choices:
@@ -31440,6 +31581,36 @@ sections:
         description: "Set the random seed. If < 0 use current time."
         required: false
         default: -1
+  - name: REDUCED D AIRWAYS GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization REDUCED D AIRWAYS
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
   - name: REDUCED DIMENSIONAL AIRWAYS DYNAMIC
     type: group
     required: false
@@ -35489,15 +35660,6 @@ sections:
         description: "number of linear solver used for structural problems"
         required: false
         default: -1
-      - name: GEOMETRY
-        type: enum
-        description: "How the geometry is specified"
-        required: false
-        default: "full"
-        choices:
-          - name: "box"
-          - name: "file"
-          - name: "full"
       - name: MIDTIME_ENERGY_TYPE
         type: enum
         description: "Specify the mid-averaging type for the structural energy contributions"
@@ -35723,6 +35885,7 @@ sections:
         default: -1
   - name: STRUCTURE GEOMETRY
     type: group
+    description: Settings related to the geometry of discretization STRUCTURE
     required: false
     defaultable: false
     specs:
@@ -35956,15 +36119,6 @@ sections:
         description: "number of linear solver used for thermal problems"
         required: false
         default: -1
-      - name: GEOMETRY
-        type: enum
-        description: "How the geometry is specified"
-        required: false
-        default: "full"
-        choices:
-          - name: "box"
-          - name: "file"
-          - name: "full"
       - name: CALCERROR
         type: enum
         description: "compute error compared to analytical solution"
@@ -36077,6 +36231,66 @@ sections:
         description: "write 4C internal node GIDs"
         required: false
         default: false
+  - name: THERMO GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization THERMO
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
+  - name: TRANSPORT GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization TRANSPORT
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
   - name: TRANSPORT NEUMANN INFLOW LINE CONDITIONS
     type: list
     required: false
@@ -36215,6 +36429,36 @@ sections:
           description: "time curve to increase the complete boundary condition, i.e., the heat flux"
           required: false
           default: null
+  - name: TRANSPORT2 GEOMETRY
+    type: group
+    description: Settings related to the geometry of discretization TRANSPORT2
+    required: false
+    defaultable: false
+    specs:
+      - name: FILE
+        type: path
+        description: "Path to the exodus geometry file. Either absolute or relative to the input file."
+        required: true
+      - name: ELEMENT_BLOCKS
+        type: list
+        required: true
+        spec:
+          type: all_of
+          description: 'all_of {ID, ELEMENT_NAME, ELEMENT_DATA}'
+          required: true
+          specs:
+            - name: ID
+              type: int
+              description: "ID of the element block in the exodus file."
+              required: true
+            - name: ELEMENT_NAME
+              type: string
+              description: "The name of the element that should be assigned to the block."
+              required: true
+            - name: ELEMENT_DATA
+              type: string
+              description: "A dat-style string of parameters for the element."
+              required: true
   - name: TSI CONTACT
     type: group
     required: false
