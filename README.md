@@ -2,16 +2,12 @@
   FourCIPP 🐍
 </h1>
 
-> 🚧 Early Development Disclaimer 🚧
->
->This project is in its early stages of development and is not yet stable or production-ready. Features, functionality, and APIs may change frequently without notice. Use at your own risk. Contributions and feedback are welcome!
-
-FourCIPP (**FourC** **I**nput **P**ython **P**arser) holds a Python Parser to simply interact with [4C](https://www.4c-multiphysics.org/) YAML input files. This tool provides a streamlined approach to data handling for third party tools.
-
-FourCIPP utilizes the `4C_metadata.yaml` file to ensure that projects remain up-to-date and consistent with the latest features. FourCIPP aims to enhance the efficiency of 4C data processing while promoting the use of YAML in project workflows.
+FourCIPP (**FourC** **I**nput **P**ython **P**arser) holds a Python Parser to simply interact with [4C](https://github.com/4C-multiphysics/4C) YAML input files. This tool provides a streamlined approach to data handling for third party tools.
 
 ## Overview <!-- omit from toc -->
 - [Installation](#installation)
+- [Quickstart example](#quickstart-example)
+- [Configuration](#configuration)
 - [Developing FourCIPP](#developing-fourcipp)
 - [Dependency Management](#dependency-management)
 - [License](#license)
@@ -39,6 +35,55 @@ pip install .
 ```
 
 Now you are up and running 🎉
+
+## Quickstart example
+<!--example, do not remove this comment-->
+```python
+from fourcipp.fourc_input import FourCInput
+
+# Create a new 4C input via
+input_4C = FourCInput()
+
+# Or load an existing input file
+input_4C = FourCInput.from_4C_yaml(input_file_path)
+
+# Add or overwrite sections
+input_4C["PROBLEM TYPE"] = {"PROBLEMTYPE": "Structure"}
+input_4C["PROBLEM SIZE"] = {"DIM": 3, "ELEMENTS": 1_000}
+
+# Update section parameter
+input_4C["PROBLEM SIZE"]["ELEMENTS"] = 1_000_000
+
+# Add new parameter
+input_4C["PROBLEM SIZE"]["NODES"] = 10_000_000
+
+# Remove section
+removed_section = input_4C.pop("PROBLEM SIZE")
+
+# Dump to file
+input_4C.dump(input_file_path, sort_sections=True, validate=True)
+```
+<!--example, do not remove this comment-->
+
+## Configuration
+FourCIPP utilizes the `4C_metadata.yaml` and `schema.json` files generated during the 4C build to remain up-to-date with your 4C build. By default, the files for the latest 4C input version can be found in `src/fourcipp/config`. You can add custom metadata and schema paths to the configuration file `src/fourcipp/config/config.yaml` by adding a new profile:
+```yaml
+profile: your_custom_files
+profiles:
+  your_custom_files:
+    4C_metadata_path: /absolute/path/to/your/4C_metadata.yaml
+    json_schema_path: /absolute/path/to/your/4C_schema.json
+  default:
+    4C_metadata_path: 4C_metadata.yaml
+    json_schema_path: 4C_schema.json
+    description: 4C metadata from the latest successful nightly 4C build
+  4C_docker_main:
+    4C_metadata_path: /home/user/4C/build/4C_metadata.yaml
+    json_schema_path: /home/user/4C/build/4C_schema.json
+    description: 4C metadata in the main 4C docker image
+```
+and select it using the `profile` entry.
+
 
 ## Developing FourCIPP
 
