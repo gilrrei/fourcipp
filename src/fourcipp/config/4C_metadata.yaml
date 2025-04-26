@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: b90a845061edee49cc95cf26572427bb5273dec1
+  commit_hash: 1bc3e8f3f07cc1f77babc3f72fbd0a9fb2aba6ca
   version: 2025.2.0-dev
   description_section_name: TITLE
 sections:
@@ -18275,8 +18275,8 @@ sections:
         default: "No"
         choices:
           - name: "No"
-          - name: "l2projectionwithcontinuityconstraint"
-          - name: "onlyl2projection"
+          - name: "l2_projection_with_continuity_constraint"
+          - name: "only_l2_projection"
       - name: C_Tauw
         type: double
         description: "Constant wall shear stress for Spalding's law, if applicable"
