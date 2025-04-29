@@ -1,6 +1,6 @@
 metadata:
-  commit_hash: 1bc3e8f3f07cc1f77babc3f72fbd0a9fb2aba6ca
-  version: 2025.2.0-dev
+  commit_hash: 87550fd36f7d057a47b67dba2226ed6cb6a8985b
+  version: 2025.2.0
   description_section_name: TITLE
 sections:
   - name: ALE DYNAMIC
@@ -31618,19 +31618,19 @@ sections:
     specs:
       - name: DYNAMICTYPE
         type: enum
-        description: "OneStepTheta Scheme"
-        required: false
-        default: "OneStepTheta"
         choices:
-          - name: "OneStepTheta"
+          - name: OneStepTheta
+        description: "Dynamic Type"
+        required: false
+        default: OneStepTheta
       - name: SOLVERTYPE
         type: enum
-        description: "Solver type"
-        required: false
-        default: "Linear"
         choices:
-          - name: "Linear"
-          - name: "Nonlinear"
+          - name: Linear
+          - name: Nonlinear
+        description: "Solver Type"
+        required: false
+        default: Linear
       - name: TIMESTEP
         type: double
         description: "Time increment dt"
