@@ -1,6 +1,6 @@
 metadata:
-  commit_hash: 87550fd36f7d057a47b67dba2226ed6cb6a8985b
-  version: 2025.2.0
+  commit_hash: dd172de26388567f7e505287afc89df596650353
+  version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
   - name: ALE DYNAMIC
