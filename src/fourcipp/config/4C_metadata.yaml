@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: dd172de26388567f7e505287afc89df596650353
+  commit_hash: d476353a392d947cf210d20472bfbf5524ff8146
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -33079,7 +33079,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
@@ -33205,7 +33205,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
@@ -33331,7 +33331,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
@@ -33457,7 +33457,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
@@ -33583,7 +33583,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
@@ -33709,7 +33709,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
@@ -33835,7 +33835,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
@@ -33961,7 +33961,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
@@ -34087,7 +34087,7 @@ sections:
           - name: "GMRES"
       - name: AZPREC
         type: enum
-        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra_RowMatrix interface and the client does not pass\nin an external preconditioner!"
+        description: "Type of internal preconditioner to use.\nNote! this preconditioner will only be used if the input operator\nsupports the Epetra interface and the client does not pass\nin an external preconditioner!"
         required: false
         default: "ILU"
         choices:
