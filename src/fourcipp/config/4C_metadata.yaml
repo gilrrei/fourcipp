@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: d476353a392d947cf210d20472bfbf5524ff8146
+  commit_hash: 19ff3b6b8f9f9f37e8f58d6e0291a88cb6f99ecb
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -31538,7 +31538,6 @@ sections:
           - name: "Fluid_Structure_Interaction_RedModels"
           - name: "Fluid_Structure_Interaction_XFEM"
           - name: "Fluid_XFEM"
-          - name: "Fluid_XFEM_LevelSet"
           - name: "Gas_Fluid_Structure_Interaction"
           - name: "Level_Set"
           - name: "Low_Mach_Number_Flow"
