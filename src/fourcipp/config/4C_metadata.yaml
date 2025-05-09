@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 19ff3b6b8f9f9f37e8f58d6e0291a88cb6f99ecb
+  commit_hash: 763b85d013c0bf28109f0fef9e513a8b658fb2a5
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -6242,30 +6242,6 @@ sections:
         - name: FUNCT_ID_PRESSURE_ACTIVE
           type: int
           required: true
-  - name: DESIGN NODE TISSUE REDAIRWAY CONDITIONS
-    type: list
-    required: false
-    spec:
-      type: all_of
-      description: 'all_of {E, ENTITY_TYPE, coupling_id}'
-      required: true
-      specs:
-        - name: E
-          type: int
-          description: "ID of the condition. This ID refers to the respective topological entity of the condition."
-          required: true
-        - name: ENTITY_TYPE
-          type: enum
-          choices:
-            - name: legacy_id
-            - name: node_set_id
-            - name: element_block_id
-          description: "The type of entity that E refers to."
-          required: false
-          default: legacy_id
-        - name: coupling_id
-          type: int
-          required: true
   - name: DESIGN OXYGEN PARTIAL PRESSURE CALCULATION LINE CONDITIONS
     type: list
     required: false
@@ -11890,30 +11866,6 @@ sections:
             - name: "PressureGrad"
             - name: "orthopressure"
             - name: "pseudo_orthopressure"
-  - name: DESIGN SURF TISSUE REDAIRWAY CONDITIONS
-    type: list
-    required: false
-    spec:
-      type: all_of
-      description: 'all_of {E, ENTITY_TYPE, coupling_id}'
-      required: true
-      specs:
-        - name: E
-          type: int
-          description: "ID of the condition. This ID refers to the respective topological entity of the condition."
-          required: true
-        - name: ENTITY_TYPE
-          type: enum
-          choices:
-            - name: legacy_id
-            - name: node_set_id
-            - name: element_block_id
-          description: "The type of entity that E refers to."
-          required: false
-          default: legacy_id
-        - name: coupling_id
-          type: int
-          required: true
   - name: DESIGN SURF TOTAL TRACTION CORRECTION CONDITIONS
     type: list
     required: false
@@ -31551,7 +31503,6 @@ sections:
           - name: "Polymer_Network"
           - name: "Poroelastic_scalar_transport"
           - name: "Poroelasticity"
-          - name: "RedAirways_Tissue"
           - name: "ReducedDimensionalAirWays"
           - name: "Reduced_Lung"
           - name: "Scalar_Thermo_Interaction"
