@@ -22,8 +22,10 @@ numpy==2.2.5
     # via -r requirements.in
 packaging==25.0
     # via deprecation
-rapidyaml==0.9.0
-    # via -r requirements.in
+rapidyaml
+    # TODO update requirements file
+    # manually removed version because on macos 0.9.0.post2 is latest
+    # and on linux/windows 0.9.0 is latest
 referencing==0.36.2
     # via
     #   jsonschema
