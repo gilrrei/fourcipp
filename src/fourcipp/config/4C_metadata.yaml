@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 763b85d013c0bf28109f0fef9e513a8b658fb2a5
+  commit_hash: ddeee4dc5a3476c49b310ea4fad268fe40492a2e
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -33037,25 +33037,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
@@ -33163,25 +33150,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
@@ -33289,25 +33263,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
@@ -33415,25 +33376,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
@@ -33541,25 +33489,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
@@ -33667,25 +33602,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
@@ -33793,25 +33715,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
@@ -33919,25 +33828,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
@@ -34045,25 +33941,12 @@ sections:
           - name: "ILU"
           - name: "MueLu"
           - name: "Teko"
-      - name: IFPACKOVERLAP
-        type: int
-        description: "The amount of overlap used for the ifpack \"ilu\" preconditioner."
+      - name: IFPACK_XML_FILE
+        noneable: true
+        type: path
+        description: "This parameter describes the absolute or relative path to an xml file containing the configuration of a Trilinos/Ifpack preconditioner. The content of this xml file needs to follow Ifpack guidelines. Consult the Trilinos/Ifpack documentation and user guide for more information on valid Ifpack parameters.."
         required: false
-        default: 0
-      - name: IFPACKGFILL
-        type: int
-        description: "The amount of fill allowed for an internal \"ilu\" preconditioner."
-        required: false
-        default: 0
-      - name: IFPACKCOMBINE
-        type: enum
-        description: "Combine mode for Ifpack Additive Schwarz"
-        required: false
-        default: "Add"
-        choices:
-          - name: "Add"
-          - name: "Insert"
-          - name: "Zero"
+        default: null
       - name: AZITER
         type: int
         description: "The maximum number of iterations the underlying iterative solver is allowed to perform"
