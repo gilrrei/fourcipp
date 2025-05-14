@@ -22,6 +22,7 @@
 """Validation utils."""
 
 import jsonschema_rs
+from jsonschema_rs import ValidationError as FourCIPPValidationError
 
 
 def validate_using_json_schema(data, json_schema):

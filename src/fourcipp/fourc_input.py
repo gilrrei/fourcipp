@@ -334,13 +334,22 @@ class FourCInput:
 
         dump_yaml(self.inlined, input_file_path, sort_sections)
 
-    def validate(self, json_schema=CONFIG["json_schema"]):
+    def validate(self, json_schema=CONFIG["json_schema"], sections_only=False):
         """Validate input file.
 
         Args:
             json_schema (dict): Schema to check the data
+            sections_only (bool): Validate each section independently. Requiredness of the sections
+                                  themselves is ignored.
         """
-        return validate_using_json_schema(self.inlined, json_schema)
+        validation_schema = json_schema
+
+        # Remove the requiredness of the sections
+        if sections_only:
+            validation_schema = json_schema.copy()
+            validation_schema.pop("required")
+
+        return validate_using_json_schema(self.inlined, validation_schema)
 
     def split(self, section_names):
         """Split input into two using sections names.
