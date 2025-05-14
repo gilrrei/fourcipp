@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 """Test fourc input."""
 
+import contextlib
 import pathlib
 import subprocess
 
@@ -28,6 +29,7 @@ import pytest
 
 from fourcipp import CONFIG
 from fourcipp.fourc_input import FourCInput, UnknownSectionException
+from fourcipp.utils.validation import FourCIPPValidationError
 
 
 @pytest.fixture(name="section_names")
@@ -400,3 +402,44 @@ def test_add_failure(fourc_input):
     """Test adding failure."""
     with pytest.raises(TypeError, match="Cannot add object of type"):
         fourc_input.add("not a valid type")
+
+
+@pytest.mark.parametrize(
+    "fourc_input,error_context, sections_only",
+    [
+        (
+            FourCInput(sections={"TITLE": "some title"}),
+            pytest.raises(FourCIPPValidationError),
+            False,
+        ),
+        (
+            FourCInput(
+                sections={
+                    "TITLE": "some title",
+                    "PROBLEM TYPE": {"PROBLEMTYPE": "Fluid"},
+                }
+            ),
+            contextlib.nullcontext(),  # No error
+            False,
+        ),
+        (
+            FourCInput(sections={"TITLE": "some title"}),
+            contextlib.nullcontext(),
+            True,
+        ),
+        (
+            FourCInput(
+                sections={
+                    "TITLE": "some title",
+                    "PROBLEM TYPE": {"PROBLEMTYPE": "Fluid"},
+                }
+            ),
+            contextlib.nullcontext(),  # No error
+            True,
+        ),
+    ],
+)
+def test_validation(fourc_input, error_context, sections_only):
+    """Test the validation."""
+    with error_context:
+        fourc_input.validate(sections_only=sections_only)
