@@ -51,14 +51,22 @@ def read_knotvectors(list_of_lines):
     knots_data = {}
     patches = []
 
+    latest_nurb_dimension = None
     while list_of_lines:
         line = list_of_lines.pop(0)
 
-        # Empty line
-        if not line.strip():
+        if isinstance(line, str):
+            if not line.strip():
+                # Skip empty line
+                continue
+            else:
+                line_list = line.split()
+        elif isinstance(line, (int, float)):
+            line_list = [line]
+        elif line is None:
             continue
-
-        line_list = line.split()
+        else:
+            raise TypeError(f"Error while parsing knotvectors line: {line}!")
 
         # Key value case
         if len(line_list) == 2:
@@ -70,9 +78,11 @@ def read_knotvectors(list_of_lines):
 
             # End reading in patch
             elif key == "END":
+                if "NURBS_DIMENSION" in patch_data:
+                    latest_nurb_dimension = patch_data.pop("NURBS_DIMENSION")
                 # Check dimension
                 if (nurbs_dimension := len(patch_data["knot_vectors"])) != (
-                    nurbs_dimension_expected := patch_data.pop("NURBS_DIMENSION")
+                    nurbs_dimension_expected := latest_nurb_dimension
                 ):
                     raise ValueError(
                         f"Expected {nurbs_dimension_expected} knot vectors, got {nurbs_dimension}"

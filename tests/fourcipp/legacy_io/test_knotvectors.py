@@ -30,65 +30,81 @@ from fourcipp.legacy_io.knotvectors import read_knotvectors, write_knotvectors
 def fixture_reference_knotvector_lines():
     """Reference lines."""
     return [
-        "NURBS_DIMENSION                       2",
+        "NURBS_DIMENSION                       3",
         "BEGIN                                 NURBSPATCH",
         "ID                                    1",
-        "NUMKNOTS                              7",
-        "DEGREE                                2",
-        "TYPE                                  Interpolated",
-        "0.0",
-        "0.0",
-        "0.0",
-        "0.5",
-        "1.0",
-        "1.0",
-        "1.0",
-        "",
         "NUMKNOTS                              8",
         "DEGREE                                2",
         "TYPE                                  Interpolated",
-        "0.0",
-        "0.0",
-        "0.0",
-        "0.3333333333333333",
-        "0.6666666666666666",
-        "1.0",
-        "1.0",
-        "1.0",
+        "0.000000000000",
+        "0.000000000000",
+        "0.000000000000",
+        "0.333333333333",
+        "0.666666666667",
+        "1.000000000000",
+        "1.000000000000",
+        "1.000000000000",
+        "NUMKNOTS                              6",
+        "DEGREE                                2",
+        "TYPE                                  Interpolated",
+        "0.000000000000",
+        "0.000000000000",
+        "0.000000000000",
+        "1.000000000000",
+        "1.000000000000",
+        "1.000000000000",
+        "NUMKNOTS                              8",
+        "DEGREE                                2",
+        "TYPE                                  Interpolated",
+        "0.000000000000",
+        "0.000000000000",
+        "0.000000000000",
+        "0.333333333333",
+        "0.666666666667",
+        "1.000000000000",
+        "1.000000000000",
+        "1.000000000000",
         "END                                   NURBSPATCH",
         "NURBS_DIMENSION                       2",
         "BEGIN                                 NURBSPATCH",
         "ID                                    2",
-        "NUMKNOTS                              7",
+        "NUMKNOTS                              9",
         "DEGREE                                2",
         "TYPE                                  Interpolated",
-        "0.0",
-        "0.0",
-        "0.0",
-        "0.5",
-        "1.0",
-        "1.0",
-        "1.0",
-        "NUMKNOTS                              8",
+        "0.000000000000",
+        "0.000000000000",
+        "0.000000000000",
+        "0.250000000000",
+        "0.500000000000",
+        "0.750000000000",
+        "1.000000000000",
+        "1.000000000000",
+        "1.000000000000",
+        "NUMKNOTS                              6",
         "DEGREE                                2",
         "TYPE                                  Interpolated",
-        "0.0",
-        "0.0",
-        "0.0",
-        "0.3333333333333333",
-        "0.6666666666666666",
-        "1.0",
-        "1.0",
-        "1.0",
+        "0.000000000000",
+        "0.000000000000",
+        "0.000000000000",
+        "1.000000000000",
+        "1.000000000000",
+        "1.000000000000",
         "END                                   NURBSPATCH",
     ]
 
 
 def test_knotvectors_read_and_write(reference_knotvector_lines):
     """Test read and write knotvectors."""
-    lines = write_knotvectors(read_knotvectors(reference_knotvector_lines))
-    for k in range(len(reference_knotvector_lines)):
-        assert reference_knotvector_lines[k].split() == lines[k].split()
+    # Copy the reference lines because read_knotvectors removes all lines
+    lines = write_knotvectors(read_knotvectors(reference_knotvector_lines.copy()))
+
+    for line, reference_line in zip(lines, reference_knotvector_lines):
+        if isinstance(line, str):
+            assert line.split() == reference_line.split()
+        elif isinstance(line, float):
+            assert line == float(reference_line)
+        else:
+            raise ValueError(f"Unexpected type {type(line)} in line: {line}")
 
 
 def test_wrong_knotvectors_dimension_mismatch():
