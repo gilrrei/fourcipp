@@ -201,24 +201,72 @@ def test_not_contains(fourc_input):
     assert not "some section" in fourc_input
 
 
-def test_join_inputs(fourc_input, fourc_input_2, section_names, section_names_2):
-    """Join inputs."""
+@pytest.mark.parametrize("method", ("combine_sections", "overwrite_sections"))
+def test_combine_sections_inputs(
+    fourc_input, fourc_input_2, section_names, section_names_2, method
+):
+    """Test combine sections inputs."""
     combined_section_names = list(section_names) + list(section_names_2)
-    fourc_input.join(fourc_input_2)
+
+    getattr(fourc_input, method)(fourc_input_2)
 
     assert fourc_input.get_section_names() == combined_section_names
 
 
-def test_join_inputs_failure(fourc_input):
-    """Join inputs failure due to wrong type."""
-    with pytest.raises(TypeError, match="Can not join"):
-        fourc_input.join("ups not a input object :/")
+@pytest.mark.parametrize("method", ("combine_sections", "overwrite_sections"))
+def test_combine_sections_dicts(
+    fourc_input, fourc_input_2, section_names, section_names_2, method
+):
+    """Test combine sections from dict."""
+    combined_section_names = list(section_names) + list(section_names_2)
+
+    getattr(fourc_input, method)(fourc_input_2.sections)
+
+    assert fourc_input.get_section_names() == combined_section_names
 
 
-def test_join_inputs_failure_doubled_data(fourc_input):
-    """Join inputs failure due to doubled data."""
+def test_combine_sections_failure_type(fourc_input):
+    """Test combine sections inputs failure due to wrong type."""
+    with pytest.raises(TypeError, match="Cannot combine sections between"):
+        fourc_input.combine_sections("ups not a input object :/")
+
+
+def test_combine_sections_failure_doubled_data(fourc_input):
+    """Test combine sections failure due to doubled section."""
     with pytest.raises(ValueError, match="Section"):
-        fourc_input.join(fourc_input)
+        fourc_input.combine_sections(fourc_input.copy())
+
+
+def test_combine_sections_failure_doubled_data_dict(fourc_input):
+    """Test combine sections failure due to doubled section."""
+    with pytest.raises(ValueError, match="Section"):
+        fourc_input.combine_sections(fourc_input.copy().sections)
+
+
+def test_overwrite_sections_new_section_dict(fourc_input):
+    """Test overwriting sections that does not exits."""
+    fourc_input.overwrite_sections({"TITLE": "new title"})
+    fourc_input["TITLE"] == "new title"
+
+
+def test_overwrite_sections_existing_section_dict(fourc_input):
+    """Test overwriting sections that already exits."""
+    fourc_input["TITLE"] = "new title"
+    fourc_input.overwrite_sections({"TITLE": "super new title"})
+    assert fourc_input["TITLE"] == "super new title"
+
+
+def test_overwrite_sections_new_section_input(fourc_input):
+    """Test overwriting sections that does not exits."""
+    fourc_input.overwrite_sections(FourCInput({"TITLE": "new title"}))
+    fourc_input["TITLE"] == "new title"
+
+
+def test_overwrite_sections_existing_section_input(fourc_input):
+    """Test overwriting sections that already exits."""
+    fourc_input["TITLE"] = "new title"
+    fourc_input.overwrite_sections(FourCInput({"TITLE": "super new title"}))
+    assert fourc_input["TITLE"] == "super new title"
 
 
 def test_add(fourc_input, fourc_input_2, fourc_input_combined):
@@ -384,24 +432,6 @@ def test_compare_failure_with_exception(fourc_input, fourc_input_2):
     """Test compare function failure."""
     with pytest.raises(AssertionError):
         fourc_input.compare(fourc_input_2, raise_exception=True)
-
-
-def test_add_dict(fourc_input_combined, fourc_input, section_names_2, dummy_data):
-    """Test adding dict."""
-    fourc_input.add({k: dummy_data for k in section_names_2})
-    assert fourc_input_combined == fourc_input
-
-
-def test_add_fourc_input(fourc_input_combined, fourc_input, fourc_input_2):
-    """Test adding FourCInput."""
-    fourc_input.add(fourc_input_2)
-    assert fourc_input_combined == fourc_input
-
-
-def test_add_failure(fourc_input):
-    """Test adding failure."""
-    with pytest.raises(TypeError, match="Cannot add object of type"):
-        fourc_input.add("not a valid type")
 
 
 @pytest.mark.parametrize(
