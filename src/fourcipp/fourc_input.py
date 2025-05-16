@@ -213,20 +213,50 @@ class FourCInput:
                     " Call FourCInputFile.known_sections for a complete list."
                 )
 
-    def add(self, sections):
-        """Add multiple sections from dict or FourCInput.
+    def combine_sections(self, other):
+        """Combine input files together.
+
+        Note: Every sections can only be defined in self or in other.
 
         Args:
-            sections (dict, FourCInput): Sections to be updated
+            other (dict, FourCInput): Sections to be combine
         """
-        if isinstance(sections, dict):
-            self.join(FourCInput(sections))
-        elif isinstance(sections, FourCInput):
-            self.join(sections)
+        other_sections_names = None
+
+        if isinstance(other, dict):
+            other_sections_names = other.keys()
+        elif isinstance(other, FourCInput):
+            other_sections_names = other.get_section_names()
         else:
             raise TypeError(
-                f"Cannot add object of type {type(sections)} to FourCInput."
+                f"Cannot combine sections between {type(self)} and {type(other)}."
             )
+
+        # Sections that can be found in both
+        if doubled_defined_sections := set(self.get_section_names()) & set(
+            other_sections_names
+        ):
+            raise ValueError(
+                f"Section(s) {', '.join(list(doubled_defined_sections))} are defined in both {type(self).__name__} objects. In order to join the {type(self).__name__} objects remove the section(s) in one of them."
+            )
+
+        self.overwrite_sections(other)
+
+    def overwrite_sections(self, other):
+        """Overwrite sections from dict or FourCInput.
+
+        This function always overwrites complete sections. Combining parameters within this
+        sections has to be done manually.
+
+
+        Args:
+            other (dict, FourCInput): Sections to be updated
+        """
+        if isinstance(other, (dict, FourCInput)):
+            for key, value in other.items():
+                self[key] = value
+        else:
+            raise TypeError(f"Cannot overwrite sections from {type(other)}.")
 
     @property
     def sections(self):
@@ -268,27 +298,6 @@ class FourCInput:
         """
         return item in (list(self._legacy_sections) + list(self._sections))
 
-    def join(self, other):
-        """Join input files together.
-
-        Args:
-            other (FourCInputFile): Input file object to join
-        """
-        if not isinstance(other, FourCInput):
-            raise TypeError(f"Can not join types {FourCInput} and {type(other)}")
-
-        # Sections that can be found in both
-        if doubled_defined_sections := set(self.get_section_names()) & set(
-            other.get_section_names()
-        ):
-            raise ValueError(
-                f"Section(s) {', '.join(list(doubled_defined_sections))} are defined in both {type(self).__name__} objects. In order to join the {type(self).__name__} objects remove the section(s) in one of them."
-            )
-
-        # Add the section from other
-        for key, value in other.items():
-            self[key] = value
-
     def __add__(self, other):
         """Add two input file objects together.
 
@@ -301,7 +310,7 @@ class FourCInput:
             FourCInputFile: Joined input file
         """
         copied_object = self.copy()
-        copied_object.join(other)
+        copied_object.combine_sections(other)
         return copied_object
 
     def copy(self):
@@ -317,7 +326,7 @@ class FourCInput:
         if includes := self.pop("INCLUDES", None):
             for partial_file in includes:
                 logger.debug(f"Gather data from {partial_file}")
-                self.join(self.from_4C_yaml(partial_file))
+                self.combine_sections(self.from_4C_yaml(partial_file))
 
     def dump(self, input_file_path, sort_sections=False, validate=False):
         """Dump object to yaml.
