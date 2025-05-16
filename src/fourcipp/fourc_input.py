@@ -274,8 +274,8 @@ class FourCInput:
         Args:
             other (FourCInputFile): Input file object to join
         """
-        if not isinstance(other, type(self)):
-            raise TypeError(f"Can not join types {type(self)} and {type(other)}")
+        if not isinstance(other, FourCInput):
+            raise TypeError(f"Can not join types {FourCInput} and {type(other)}")
 
         # Sections that can be found in both
         if doubled_defined_sections := set(self.get_section_names()) & set(
