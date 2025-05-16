@@ -54,11 +54,18 @@ def read_knotvectors(list_of_lines):
     while list_of_lines:
         line = list_of_lines.pop(0)
 
-        # Empty line
-        if not line.strip():
+        if isinstance(line, str):
+            if not line.strip():
+                # Skip empty line
+                continue
+            else:
+                line_list = line.split()
+        elif isinstance(line, (int, float)):
+            line_list = [line]
+        elif line is None:
             continue
-
-        line_list = line.split()
+        else:
+            raise TypeError(f"Error while parsing knotvectors line: {line}!")
 
         # Key value case
         if len(line_list) == 2:
