@@ -220,8 +220,7 @@ class FourCInput:
             sections (dict, FourCInput): Sections to be updated
         """
         if isinstance(sections, dict):
-            for k, v in sections.items():
-                self[k] = v
+            self.join(FourCInput(sections))
         elif isinstance(sections, FourCInput):
             self.join(sections)
         else:
