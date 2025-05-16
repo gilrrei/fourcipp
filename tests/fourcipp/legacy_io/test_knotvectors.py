@@ -56,7 +56,6 @@ def fixture_reference_knotvector_lines():
         "1.0",
         "1.0",
         "END                                   NURBSPATCH",
-        "NURBS_DIMENSION                       2",
         "BEGIN                                 NURBSPATCH",
         "ID                                    2",
         "NUMKNOTS                              7",
