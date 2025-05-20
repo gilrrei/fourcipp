@@ -60,6 +60,9 @@ class FourCInput:
 
     known_sections = ALL_SECTIONS
 
+    # define a converter which converts data types to native Python types
+    type_converter = None
+
     def __init__(self, sections=None):
         """Initialise object.
 
@@ -128,6 +131,10 @@ class FourCInput:
             key (str): Section name
             value (dict): Section entry
         """
+
+        if self.type_converter:
+            value = self.type_converter(value)
+
         # Warn if complete section is overwritten
         if key in self.sections:
             logger.warning(f"Section {key} was overwritten.")
@@ -253,6 +260,9 @@ class FourCInput:
             other (dict, FourCInput): Sections to be updated
         """
         if isinstance(other, (dict, FourCInput)):
+            if isinstance(other, dict) and self.type_converter:
+                other = self.type_converter(other)
+
             for key, value in other.items():
                 self[key] = value
         else:
@@ -337,6 +347,9 @@ class FourCInput:
             validate (bool): Validate input data before dumping
         """
 
+        if self.type_converter:
+            self.type_converter(self.inlined)
+
         if validate:
             self.validate()
 
@@ -350,6 +363,9 @@ class FourCInput:
             sections_only (bool): Validate each section independently. Requiredness of the sections
                                   themselves is ignored.
         """
+        if self.type_converter:
+            self.type_converter(self.inlined)
+
         validation_schema = json_schema
 
         # Remove the requiredness of the sections
