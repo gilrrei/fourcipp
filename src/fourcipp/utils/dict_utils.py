@@ -129,44 +129,6 @@ def compare_nested_dicts_or_lists(
     return True
 
 
-def convert_to_native_types(obj, custom_converter=None):
-    """Recursively convert objects to native python types. A custom converter
-    can be provided to convert custom objects.
-
-    Args:
-        obj (object): Object to convert.
-        custom_converter (callable): Callable to convert objects.
-            Returns a tuple of (converted_object, handled(bool))
-    """
-
-    if custom_converter is not None:
-        result, handled = custom_converter(obj)
-        if handled:
-            return result
-
-    if isinstance(obj, dict):
-        return {
-            key: convert_to_native_types(value, custom_converter=custom_converter)
-            for key, value in obj.items()
-        }
-    elif isinstance(obj, list):
-        return [
-            convert_to_native_types(item, custom_converter=custom_converter)
-            for item in obj
-        ]
-    elif isinstance(obj, set):
-        return {
-            convert_to_native_types(item, custom_converter=custom_converter)
-            for item in obj
-        }
-    elif isinstance(obj, np.ndarray):
-        return convert_to_native_types(obj.tolist(), custom_converter=custom_converter)
-    elif isinstance(obj, np.generic):
-        return obj.item()
-    else:
-        return obj
-
-
 def _get_dict(nested_dict, keys, optional=True):
     """Return dict entry within a nested dict by keys.
 
