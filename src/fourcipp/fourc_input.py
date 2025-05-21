@@ -67,6 +67,7 @@ class FourCInput:
     type_converter = CONVERTER
 
     def convert_to_native_types(self):
+        """Convert all sections to native Python types."""
         self._sections = self.type_converter(self._sections)
         self._legacy_sections = self.type_converter(self._legacy_sections)
 

@@ -19,26 +19,36 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+"""Converter to convert custom types to native Python types."""
+
 import numpy as np
 
 
 class Converter:
+    """Converter class to convert custom types to native Python types."""
+
     def __init__(self):
         self._custom_converters = {}
 
     def register_type(self, custom_type, converter_function):
+        """Register a custom type and its converter function."""
         self._custom_converters[custom_type] = converter_function
         return self
 
     def register_types(self, types_dict):
+        """Register multiple custom types and their converter functions."""
         self._custom_converters.update(types_dict)
         return self
 
     def register_numpy_types(self):
+        """Register NumPy types and their converter functions."""
+
         def convert_ndarray(converter, obj):
+            """Convert a NumPy ndarray to a list."""
             return converter(obj.tolist())
 
         def convert_generic(converter, obj):
+            """Convert a NumPy generic type to a native Python type."""
             return obj.item()
 
         self.register_type(np.generic, convert_generic)
@@ -46,6 +56,7 @@ class Converter:
         return self
 
     def __call__(self, obj):
+        """Convert the object to a native Python type."""
         # If no custom converters are present, no need to do a conversion
         if not self._custom_converters:
             return obj
@@ -55,7 +66,7 @@ class Converter:
             if isinstance(obj, custom_type):
                 # First match will be used.
                 # Keep in mind for inheritance you have think about child classes!
-                # Make sure if you have parent and child classes registerd separately, to first register the child classes!
+                # Make sure if you have parent and child classes registered separately, to first register the child classes!
                 return self._custom_converters[custom_type](self, obj)
 
         # Lets convert
@@ -79,6 +90,7 @@ class Converter:
                 )
 
     def __str__(self):
+        """String representation of the Converter class."""
         string = "Converter with custom object (objects will be converted from top to bottom):"
         for k, v in self._custom_converters.items():
             string += f"\n\t{k}\t: {v}"
