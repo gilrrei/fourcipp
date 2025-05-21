@@ -25,25 +25,31 @@ import numpy as np
 import pytest
 
 from fourcipp.utils.converter import Converter
+from fourcipp.utils.dict_utils import compare_nested_dicts_or_lists
 
 
-def test_basic_python_types():
+# create a fixture for the converter
+@pytest.fixture
+def converter():
+    """Fixture for the Converter class."""
+    return Converter()
+
+
+def test_basic_python_types(converter):
     """Test identity conversion for basic Python types."""
-    converter = Converter()
     for value in [123, 12.5, "text", True]:
         assert converter(value) == value
 
 
-def test_list_and_dict_conversion():
+def test_list_and_dict_conversion(converter):
     """Test identity conversion of nested lists and dictionaries."""
-    converter = Converter()
     input_data = {"a": [1, 2, {"b": "text"}], "c": True}
     assert converter(input_data) == input_data
 
 
-def test_nested_numpy_structures():
+def test_nested_numpy_structures(converter):
     """Test nested structures with NumPy types."""
-    converter = Converter().register_numpy_types()
+    converter.register_numpy_types()
 
     obj = {
         "arr": np.array([1, 2, 3]),
@@ -54,17 +60,14 @@ def test_nested_numpy_structures():
         "arr": [1, 2, 3],
         "nested": {
             "scalar": 42,
-            "float": pytest.approx(3.1),
+            "float": 3.1,
         },
     }
 
-    result = converter(obj)
-    assert result["arr"] == expected["arr"]
-    assert result["nested"]["scalar"] == expected["nested"]["scalar"]
-    assert result["nested"]["float"] == expected["nested"]["float"]
+    assert compare_nested_dicts_or_lists(converter(obj), expected)
 
 
-def test_register_custom_type():
+def test_register_custom_type(converter):
     """Test custom type registration and conversion."""
 
     class Custom:
@@ -73,22 +76,30 @@ def test_register_custom_type():
         def __init__(self, value):
             self.value = value
 
+    class Custom2:
+        """Another custom class for testing."""
+
+        def __init__(self, value):
+            self.value = value
+
     def convert_custom(converter, obj):
         """Custom conversion function for the Custom class."""
-        return {"custom_value": obj.value}
+        return {"custom_value": converter(obj.value)}
 
-    converter = Converter().register_type(Custom, convert_custom)
+    converter.register_type(Custom, convert_custom)
+    converter.register_type(Custom2, convert_custom)
 
-    custom_obj = Custom("abc")
-    result = converter(custom_obj)
-    assert result == {"custom_value": "abc"}
+    custom_obj = Custom2([Custom("ab"), Custom(3)])
+    assert converter(custom_obj) == {
+        "custom_value": [{"custom_value": "ab"}, {"custom_value": 3}]
+    }
 
 
-def test_not_convertible_type():
+def test_not_convertible_type(converter):
     """Test conversion of a non-convertible type."""
 
     # register a type to enable conversion
-    converter = Converter().register_numpy_types()
+    converter.register_numpy_types()
 
     class UnknownType:
         """Unknown type for testing."""
