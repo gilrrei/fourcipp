@@ -31,6 +31,7 @@ from fourcipp.legacy_io import (
     inline_legacy_sections,
     interpret_legacy_section,
 )
+from fourcipp.utils.converter import Converter
 from fourcipp.utils.dict_utils import compare_nested_dicts_or_lists
 from fourcipp.utils.not_set import NotSet, check_if_set
 from fourcipp.utils.validation import validate_using_json_schema
@@ -55,10 +56,20 @@ def is_section_known(section_name):
     return section_name in SECTIONS or section_name.startswith("FUNCT")
 
 
+# Converter for the FourCInput
+CONVERTER = Converter()
+
+
 class FourCInput:
     """4C inout file object."""
 
     known_sections = ALL_SECTIONS
+    type_converter = CONVERTER
+
+    def convert_to_native_types(self):
+        """Convert all sections to native Python types."""
+        self._sections = self.type_converter(self._sections)
+        self._legacy_sections = self.type_converter(self._legacy_sections)
 
     def __init__(self, sections=None):
         """Initialise object.
@@ -128,6 +139,7 @@ class FourCInput:
             key (str): Section name
             value (dict): Section entry
         """
+        value = self.type_converter(value)
         # Warn if complete section is overwritten
         if key in self.sections:
             logger.warning(f"Section {key} was overwritten.")
@@ -340,6 +352,7 @@ class FourCInput:
         if validate:
             self.validate()
 
+        self.convert_to_native_types()
         dump_yaml(self.inlined, input_file_path, sort_sections)
 
     def validate(self, json_schema=CONFIG["json_schema"], sections_only=False):
@@ -357,6 +370,7 @@ class FourCInput:
             validation_schema = json_schema.copy()
             validation_schema.pop("required")
 
+        self.convert_to_native_types()
         return validate_using_json_schema(self.inlined, validation_schema)
 
     def split(self, section_names):
