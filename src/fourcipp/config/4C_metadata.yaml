@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: ddeee4dc5a3476c49b310ea4fad268fe40492a2e
+  commit_hash: 616e6ec7e6d9efcdcf150c743a790d194f92bd73
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -18788,11 +18788,6 @@ sections:
           - name: "iter_stagg_fixed_rel_param"
           - name: "iter_stagg_steep_desc"
           - name: "iter_xfem_monolithic"
-      - name: DEBUGOUTPUT
-        type: bool
-        description: "Output of unconverged interface values during FSI iteration. There will be a new control file for each time step. This might be helpful to understand the coupling iteration."
-        required: false
-        default: false
       - name: MATCHGRID_FLUIDALE
         type: bool
         description: "is matching grid (fluid-ale)"
