@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 616e6ec7e6d9efcdcf150c743a790d194f92bd73
+  commit_hash: fd3357ec71dd2375e600a442aedbf4cf82dc2d1e
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -18018,31 +18018,23 @@ sections:
         default: true
       - name: CANONICAL_FLOW
         type: enum
-        description: "Sampling is different for different canonical flows - so specify what kind of flow you've got \n\nno: The flow is not further specified, so spatial averaging and hence the standard sampling procedure is not possible\ntime_averaging: The flow is not further specified, but time averaging of velocity and pressure field is performed\nchannel_flow_of_height_2: For this flow, all statistical data could be averaged in the homogeneous planes - it is essentially a statistically one dimensional flow.\nlid_driven_cavity: For this flow, all statistical data are evaluated on the center lines of the xy-midplane, averaged only over time.\nbackward_facing_step: For this flow, statistical data are evaluated on various lines, averaged over time and z.\nsquare_cylinder: For this flow, statistical data are evaluated on various lines of the xy-midplane, averaged only over time.\nsquare_cylinder_nurbs: For this flow, statistical data are evaluated on various lines of the xy-midplane, averaged over time and eventually in one home.direction.\nrotating_circular_cylinder_nurbs: For this flow, statistical data is computed in concentric surfaces and averaged. in time and in one home. direction\nrotating_circular_cylinder_nurbs_scatra: For this flow with mass transport, statistical data is computed in concentric surfaces and averaged. in time and in one home. direction\nloma_channel_flow_of_height_2: For this low-Mach-number flow, all statistical data could be averaged in the homogeneous planes - it is essentially a statistically one dimensional flow.\nloma_lid_driven_cavity: For this low-Mach-number flow, all statistical data are evaluated on the center lines of the xy-midplane, averaged only over time.\nloma_backward_facing_step: For this low-Mach-number flow, statistical data are evaluated on various lines, averaged over time and z.\ncombust_oracles: ORACLES test rig for turbulent premixed combustion.\nbubbly_channel_flow: Turbulent two-phase flow: bubbly channel flow, statistical data are averaged in homogeneous planes and over time.\nscatra_channel_flow_of_height_2: For this flow, all statistical data could be averaged in the homogeneous planes - it is essentially a statistically one dimensional flow.\ndecaying_homogeneous_isotropic_turbulence: For this flow, all statistical data could be averaged in the in all homogeneous directions  - it is essentially a statistically zero dimensional flow.\nforced_homogeneous_isotropic_turbulence: For this flow, all statistical data could be averaged in the in all homogeneous directions  - it is essentially a statistically zero dimensional flow.\nscatra_forced_homogeneous_isotropic_turbulence: For this flow, all statistical data could be averaged in the in all homogeneous directions  - it is essentially a statistically zero dimensional flow.\ntaylor_green_vortex: For this flow, dissipation rate could be averaged in the in all homogeneous directions  - it is essentially a statistically zero dimensional flow.\nperiodic_hill: For this flow, statistical data is evaluated on various lines, averaged over time and z.\nblood_fda_flow: For this flow, statistical data is evaluated on various planes.\nbackward_facing_step2: For this flow, statistical data is evaluated on various planes.\n"
+        description: "Sampling is different for different canonical flows - so specify what kind of flow you've got \n\nno: The flow is not further specified, so spatial averaging and hence the standard sampling procedure is not possible\ntime_averaging: The flow is not further specified, but time averaging of velocity and pressure field is performed\nchannel_flow_of_height_2: For this flow, all statistical data could be averaged in the homogeneous planes - it is essentially a statistically one dimensional flow.\nsquare_cylinder_nurbs: For this flow, statistical data are evaluated on various lines of the xy-midplane, averaged over time and eventually in one home.direction.\nrotating_circular_cylinder_nurbs: For this flow, statistical data is computed in concentric surfaces and averaged. in time and in one home. direction\nrotating_circular_cylinder_nurbs_scatra: For this flow with mass transport, statistical data is computed in concentric surfaces and averaged. in time and in one home. direction\nloma_channel_flow_of_height_2: For this low-Mach-number flow, all statistical data could be averaged in the homogeneous planes - it is essentially a statistically one dimensional flow.\ncombust_oracles: ORACLES test rig for turbulent premixed combustion.\nbubbly_channel_flow: Turbulent two-phase flow: bubbly channel flow, statistical data are averaged in homogeneous planes and over time.\nscatra_channel_flow_of_height_2: For this flow, all statistical data could be averaged in the homogeneous planes - it is essentially a statistically one dimensional flow.\ndecaying_homogeneous_isotropic_turbulence: For this flow, all statistical data could be averaged in the in all homogeneous directions  - it is essentially a statistically zero dimensional flow.\nforced_homogeneous_isotropic_turbulence: For this flow, all statistical data could be averaged in the in all homogeneous directions  - it is essentially a statistically zero dimensional flow.\nscatra_forced_homogeneous_isotropic_turbulence: For this flow, all statistical data could be averaged in the in all homogeneous directions  - it is essentially a statistically zero dimensional flow.\nperiodic_hill: For this flow, statistical data is evaluated on various lines, averaged over time and z.\nblood_fda_flow: For this flow, statistical data is evaluated on various planes.\n"
         required: false
         default: "no"
         choices:
-          - name: "backward_facing_step"
-          - name: "backward_facing_step2"
-          - name: "blood_fda_flow"
           - name: "bubbly_channel_flow"
           - name: "channel_flow_of_height_2"
           - name: "combust_oracles"
           - name: "decaying_homogeneous_isotropic_turbulence"
           - name: "forced_homogeneous_isotropic_turbulence"
-          - name: "lid_driven_cavity"
-          - name: "loma_backward_facing_step"
           - name: "loma_channel_flow_of_height_2"
-          - name: "loma_lid_driven_cavity"
           - name: "no"
           - name: "periodic_hill"
           - name: "rotating_circular_cylinder_nurbs"
           - name: "rotating_circular_cylinder_nurbs_scatra"
           - name: "scatra_channel_flow_of_height_2"
           - name: "scatra_forced_homogeneous_isotropic_turbulence"
-          - name: "square_cylinder"
           - name: "square_cylinder_nurbs"
-          - name: "taylor_green_vortex"
           - name: "time_averaging"
       - name: HOMDIR
         type: enum
