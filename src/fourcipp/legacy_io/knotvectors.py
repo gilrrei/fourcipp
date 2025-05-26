@@ -55,18 +55,11 @@ def read_knotvectors(list_of_lines):
     while list_of_lines:
         line = list_of_lines.pop(0)
 
-        if isinstance(line, str):
-            if not line.strip():
-                # Skip empty line
-                continue
-            else:
-                line_list = line.split()
-        elif isinstance(line, (int, float)):
-            line_list = [line]
-        elif line is None:
+        # Empty line
+        if not line.strip():
             continue
-        else:
-            raise TypeError(f"Error while parsing knotvectors line: {line}!")
+
+        line_list = line.split()
 
         # Key value case
         if len(line_list) == 2:
@@ -155,8 +148,9 @@ def write_knotvectors(patches):
             patch_lines.append(f"NUMKNOTS {len(knot_vector['knots'])}")
             patch_lines.append(f"DEGREE {knot_vector['DEGREE']}")
             patch_lines.append(f"TYPE {knot_vector['TYPE']}")
-            patch_lines.extend(knot_vector["knots"])
-
+            patch_lines.extend(
+                [f"{knot}" for knot in knot_vector["knots"]]
+            )  # convert float to string as 4C expects each line of a legacy section as a string
         # End key
         patch_lines.append("END NURBSPATCH")
         return patch_lines

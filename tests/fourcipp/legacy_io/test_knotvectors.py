@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 """Test knotvectors io."""
 
+import numpy as np
 import pytest
 
 from fourcipp.legacy_io.knotvectors import read_knotvectors, write_knotvectors
@@ -99,12 +100,15 @@ def test_knotvectors_read_and_write(reference_knotvector_lines):
     lines = write_knotvectors(read_knotvectors(reference_knotvector_lines.copy()))
 
     for line, reference_line in zip(lines, reference_knotvector_lines):
-        if isinstance(line, str):
-            assert line.split() == reference_line.split()
-        elif isinstance(line, float):
-            assert line == float(reference_line)
-        else:
-            raise ValueError(f"Unexpected type {type(line)} in line: {line}")
+        for line_split, reference_line_split in zip(
+            line.split(), reference_line.split()
+        ):
+            try:
+                assert np.isclose(
+                    float(line_split), float(reference_line_split), atol=1e-8
+                )
+            except ValueError:
+                assert line_split == reference_line_split
 
 
 def test_wrong_knotvectors_dimension_mismatch():
