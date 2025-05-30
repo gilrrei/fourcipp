@@ -24,7 +24,6 @@
 import json
 import pathlib
 
-import ruamel.yaml
 import ryml
 
 
@@ -58,22 +57,25 @@ def dump_yaml(data, path_to_yaml_file, sort_keys=False):
         path_to_yaml_file (str): Yaml file path
         sort_keys (bool): If true sort the sections by section name
     """
-    # Ignore alias or anchors in dumps
-    ruamel.yaml.representer.RoundTripRepresenter.ignore_aliases = lambda x, y: True
-
-    # Currently using ruamel.yaml, will probably change in the future
-    YAML = ruamel.yaml.YAML()
-
-    # Some nice settings
-    YAML.indent(mapping=2, sequence=4, offset=2)
-
-    # Avoid wrapping of long lines
-    YAML.width = 4096
 
     # Sort keys
     if sort_keys:
         data = {key: data[key] for key in sorted(data.keys())}
 
-    # Dump it
+    # Convert dictionary into a ryml tree
+    tree = ryml.parse_in_arena(bytearray(json.dumps(data).encode("utf8")))
+
+    # remove all style bits to enable a YAML style output
+    # see https://github.com/biojppm/rapidyaml/issues/520
+    for node_id, _ in ryml.walk(tree):
+        if tree.is_map(node_id) or tree.is_seq(node_id):
+            tree.set_container_style(node_id, ryml.NOTYPE)
+
+        if tree.has_key(node_id):
+            tree.set_key_style(node_id, ryml.NOTYPE)
+
+        if tree.has_val(node_id):
+            tree.set_val_style(node_id, ryml.NOTYPE)
+
     with open(path_to_yaml_file, "w", encoding="utf-8") as f:
-        YAML.dump(data, f)
+        f.write(ryml.emit_yaml(tree))
