@@ -349,9 +349,24 @@ def get_4C_test_input_files():
     if not test_files_directory.exists():
         return []
 
-    return [
-        str(file_path) for file_path in sorted(test_files_directory.glob("*.4C.yaml"))
+    files = [
+        "ale2d_solid_lin.4C.yaml",
+        "beam3eb_genalpha_lineload_dynamic.4C.yaml",
+        "beam3r_herm2line3_static_beam_to_solid_volume_meshtying_2d-3d.4C.yaml",
+        "contact3D_quad_tet10.4C.yaml",
+        "elch_2D_porousMediumHomo_SSPP.4C.yaml",
+        "f2_nurbs9_dc_drt.4C.yaml",
+        "fsi_dc_mono_slss_msht.4C.yaml",
+        "particle_dem_1d_adhesion_RegDMT.4C.yaml",
+        "poro_3D_tet4.4C.yaml",
+        "reduced_lung_3_aw_2_tu.4C.yaml",
+        "scatra_chemo_h27.4C.yaml",
+        "solid_ele_tet4_Standard_linear.4C.yaml",
+        "tsi_meshtying_nurbs.4C.yaml",
+        "xfsi_comp_struct_fsi_2D_mono_slip.4C.yaml",
     ]
+
+    return [str(test_files_directory / file) for file in files]
 
 
 FOURC_TEST_INPUT_FILES = get_4C_test_input_files()
@@ -364,7 +379,6 @@ class SubprocessError(Exception):
 @pytest.mark.skipif(
     CONFIG["profile"] != "4C_docker_main", reason="Not using docker config."
 )
-@pytest.mark.xfail(raises=SubprocessError)
 @pytest.mark.parametrize("fourc_file", FOURC_TEST_INPUT_FILES)
 def test_roundtrip_test(fourc_file, tmp_path):
     """Roundtrip test."""
@@ -373,12 +387,16 @@ def test_roundtrip_test(fourc_file, tmp_path):
     # Load 4C input test file
     fourc_input = FourCInput.from_4C_yaml(fourc_file)
 
+    # Delete the original file (we need to dump the file in the original location to ensure that associated files, i.e., xml solver files, are still present)
+    fourc_file.unlink()
+
     # Dump out again
-    roundtrip_file_path = tmp_path / fourc_file.name
-    fourc_input.dump(roundtrip_file_path, validate=True)
+    fourc_input.dump(fourc_file, validate=True)
 
     # Command
-    command = f"/home/user/4C/build/4C {roundtrip_file_path} xxx > {tmp_path / 'output.log'} 2>&1"
+    command = (
+        f"/home/user/4C/build/4C {fourc_file} xxx > {tmp_path / 'output.log'} 2>&1"
+    )
 
     # Run 4C with the dumped input
     return_code = subprocess.call(command, shell=True)  # nosec
