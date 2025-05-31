@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: fd3357ec71dd2375e600a442aedbf4cf82dc2d1e
+  commit_hash: 19f0f5fbd16b690eee3de8be319c119c77b1ca8f
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -28515,12 +28515,12 @@ sections:
                   default: 1
                 - name: VARYING_DIAMETERLAW
                   type: string
-                  description: "type of varying diameter law, CONSTANT (default) or BY_FUNCTION"
+                  description: "type of variable diameter law, CONSTANT (default) or BY_FUNCTION"
                   required: false
                   default: "CONSTANT"
                 - name: VARYING_DIAMETER_FUNCTION
                   type: int
-                  description: "function for varying diameter law"
+                  description: "function for variable diameter law"
                   required: false
                   default: -1
                 - name: COLLAPSE_THRESHOLD
