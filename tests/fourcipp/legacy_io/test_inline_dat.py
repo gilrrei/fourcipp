@@ -48,7 +48,7 @@ def test_entry_casting_factory_invalid_type():
 
 def test_casting_factory_invalid_type():
     """Test reading invalid types."""
-    with pytest.raises(NotImplementedError, match="Entry type"):
+    with pytest.raises(NotImplementedError, match="First entry has to be an all_of"):
         casting_factory({"type": "invalid"})
 
 
@@ -58,7 +58,7 @@ def test_doubled_inline_keyword():
         inline_dat_read(
             ["a", "1", "b", "1", "a", "2"],
             keyword_casting={
-                "a": partial(_extract_entry, entry_type=int),
-                "b": partial(_extract_entry, entry_type=int),
+                "a": partial(_extract_entry, extractor=int),
+                "b": partial(_extract_entry, extractor=int),
             },
         )

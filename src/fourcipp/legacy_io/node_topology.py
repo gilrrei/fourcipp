@@ -32,14 +32,14 @@ from fourcipp.legacy_io.inline_dat import (
 )
 
 
-def _read_corner(line_list):
+def _read_corner(line_list: list) -> dict:
     """Read corner line.
 
     Args:
-        line_list (list): List to extract the entry
+        line_list: List to extract the entry
 
     Returns:
-        dict: corner as dict
+        corner as dict
     """
     corner = {
         "type": "CORNER",
@@ -50,19 +50,19 @@ def _read_corner(line_list):
             _extract_enum(line_list, choices=["x-", "x+", "y-", "y+", "z-", "z+"]),
         ],
         "d_type": line_list.pop(0),
-        "d_id": _extract_entry(line_list, entry_type=int),
+        "d_id": _extract_entry(line_list, extractor=int),
     }
     return corner
 
 
-def _read_edge(line_list):
+def _read_edge(line_list: list[str]) -> dict:
     """Read edge line.
 
     Args:
-        line_list (list): List to extract the entry
+        line_list: List to extract the entry
 
     Returns:
-        dict: edge as dict
+        edge as dict
     """
     edge = {
         "type": "EDGE",
@@ -72,19 +72,19 @@ def _read_edge(line_list):
             _extract_enum(line_list, choices=["x-", "x+", "y-", "y+", "z-", "z+"]),
         ],
         "d_type": line_list.pop(0),
-        "d_id": _extract_entry(line_list, entry_type=int),
+        "d_id": _extract_entry(line_list, extractor=int),
     }
     return edge
 
 
-def _read_side(line_list):
+def _read_side(line_list: list[str]) -> dict:
     """Read side line.
 
     Args:
-        line_list (list): List to extract the entry
+        line_list: List to extract the entry
 
     Returns:
-        dict: Side as dict
+        Side as dict
     """
     side = {
         "type": "SIDE",
@@ -93,61 +93,63 @@ def _read_side(line_list):
             _extract_enum(line_list, choices=["x-", "x+", "y-", "y+", "z-", "z+"]),
         ],
         "d_type": line_list.pop(0),
-        "d_id": _extract_entry(line_list, entry_type=int),
+        "d_id": _extract_entry(line_list, extractor=int),
     }
     return side
 
 
-def _read_volume(line_list):
+def _read_volume(line_list: list[str]) -> dict:
     """Read volume line.
 
     Args:
-        line_list (list): List to extract the entry
+        line_list: List to extract the entry
 
     Returns:
-        dict: Volume as dict
+        Volume as dict
     """
     volume = {
         "type": "VOLUME",
         "discretization_type": line_list.pop(0),
         "d_type": line_list.pop(0),
-        "d_id": _extract_entry(line_list, entry_type=int),
+        "d_id": _extract_entry(line_list, extractor=int),
     }
     return volume
 
 
-def _read_domain_topology(line_list, entry_type):
+def _read_domain_topology(line_list: list[str], extractor: str) -> dict:
     """
     Args:
-        line_list (list): List to extract the entry
-        entry_type (str): Type of domain node topology
+        line_list: List to extract the entry
+        extractor: Type of domain node topology
 
     Returns:
-        dict: Topology entry as a dict
+        Topology entry as a dict
     """
-    if entry_type == "CORNER":
+    if extractor == "CORNER":
         return _read_corner(line_list)
-    if entry_type == "EDGE":
+    elif extractor == "EDGE":
         return _read_edge(line_list)
-    if entry_type == "SIDE":
+    elif extractor == "SIDE":
         return _read_side(line_list)
-    if entry_type == "VOLUME":
+    elif extractor == "VOLUME":
         return _read_volume(line_list)
+    else:
+        raise TypeError(f"Unknown entry type {extractor}")
 
 
-def _read_d_topology(line_list):
+def _read_d_topology(line_list: list[str]) -> dict:
     """
     Args:
-        line_list (list): List to extract the entries
+        line_list: List to extract the entries
 
     Returns:
-        dict: Topology entry as a dict
+        Topology entry as a dict
     """
-    node_id = _extract_entry(line_list, entry_type=int)
+    node_id = _extract_entry(line_list, extractor=int)
     d_type = _extract_enum(
         line_list, choices=["DNODE", "DLINE", "DSURFACE", "DSURF", "DVOLUME", "DVOL"]
     )
-    d_id = _extract_entry(line_list, entry_type=int)
+    d_id = _extract_entry(line_list, extractor=int)
 
     d_topology = {
         "type": "NODE",
@@ -158,34 +160,34 @@ def _read_d_topology(line_list):
     return d_topology
 
 
-def read_node_topology(line):
+def read_node_topology(line: str) -> dict:
     """Read topology entry as line.
 
     Args:
-        line (str): Inline dat description of the topology entry
+        line: Inline dat description of the topology entry
 
     Returns:
-        dict: Topology entry as a dict
+        Topology entry as a dict
     """
     line_list = line.split()
-    entry_type = line_list.pop(0)
+    extractor = line_list.pop(0)
 
-    if entry_type == "NODE":
+    if extractor == "NODE":
         return _read_d_topology(line_list)
 
-    if entry_type in ["CORNER", "EDGE", "SIDE", "VOLUME"]:
-        return _read_domain_topology(line_list, entry_type)
+    if extractor in ["CORNER", "EDGE", "SIDE", "VOLUME"]:
+        return _read_domain_topology(line_list, extractor)
 
-    raise ValueError(f"Unknown type {entry_type}")
+    raise ValueError(f"Unknown type {extractor}")
 
 
-def write_node_topology(topology):
+def write_node_topology(topology: dict) -> str:
     """Write topology line.
 
     Args:
-        topology (dict): Topology dict
+        topology: Topology dict
 
     Returns:
-        str: Topology entry as line
+        Topology entry as line
     """
     return " ".join([to_dat_string(e) for e in topology.values()])

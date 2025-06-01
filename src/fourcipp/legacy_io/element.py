@@ -23,25 +23,28 @@
 
 from fourcipp import CONFIG
 from fourcipp.legacy_io.inline_dat import (
-    casting_factory,
     inline_dat_read,
+    nested_casting_factory,
     to_dat_string,
 )
+from fourcipp.utils.typing import LineCastingDict, NestedCastingDict
 
-_ELEMENT_CASTING = None
-if CONFIG["4C_metadata"] is not None:
-    _ELEMENT_CASTING = casting_factory(CONFIG["4C_metadata"]["legacy_element_specs"])
+_elemeny_casting: NestedCastingDict = nested_casting_factory(
+    CONFIG["4C_metadata"]["legacy_element_specs"]
+)
 
 
-def read_element(line, elements_casting=_ELEMENT_CASTING):
+def read_element(
+    line: str, elements_casting: NestedCastingDict = _elemeny_casting
+) -> dict:
     """Read a element line.
 
     Args:
-        line (str): Inline dat description of the element
-        elements_casting (dict): Element casting dict.
+        line: Inline dat description of the element
+        elements_casting: Element casting dict.
 
     Returns:
-        dict: element as dict
+        element as dict
     """
     line_list = line.split()
 
@@ -54,7 +57,9 @@ def read_element(line, elements_casting=_ELEMENT_CASTING):
     # Third entry is the cell type
     cell_type = line_list.pop(0)
 
-    element_parameter_casting = elements_casting[element_type][cell_type]
+    element_parameter_casting: LineCastingDict = elements_casting[element_type][  # type: ignore[index, assignment]
+        cell_type
+    ]
 
     element = {
         "id": element_id,
@@ -68,14 +73,14 @@ def read_element(line, elements_casting=_ELEMENT_CASTING):
     return element
 
 
-def write_element(element):
+def write_element(element: dict) -> str:
     """Write element as inline dat style.
 
     Args:
-        element (dict): Element description
+        element: Element description
 
     Returns:
-        str: element line
+        element line
     """
     line = " ".join(
         [
