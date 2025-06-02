@@ -360,6 +360,7 @@ class FourCInput:
         sort_sections: bool = False,
         validate: bool = False,
         validate_sections_only: bool = False,
+        convert_to_native_types: bool = True,
     ) -> None:
         """Dump object to yaml.
 
@@ -369,25 +370,36 @@ class FourCInput:
             validate: Validate input data before dumping
             validate_sections_only: Validate each section independently.
                 Requiredness of the sections themselves is ignored.
+            convert_to_native_types: Convert all sections to native Python types
         """
 
         if validate or validate_sections_only:
-            self.validate(sections_only=validate_sections_only)
+            self.validate(
+                sections_only=validate_sections_only,
+                convert_to_native_types=convert_to_native_types,
+            )
+            # if conversion already happened in validation do not convert again
+            if convert_to_native_types:
+                convert_to_native_types = False
 
-        self.convert_to_native_types()
+        if convert_to_native_types:
+            self.convert_to_native_types()
+
         dump_yaml(self.inlined, input_file_path, sort_sections)
 
     def validate(
         self,
         json_schema: dict = CONFIG["json_schema"],
         sections_only: bool = False,
+        convert_to_native_types: bool = True,
     ) -> bool:
         """Validate input file.
 
         Args:
             json_schema: Schema to check the data
-            sections_only: Validate each section independently. Requiredness of the sections
-                                  themselves is ignored.
+            sections_only: Validate each section independently.
+                Requiredness of the sections themselves is ignored.
+            convert_to_native_types: Convert all sections to native Python types
         """
         validation_schema = json_schema
 
@@ -396,7 +408,8 @@ class FourCInput:
             validation_schema = json_schema.copy()
             validation_schema.pop("required")
 
-        self.convert_to_native_types()
+        if convert_to_native_types:
+            self.convert_to_native_types()
         return validate_using_json_schema(self.inlined, validation_schema)
 
     def split(self, section_names: Sequence) -> tuple[FourCInput, FourCInput]:
