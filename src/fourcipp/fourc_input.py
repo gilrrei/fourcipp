@@ -359,6 +359,7 @@ class FourCInput:
         input_file_path: Path,
         sort_sections: bool = False,
         validate: bool = False,
+        validate_sections_only: bool = False,
     ) -> None:
         """Dump object to yaml.
 
@@ -366,10 +367,12 @@ class FourCInput:
             input_file_path: Path to dump the data to
             sort_sections: Sort the sections alphabetically
             validate: Validate input data before dumping
+            validate_sections_only: Validate each section independently.
+                Requiredness of the sections themselves is ignored.
         """
 
-        if validate:
-            self.validate()
+        if validate or validate_sections_only:
+            self.validate(sections_only=validate_sections_only)
 
         self.convert_to_native_types()
         dump_yaml(self.inlined, input_file_path, sort_sections)
