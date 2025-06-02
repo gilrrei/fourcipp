@@ -21,21 +21,30 @@
 # THE SOFTWARE.
 """Read inline dat strings."""
 
+from collections.abc import Callable
 from functools import partial
+from typing import Any
 
 from fourcipp.utils.metadata import METADATA_TO_PYTHON
+from fourcipp.utils.typing import (
+    Extractor,
+    LineCastingDict,
+    LineListExtractor,
+    NestedCastingDict,
+    T,
+)
 
 # Metadata types currently supported
 SUPPORTED_METADATA_TYPES = list(METADATA_TO_PYTHON.keys()) + ["vector", "enum"]
 
 
-def to_dat_string(object):
+def to_dat_string(object: Any) -> str:
     """Convert object to dat style string.
     Args:
-        data (object): Object to be casted
+        data: Object to be casted
 
     Returns:
-        str: Object as dict
+        Object as dict
     """
     if isinstance(object, list):
         return " ".join([str(d) for d in object])
@@ -44,70 +53,72 @@ def to_dat_string(object):
     return str(object)
 
 
-def _left_pop(line_list, n_entries):
+def _left_pop(line_list: list[str], n_entries: int) -> list[str]:
     """Pop entries the beginning of a list.
 
     Args:
-        line_list (list): List to extract the entries
-        n_entries (int): Number of entries starting from the beginning of the list
+        line_list: List to extract the entries
+        n_entries: Number of entries starting from the beginning of the list
 
     Returns:
-        list: Extracted entries
+        Extracted entries
     """
     entries = line_list[:n_entries]
     del line_list[:n_entries]
     return entries
 
 
-def _extract_entry(line_list, entry_type):
+def _extract_entry(line_list: list[str], extractor: Extractor[T]) -> T:
     """Extract a single entry from a line list.
 
     Args:
-        line_list (list): List to extract the entries
-        entry_type (callable): Function to cast the string into the desired object
+        line_list: List to extract the entries
+        extractor: Function to cast the string into the desired object
 
     Returns:
-        object: Casted object
+        Casted object
     """
-    return entry_type(_left_pop(line_list, 1)[0])
+    return extractor(_left_pop(line_list, 1)[0])
 
 
-def _extract_vector(line_list, entry_type, size):
+def _extract_vector(
+    line_list: list[str], extractor: Extractor[T], size: int
+) -> list[T]:
     """Extract a vector entry from a line list.
 
     Args:
-        line_list (list): List to extract the entries
-        entry_type (callable): Function to cast the string into the desired object
-        size (int): Vector size
+        line_list: List to extract the entries
+        extractor: Function to cast the string into the desired object
+        size: Vector size
 
     Returns:
-        list: Casted vector object
+        Casted vector object
     """
-    return [entry_type(e) for e in _left_pop(line_list, size)]
+    return [extractor(e) for e in _left_pop(line_list, size)]
 
 
-def _extract_all(line_list, entry_type):
+def _extract_all(line_list: list[str], extractor: Extractor[T]) -> list[T]:
     """Extract all the entries from a line list.
 
     Args:
-        line_list (list): List to extract the entries
-        entry_type (callable): Function to cast the string into the desired object
+        line_list: List to extract the entries
+        extractor: Function to cast the string into the desired object
 
     Returns:
-        list: Casted vector object
+        Casted vector object
     """
-    return [entry_type(e) for e in _left_pop(line_list, len(line_list))]
+    return [extractor(e) for e in _left_pop(line_list, len(line_list))]
 
 
-def _extract_enum(line_list, choices):
+def _extract_enum(line_list: list[str], choices: list[str]) -> str:
     """Extract enum entry from a line list.
 
     Args:
-        line_list (list): List to extract the entries
-        choices (list): Choices for the enum
+        line_list: List to extract the entries
+        choices: Choices for the enum
 
     Returns:
-        str: Valid enum entry
+        Valid enum entry
     """
     entry = _left_pop(line_list, 1)[0]
     if not entry in choices:
@@ -115,20 +126,20 @@ def _extract_enum(line_list, choices):
     return entry
 
 
-def _entry_casting_factory(spec):
+def _entry_casting_factory(spec: dict) -> LineListExtractor:
     """Create the casting function for a spec.
 
     Args:
-        spec (dict): 4C metadata style object description
+        spec: 4C metadata style object description
 
     Returns:
-        callable: Casting function for the spec
+        Casting function for the spec
     """
     if spec["type"] in METADATA_TO_PYTHON:
-        return partial(_extract_entry, entry_type=METADATA_TO_PYTHON[spec["type"]])
+        return partial(_extract_entry, extractor=METADATA_TO_PYTHON[spec["type"]])
     elif spec["type"] == "vector":
         value_type = METADATA_TO_PYTHON[spec["value_type"]["type"]]
-        return partial(_extract_vector, entry_type=value_type, size=spec["size"])
+        return partial(_extract_vector, extractor=value_type, size=spec["size"])
     elif spec["type"] == "enum":
         choices = [s["name"] for s in spec["choices"]]
         return partial(_extract_enum, choices=choices)
@@ -136,43 +147,75 @@ def _entry_casting_factory(spec):
         raise NotImplementedError(f"Entry type {spec['type']} not supported.")
 
 
-def casting_factory(fourc_metadata):
+def casting_factory(fourc_metadata: dict) -> LineCastingDict:
     """Create casting object for the specs.
 
     Args:
-        fourc_metadata (dict): 4C metadata style object description
+        fourc_metadata: 4C metadata style object description
 
     Returns:
-        dict: Casting object for the specs by name
+        Casting object for the specs by name
     """
+    metadata_type = fourc_metadata["type"]
+
+    if metadata_type == "all_of":
+        specs: LineCastingDict = {}
+
+        for spec_i in fourc_metadata["specs"]:
+            if spec_i["type"] in SUPPORTED_METADATA_TYPES:
+                spec_name: str = spec_i["name"]
+                specs[spec_name] = _entry_casting_factory(spec_i)
+            else:
+                raise NotImplementedError(f"Entry type {spec_i['type']} not supported.")
+
+        return specs
+
+    raise NotImplementedError(f"First entry has to be an all_of")
+
+
+def nested_casting_factory(fourc_metadata: dict) -> NestedCastingDict:
+    """Create nested casting object for the specs.
+
+    Args:
+        fourc_metadata: 4C metadata style object description
+
+    Returns:
+        Casting object for the specs by name
+    """
+
     if fourc_metadata["type"] in SUPPORTED_METADATA_TYPES:
-        return {fourc_metadata["name"]: _entry_casting_factory(fourc_metadata)}
+        type_name: str = fourc_metadata["name"]
+        return {type_name: _entry_casting_factory(fourc_metadata)}
 
     # Supported collections
     if fourc_metadata["type"] in ["all_of", "group", "one_of"]:
-        specs = {}
+        specs: NestedCastingDict = {}
         for spec_i in fourc_metadata["specs"]:
-            specs.update(casting_factory(spec_i))
+            specs.update(nested_casting_factory(spec_i))
 
         if fourc_metadata["type"] == "group":
-            return {fourc_metadata["name"]: specs}
+            type_name = fourc_metadata["name"]
+            return {type_name: specs}  # type: ignore[dict-item]
         else:
             return specs
     else:
         raise NotImplementedError(f"Entry type {fourc_metadata['type']} not supported.")
 
 
-def inline_dat_read(line_list, keyword_casting):
+def inline_dat_read(line_list: list, keyword_casting: LineCastingDict) -> dict:
     """Read inline dat to dict.
 
+    Note: This function is not able to read nested containers such as groups. This would diminish
+    performance and is not needed for the legacy sections.
+
     Args:
-        line_list (list): List to extract the entries
-        keyword_casting (dict): Dict with the casting
+        line_list: List to extract the entries
+        keyword_casting: Dict with the casting
 
     Returns:
-        dict: Entry as dict
+        Entry as dict
     """
-    entry = {}
+    entry: dict = {}
     while line_list:
         key = line_list.pop(0)
         # Raises Error if an entry was provided twice

@@ -19,46 +19,21 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""Not set utils."""
+"""Type hinting utils."""
 
-from typing import Any
+import pathlib
+from collections.abc import Callable
+from typing import Any, TypeAlias, TypeVar
 
+# Generic type variable
+T = TypeVar("T")
 
-class _NotSet:
-    """Not set object."""
-
-
-# Not set object
-NotSet = _NotSet()
-
-
-def check_if_set(obj: Any) -> bool:
-    """Check if object or is NotSet.
-
-    Args:
-        obj: Object to check
-
-    Returns:
-        True if object is set
-    """
-    # Check if object is not of type _NotSet, i.e. it has a value
-    return not isinstance(obj, _NotSet)
+# For paths we commonly use string or pathlib.path
+Path: TypeAlias = pathlib.Path | str
 
 
-def pop_arguments(key: str, default: Any = NotSet) -> tuple:
-    """Create arguments for the pop method.
-
-    We need this utility since pop is not implemented using kwargs, instead the default is checked
-     via the number of arguments.
-
-    Args:
-        key: Key to pop the value for
-        default: Default value to return in case of the pop value.
-
-    Returns:
-        Arguments for pop
-    """
-    if check_if_set(default):
-        return (key, default)
-    else:
-        return (key,)
+# For casting dicts
+Extractor: TypeAlias = Callable[[str], T]
+LineListExtractor: TypeAlias = Callable[[list[str]], T]
+LineCastingDict: TypeAlias = dict[str, LineListExtractor]
+NestedCastingDict: TypeAlias = dict[str, LineCastingDict | LineListExtractor]

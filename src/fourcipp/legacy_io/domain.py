@@ -34,40 +34,41 @@ from fourcipp.legacy_io.inline_dat import (
     inline_dat_read,
     to_dat_string,
 )
+from fourcipp.utils.typing import LineCastingDict
 
-DOMAIN_CASTING = {
-    "LOWER_BOUND": partial(_extract_vector, entry_type=float, size=3),
-    "UPPER_BOUND": partial(_extract_vector, entry_type=float, size=3),
-    "INTERVALS": partial(_extract_vector, entry_type=int, size=3),
-    "ROTATION": partial(_extract_vector, entry_type=float, size=3),
-    "ELEMENTS": partial(_extract_all, entry_type=str),
+_DOMAIN_CASTING: LineCastingDict = {
+    "LOWER_BOUND": partial(_extract_vector, extractor=float, size=3),
+    "UPPER_BOUND": partial(_extract_vector, extractor=float, size=3),
+    "INTERVALS": partial(_extract_vector, extractor=int, size=3),
+    "ROTATION": partial(_extract_vector, extractor=float, size=3),
+    "ELEMENTS": partial(_extract_all, extractor=str),
     "PARTITION": partial(_extract_enum, choices=["auto", "structured"]),
 }
 
 
-def read_domain(lines):
+def read_domain(lines: list[str]) -> dict:
     """Read domain section.
 
     Args:
-        lines (list): List of lines.
+        lines: List of lines.
 
     Returns:
-        dict: Domain section as dict
+        Domain section as dict
     """
     data = {}
     for line in lines:
-        data.update(inline_dat_read(line.split(), DOMAIN_CASTING))
+        data.update(inline_dat_read(line.split(), _DOMAIN_CASTING))
     return data
 
 
-def write_domain(domain):
+def write_domain(domain: dict) -> list[str]:
     """Write domain section.
 
     Args:
-        domain (dict): Domain section as dict
+        domain: Domain section as dict
 
     Returns:
-        list: Domain as list of lines
+        Domain as list of lines
     """
     new_lines = []
     for k, v in domain.items():

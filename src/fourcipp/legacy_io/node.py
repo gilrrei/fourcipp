@@ -25,27 +25,29 @@ Once this section is implemented in 4C using InputSpec, this file can be
 simplified.
 """
 
+from collections.abc import Callable
 from functools import partial
+from typing import Any, Literal
 
 from fourcipp.legacy_io.inline_dat import _extract_entry, _extract_vector, to_dat_string
 
-_FNODE_CASTING = {
-    "CIR": partial(_extract_vector, entry_type=float, size=3),
-    "TAN": partial(_extract_vector, entry_type=float, size=3),
-    "RAD": partial(_extract_vector, entry_type=float, size=3),
-    "HELIX": partial(_extract_entry, entry_type=float),
-    "TRANS": partial(_extract_entry, entry_type=float),
+_FNODE_CASTING: dict[str, Callable] = {
+    "CIR": partial(_extract_vector, extractor=float, size=3),
+    "TAN": partial(_extract_vector, extractor=float, size=3),
+    "RAD": partial(_extract_vector, extractor=float, size=3),
+    "HELIX": partial(_extract_entry, extractor=float),
+    "TRANS": partial(_extract_entry, extractor=float),
 }
 
 
-def read_node(line):
+def read_node(line: str) -> dict:
     """Read node.
 
     Args:
-        line (str): Inline dat description of the element
+        line: Inline dat description of the element
 
     Returns:
-        dict: Node as dict
+        Node as dict
     """
     line_list = line.split()
 
@@ -57,9 +59,13 @@ def read_node(line):
 
     # Read the coords
     line_list.pop(0)
-    coordinate = _extract_vector(line_list, entry_type=float, size=3)
+    coordinate = _extract_vector(line_list, extractor=float, size=3)
 
-    node = {"id": node_id, "COORD": coordinate, "data": {"type": node_type}}
+    node: dict[Literal["id", "COORD", "data"], dict | Any] = {
+        "id": node_id,
+        "COORD": coordinate,
+        "data": {"type": node_type},
+    }
 
     if node_type == "NODE":
         return node
@@ -72,23 +78,22 @@ def read_node(line):
         while line_list:
             key = line_list.pop(0)
             if key.startswith("FIBER"):
-                node["data"][key] = _extract_vector(line_list, entry_type=float, size=3)
+                node["data"][key] = _extract_vector(line_list, extractor=float, size=3)
                 continue
-
             node["data"][key] = _FNODE_CASTING[key](line_list)
         return node
 
     raise ValueError(f"Unknown node type {node_type}")
 
 
-def write_node(node):
+def write_node(node: dict) -> str:
     """Write node as line.
 
     Args:
-        node (dict): Node as dict
+        node: Node as dict
 
     Returns:
-        str: Node as line
+        Node as line
     """
     node_type = node["data"]["type"]
     line = f"{node_type} {node['id']} COORD {to_dat_string(node['COORD'])}"

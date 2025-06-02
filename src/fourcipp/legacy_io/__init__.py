@@ -21,6 +21,8 @@
 # THE SOFTWARE.
 """Modules related to legacy io."""
 
+from collections.abc import Callable, Sequence
+
 from fourcipp import LEGACY_SECTIONS
 from fourcipp.legacy_io.domain import read_domain, write_domain
 from fourcipp.legacy_io.element import read_element, write_element
@@ -28,32 +30,33 @@ from fourcipp.legacy_io.knotvectors import read_knotvectors, write_knotvectors
 from fourcipp.legacy_io.node import read_node, write_node
 from fourcipp.legacy_io.node_topology import read_node_topology, write_node_topology
 from fourcipp.legacy_io.particle import read_particle, write_particle
+from fourcipp.utils.typing import T
 
 
-def _iterate_and_evaluate(function, iterable):
+def _iterate_and_evaluate(function: Callable[..., T], iterable: Sequence) -> list[T]:
     """Iterate through lines and evaluate function on them.
 
     Args:
-        function (callable): Function to be called
-        iterable (iterable): List of data
+        function: Function to be called
+        iterable: List of data
 
     Returns:
-        list: List evaluate as desired
+        List evaluate as desired
     """
     return [function(line) for line in iterable]
 
 
-def interpret_legacy_section(legacy_section, section_data):
+def interpret_legacy_section(legacy_section: str, section_data: list) -> dict | list:
     """Interpret legacy section.
 
     Transform line into usable data.
 
     Args:
-        legacy_section (str): Section name
-        section_data (dict): Section data
+        legacy_section: Section name
+        section_data: Section data
 
     Returns:
-        dict: Interpreted data
+        Interpreted data
     """
     if legacy_section not in LEGACY_SECTIONS:
         raise ValueError(
@@ -63,6 +66,7 @@ def interpret_legacy_section(legacy_section, section_data):
     match legacy_section:
         case "PARTICLES":
             return _iterate_and_evaluate(read_particle, section_data)
+
         case "NODE COORDS":
             return _iterate_and_evaluate(read_node, section_data)
 
@@ -84,14 +88,14 @@ def interpret_legacy_section(legacy_section, section_data):
             )
 
 
-def interpret_legacy_sections(legacy_sections):
+def interpret_legacy_sections(legacy_sections: dict) -> dict:
     """Interpret all legacy sections.
 
     Args:
-        legacy_sections (dict): Legacy sections and data
+        legacy_sections: Legacy sections and data
 
     Returns:
-        dict: Interpreted legacy sections
+        Interpreted legacy sections
     """
     for legacy_section, section in legacy_sections.items():
         legacy_sections[legacy_section] = interpret_legacy_section(
@@ -100,55 +104,64 @@ def interpret_legacy_sections(legacy_sections):
     return legacy_sections
 
 
-def inline_legacy_section(legacy_section, section_data):
+def inline_legacy_section(legacy_section: str, section_data: dict | list) -> list:
     """Inline legacy section.
 
     Transform dict form of the section into the inline dat style.
 
     Args:
-        legacy_section (str): Section name
-        section_data (dict): Section data
+        legacy_section: Section name
+        section_data: Section data
 
     Returns:
-        dict: Inlined data
+        Inlined data
     """
-    if legacy_section not in LEGACY_SECTIONS:
-        raise ValueError(
-            f"Section {legacy_section} is not a known legacy section. Current legacy sections are {', '.join(LEGACY_SECTIONS)}"
-        )
 
     match legacy_section:
         case "PARTICLES":
+            if not isinstance(section_data, Sequence):
+                raise TypeError("Expected the section data to be of type list.")
             return _iterate_and_evaluate(write_particle, section_data)
+
         case "NODE COORDS":
+            if not isinstance(section_data, Sequence):
+                raise TypeError("Expected the section data to be of type list.")
             return _iterate_and_evaluate(write_node, section_data)
 
         case _ if legacy_section.endswith("ELEMENTS"):
+            if not isinstance(section_data, Sequence):
+                raise TypeError("Expected the section data to be of type list.")
             return _iterate_and_evaluate(write_element, section_data)
 
         case _ if legacy_section.endswith("NODE TOPOLOGY"):
+            if not isinstance(section_data, Sequence):
+                raise TypeError("Expected the section data to be of type list.")
             return _iterate_and_evaluate(write_node_topology, section_data)
 
-        case _ if legacy_section.endswith("DOMAIN"):
-            return write_domain(section_data)
-
         case _ if legacy_section.endswith("KNOTVECTORS"):
+            if not isinstance(section_data, Sequence):
+                raise TypeError("Expected the section data to be of type list.")
             return write_knotvectors(section_data)
 
+        case _ if legacy_section.endswith("DOMAIN"):
+            if not isinstance(section_data, dict):
+                raise TypeError("Expected a dictionary for the section data.")
+            return write_domain(section_data)
+
         case _:
-            raise NotImplementedError(
-                f"Legacy section {legacy_section} is not implemented."
+            raise ValueError(
+                f"Section {legacy_section} is not a known legacy section. Current legacy sections are {', '.join(LEGACY_SECTIONS)}"
             )
 
 
-def inline_legacy_sections(legacy_sections):
+def inline_legacy_sections(legacy_sections: dict) -> dict:
     """Inline all legacy sections.
 
     Args:
-        legacy_sections (dict): Legacy sections and data
+        legacy_sections: Legacy sections and data
 
     Returns:
-        dict: Inline legacy sections
+        Inline legacy sections
     """
 
     for legacy_section, section in legacy_sections.items():

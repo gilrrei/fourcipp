@@ -25,31 +25,31 @@ from functools import partial
 
 from fourcipp.legacy_io.inline_dat import _extract_entry, _extract_enum, _extract_vector
 
-NURBS_PATCH_CASTING = {
-    "ID": partial(_extract_entry, entry_type=int),
-    "NURBS_DIMENSION": partial(_extract_entry, entry_type=int),
+NURBS_PATCH_CASTING: dict = {
+    "ID": partial(_extract_entry, extractor=int),
+    "NURBS_DIMENSION": partial(_extract_entry, extractor=int),
 }
 
-KNOT_VECTORS_CASTING = {
-    "NUMKNOTS": partial(_extract_entry, entry_type=int),
-    "DEGREE": partial(_extract_entry, entry_type=int),
+KNOT_VECTORS_CASTING: dict = {
+    "NUMKNOTS": partial(_extract_entry, extractor=int),
+    "DEGREE": partial(_extract_entry, extractor=int),
     "TYPE": partial(_extract_enum, choices=["Interpolated", "Periodic"]),
 }
 
 
-def read_knotvectors(list_of_lines):
+def read_knotvectors(list_of_lines: list) -> list[dict]:
     """Read knotvectors section.
 
     Args:
-        list_of_lines (list): List of section lines
+        list_of_lines: List of section lines
 
     Returns:
-        list: List of patch dicts
+        List of patch dicts
     """
 
-    patch_data = {}
-    knots_data = {}
-    patches = []
+    patch_data: dict = {}
+    knots_data: dict = {}
+    patches: list = []
 
     latest_nurb_dimension = None
     while list_of_lines:
@@ -101,7 +101,7 @@ def read_knotvectors(list_of_lines):
             knots_data["knots"] = [
                 float(line_list[0])
             ] + _extract_vector(  # misuse this function to extract from list of lines
-                list_of_lines, entry_type=float, size=knots_data.pop("NUMKNOTS") - 1
+                list_of_lines, extractor=float, size=knots_data.pop("NUMKNOTS") - 1
             )
 
             # Append knots data
@@ -116,24 +116,24 @@ def read_knotvectors(list_of_lines):
     return patches
 
 
-def write_knotvectors(patches):
+def write_knotvectors(patches: list) -> list[str]:
     """Read knotvectors sections.
 
     Args:
-        patches (dict): Patches list
+        patches: Patches list
 
     Returns:
-        list: List of lines
+        List of lines
     """
 
     def write_patch(patch):
         """Write patch lines.
 
         Args:
-            patch (dict): Patch dict
+            patch: Patch dict
 
         Returns:
-            list: List of lines
+            List of lines
         """
 
         # Patch data
