@@ -21,8 +21,52 @@
 # THE SOFTWARE.
 """Validation utils."""
 
+from __future__ import annotations
+
+from collections.abc import Iterable, Sequence
+
 import jsonschema_rs
-from jsonschema_rs import ValidationError as FourCIPPValidationError
+
+from fourcipp.utils.yaml_io import dict_to_yaml_string
+
+
+class ValidationError(Exception):
+    """FourCIPP validation error."""
+
+    @classmethod
+    def from_errors(
+        cls, errors: Iterable[jsonschema_rs.ValidationError]
+    ) -> ValidationError:
+        """Create error from multiple errors.
+
+        Args:
+            errors: Errors to raise
+
+        Returns:
+            New error for this case
+        """
+        message = "\nValidation failed, due to the following parameters:"
+
+        def indent(text: str, n_spaces: int = 4):
+            """Indent the text."""
+            indent_with_newline = "\n" + " " * n_spaces
+            return indent_with_newline + text.replace("\n", indent_with_newline)
+
+        def path_indexer(path: Sequence[str | int]) -> str:
+            """Create a path representation to walk the dict."""
+            path_for_data = ""
+            for p in path:
+                if isinstance(p, str):
+                    p = '"' + p + '"'
+                path_for_data += "[" + str(p) + "]"
+            return path_for_data
+
+        for error in errors:
+            message += "\n\n- Parameter in " + path_indexer(error.instance_path)
+            message += indent(indent(dict_to_yaml_string(error.instance), 4))
+            message += indent("Error: " + error.message, 2)
+
+        return cls(message)
 
 
 def validate_using_json_schema(data: dict, json_schema: dict) -> bool:
@@ -36,5 +80,9 @@ def validate_using_json_schema(data: dict, json_schema: dict) -> bool:
         True if successful
     """
     validator = jsonschema_rs.validator_for(json_schema)
-    validator.validate(data)
+    try:
+        validator.validate(data)
+    except jsonschema_rs.ValidationError as exception:
+        # Validation failed, look for all errors
+        raise ValidationError.from_errors(validator.iter_errors(data)) from exception
     return True

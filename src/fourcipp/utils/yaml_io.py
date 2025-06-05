@@ -51,12 +51,11 @@ def load_yaml(path_to_yaml_file: Path) -> dict:
     return data
 
 
-def dump_yaml(data: dict, path_to_yaml_file: Path, sort_keys: bool = False) -> None:
-    """Dump yaml to file.
+def dict_to_yaml_string(data: dict, sort_keys=False) -> str:
+    """Dump dict as yaml.
 
     Args:
         data: Data to dump.
-        path_to_yaml_file: Yaml file path
         sort_keys: If true sort the sections by section name
     """
 
@@ -79,5 +78,17 @@ def dump_yaml(data: dict, path_to_yaml_file: Path, sort_keys: bool = False) -> N
         if tree.has_val(node_id):
             tree.set_val_style(node_id, ryml.NOTYPE)
 
-    with open(path_to_yaml_file, "w", encoding="utf-8") as f:
-        f.write(ryml.emit_yaml(tree))
+    return ryml.emit_yaml(tree)
+
+
+def dump_yaml(data: dict, path_to_yaml_file: Path, sort_keys: bool = False) -> None:
+    """Dump yaml to file.
+
+    Args:
+        data: Data to dump.
+        path_to_yaml_file: Yaml file path
+        sort_keys: If true sort the sections by section name
+    """
+    pathlib.Path(path_to_yaml_file).write_text(
+        dict_to_yaml_string(data, sort_keys), encoding="utf-8"
+    )

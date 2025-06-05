@@ -39,7 +39,7 @@ from fourcipp.utils.converter import Converter
 from fourcipp.utils.dict_utils import compare_nested_dicts_or_lists
 from fourcipp.utils.not_set import NotSet, check_if_set
 from fourcipp.utils.typing import Path
-from fourcipp.utils.validation import validate_using_json_schema
+from fourcipp.utils.validation import ValidationError, validate_using_json_schema
 from fourcipp.utils.yaml_io import dump_yaml, load_yaml
 
 
@@ -410,7 +410,21 @@ class FourCInput:
 
         if convert_to_native_types:
             self.convert_to_native_types()
-        return validate_using_json_schema(self.inlined, validation_schema)
+
+        # Validate sections using schema
+        validate_using_json_schema(self._sections, validation_schema)
+
+        # Legacy sections are only checked if they are of type string
+        for section_name, section in inline_legacy_sections(
+            self._legacy_sections.copy()
+        ).items():
+            for i, k in enumerate(section):
+                if not isinstance(k, str):
+                    raise ValidationError(
+                        f"Could not validate the legacy section {section_name}, since entry {i}:\n{k} is not a string"
+                    )
+
+        return True
 
     def split(self, section_names: Sequence) -> tuple[FourCInput, FourCInput]:
         """Split input into two using sections names.
