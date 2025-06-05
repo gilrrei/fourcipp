@@ -29,7 +29,7 @@ import pytest
 
 from fourcipp import CONFIG
 from fourcipp.fourc_input import FourCInput, UnknownSectionException
-from fourcipp.utils.validation import FourCIPPValidationError
+from fourcipp.utils.validation import ValidationError
 
 
 @pytest.fixture(name="section_names")
@@ -457,7 +457,7 @@ def test_compare_failure_with_exception(fourc_input, fourc_input_2):
     [
         (
             FourCInput(sections={"TITLE": "some title"}),
-            pytest.raises(FourCIPPValidationError),
+            pytest.raises(ValidationError),
             False,
         ),
         (
