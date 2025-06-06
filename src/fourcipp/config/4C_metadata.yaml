@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 2402acc0f56d0e30efe6e014240361570eeb07dd
+  commit_hash: 2ccae6a4e932bb2085820584d5907c502e4b3cac
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -23234,6 +23234,15 @@ sections:
                   description: "Initial volume of RVE"
                   required: false
                   default: 0
+                - name: RUNTIMEOUTPUT_GP
+                  type: enum
+                  choices:
+                    - name: none
+                    - name: all
+                    - name: first_gp_only
+                  description: "Specify the Gauss Points of this element for which runtime output is generated"
+                  required: false
+                  default: all
         - type: all_of
           specs:
             - name: MAT
