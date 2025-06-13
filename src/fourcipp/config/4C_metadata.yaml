@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 2ccae6a4e932bb2085820584d5907c502e4b3cac
+  commit_hash: bd78f0d4c7cdc4c33bc6da6c319c938a4fd746ee
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -120,6 +120,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -210,6 +221,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -17630,6 +17652,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -19516,50 +19549,69 @@ sections:
                   type: double
                   description: "Dynamic viscosity of the fluid"
                   required: true
-                - name: rotation_around_x_axis
-                  type: double
-                  description: "Rotation of the magnet around the x-axis in degrees"
+                - name: rotation
+                  type: group
+                  description: Rotation of the magnet around different axes
                   required: false
-                  default: 0
-                - name: rotation_around_y_axis
-                  type: double
-                  description: "Rotation of the magnet around the y-axis in degrees"
-                  required: false
-                  default: 0
+                  defaultable: true
+                  specs:
+                    - name: around_x_axis
+                      type: double
+                      description: "Rotation of the magnet around the x-axis in degrees"
+                      required: false
+                      default: 0
+                    - name: around_y_axis
+                      type: double
+                      description: "Rotation of the magnet around the y-axis in degrees"
+                      required: false
+                      default: 0
                 - name: particle_radius
                   type: double
                   description: "Radius of the magnetic particle"
                   required: true
-            - name: particle_magnetization_model
-              type: selection
-              description: "Magnetization model for the demagnetization factor f(|H|)"
-              required: true
-              selector: type
-              choices:
-                - name: linear
-                  spec:
-                    name: susceptibility
-                    type: double
-                    description: "Magnetic susceptibility"
-                    required: true
-                - name: linear_with_saturation
-                  spec:
-                    type: all_of
-                    specs:
-                      - name: saturation_magnetization
-                        type: double
-                        description: "Saturation magnetization"
+                - name: particle_magnetization_model
+                  type: selection
+                  description: "Magnetization model for the demagnetization factor f(|H|)"
+                  required: true
+                  selector: type
+                  choices:
+                    - name: linear
+                      spec:
+                        name: linear
+                        type: group
                         required: true
-                      - name: susceptibility
-                        type: double
-                        description: "Magnetic susceptibility"
+                        defaultable: false
+                        specs:
+                          - name: susceptibility
+                            type: double
+                            description: "Magnetic susceptibility"
+                            required: true
+                    - name: linear_with_saturation
+                      spec:
+                        name: linear_with_saturation
+                        type: group
                         required: true
-                - name: superparamagnetic
-                  spec:
-                    name: saturation_magnetization
-                    type: double
-                    description: "Saturation magnetization"
-                    required: true
+                        defaultable: false
+                        specs:
+                          - name: saturation_magnetization
+                            type: double
+                            description: "Saturation magnetization"
+                            required: true
+                          - name: susceptibility
+                            type: double
+                            description: "Magnetic susceptibility"
+                            required: true
+                    - name: superparamagnetic
+                      spec:
+                        name: superparamagnetic
+                        type: group
+                        required: true
+                        defaultable: false
+                        specs:
+                          - name: saturation_magnetization
+                            type: double
+                            description: "Saturation magnetization"
+                            required: true
   - name: INCLUDES
     noneable: true
     type: vector
@@ -20689,6 +20741,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -29368,6 +29431,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -30501,6 +30575,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -34933,6 +35018,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -35275,6 +35371,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -35303,6 +35410,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
@@ -35461,6 +35579,17 @@ sections:
         type: path
         description: "Path to the exodus geometry file. Either absolute or relative to the input file."
         required: true
+      - name: SHOW_INFO
+        type: enum
+        choices:
+          - name: none
+          - name: summary
+          - name: detailed_summary
+          - name: detailed
+          - name: full
+        description: "Print element, node and set info for the exodus file after reading."
+        required: false
+        default: none
       - name: ELEMENT_BLOCKS
         type: list
         required: true
