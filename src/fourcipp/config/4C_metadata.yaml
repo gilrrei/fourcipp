@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: f09446492af6b8fd584ccb92161be58a74bbb03a
+  commit_hash: 9460e80bd54c9328a298361748ff448feffe8190
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -7030,12 +7030,12 @@ sections:
           required: true
         - name: DIRECTION
           type: enum
+          choices:
+            - name: xyz
+            - name: refsurfnormal
+            - name: cursurfnormal
           description: "Direction of the spring-dashpot boundary conditions"
           required: true
-          choices:
-            - name: "cursurfnormal"
-            - name: "refsurfnormal"
-            - name: "xyz"
         - name: COUPLING
           noneable: true
           type: int
@@ -11315,12 +11315,12 @@ sections:
           required: true
         - name: DIRECTION
           type: enum
+          choices:
+            - name: xyz
+            - name: refsurfnormal
+            - name: cursurfnormal
           description: "Direction of the spring-dashpot boundary conditions"
           required: true
-          choices:
-            - name: "cursurfnormal"
-            - name: "refsurfnormal"
-            - name: "xyz"
         - name: COUPLING
           noneable: true
           type: int
@@ -18384,12 +18384,12 @@ sections:
         specs:
           - name: PRECONDITIONER
             type: enum
+            choices:
+              - name: Simple
+              - name: Simplec
             description: "preconditioner to use"
             required: false
-            default: "Simple"
-            choices:
-              - name: "Simple"
-              - name: "Simplec"
+            default: Simple
           - name: SIMPLEITER
             type: int
             description: "Number of iterations for simple pc"
@@ -18454,12 +18454,12 @@ sections:
             default: 50
           - name: LINEARBLOCKSOLVER
             type: enum
+            choices:
+              - name: PreconditionedKrylov
+              - name: LinalgSolver
             description: "Linear block preconditioner for block system in monolithic FSI."
             required: false
-            default: "PreconditionedKrylov"
-            choices:
-              - name: "LinalgSolver"
-              - name: "PreconditionedKrylov"
+            default: PreconditionedKrylov
           - name: LINEAR_SOLVER
             type: int
             description: "Number of SOLVER block describing the linear solver and preconditioner"
@@ -19809,7 +19809,6 @@ sections:
                                   type: selection
                                   description: "Magnetization model for the demagnetization factor f(|H|)"
                                   required: true
-                                  selector: type
                                   choices:
                                     - name: linear
                                       spec:
@@ -20679,12 +20678,12 @@ sections:
               - name: "node_based"
           - name: LINEARIZATIONREINIT
             type: enum
+            choices:
+              - name: newton
+              - name: fixed_point
             description: "linearization scheme for nonlinear convective term of reinitialization equation"
             required: false
-            default: "newton"
-            choices:
-              - name: "fixed_point"
-              - name: "newton"
+            default: newton
           - name: CORRECTOR_STEP
             type: bool
             description: "correction of interface position via volume constraint according to Sussman & Fatemi"
@@ -20732,14 +20731,14 @@ sections:
             default: false
           - name: DIFF_FUNC
             type: enum
+            choices:
+              - name: hyperbolic
+              - name: hyperbolic_smoothed_positive
+              - name: hyperbolic_clipped_05
+              - name: hyperbolic_clipped_1
             description: "function for diffusivity"
             required: false
-            default: "hyperbolic"
-            choices:
-              - name: "hyperbolic"
-              - name: "hyperbolic_clipped_05"
-              - name: "hyperbolic_clipped_1"
-              - name: "hyperbolic_smoothed_positive"
+            default: hyperbolic
   - name: LOMA CONTROL
     type: group
     required: false
@@ -29359,13 +29358,13 @@ sections:
             default: "0.0 0.0 0.0"
           - name: PARTICLE_WALL_SOURCE
             type: enum
+            choices:
+              - name: NoParticleWall
+              - name: DiscretCondition
+              - name: BoundingBox
             description: "type of particle wall source"
             required: false
-            default: "NoParticleWall"
-            choices:
-              - name: "BoundingBox"
-              - name: "DiscretCondition"
-              - name: "NoParticleWall"
+            default: NoParticleWall
           - name: PARTICLE_WALL_MAT
             type: int
             description: "material id for particle wall from bounding box source"
@@ -29422,39 +29421,39 @@ sections:
               - name: "NormalTsuji"
           - name: TANGENTIALCONTACTLAW
             type: enum
+            choices:
+              - name: NoTangentialContact
+              - name: TangentialLinSpringDamp
             description: "tangential contact law for particles"
             required: false
-            default: "NoTangentialContact"
-            choices:
-              - name: "NoTangentialContact"
-              - name: "TangentialLinSpringDamp"
+            default: NoTangentialContact
           - name: ROLLINGCONTACTLAW
             type: enum
+            choices:
+              - name: NoRollingContact
+              - name: RollingViscous
+              - name: RollingCoulomb
             description: "rolling contact law for particles"
             required: false
-            default: "NoRollingContact"
-            choices:
-              - name: "NoRollingContact"
-              - name: "RollingCoulomb"
-              - name: "RollingViscous"
+            default: NoRollingContact
           - name: ADHESIONLAW
             type: enum
+            choices:
+              - name: NoAdhesion
+              - name: AdhesionVdWDMT
+              - name: AdhesionRegDMT
             description: "type of adhesion law for particles"
             required: false
-            default: "NoAdhesion"
-            choices:
-              - name: "AdhesionRegDMT"
-              - name: "AdhesionVdWDMT"
-              - name: "NoAdhesion"
+            default: NoAdhesion
           - name: ADHESION_SURFACE_ENERGY_DISTRIBUTION
             type: enum
+            choices:
+              - name: ConstantSurfaceEnergy
+              - name: NormalSurfaceEnergyDistribution
+              - name: LogNormalSurfaceEnergyDistribution
             description: "type of (random) surface energy distribution"
             required: false
-            default: "ConstantSurfaceEnergy"
-            choices:
-              - name: "ConstantSurfaceEnergy"
-              - name: "LogNormalSurfaceEnergyDistribution"
-              - name: "NormalSurfaceEnergyDistribution"
+            default: ConstantSurfaceEnergy
           - name: MIN_RADIUS
             type: double
             description: "minimum allowed particle radius"
@@ -29472,14 +29471,14 @@ sections:
             default: -1
           - name: INITIAL_RADIUS
             type: enum
+            choices:
+              - name: RadiusFromParticleMaterial
+              - name: RadiusFromParticleInput
+              - name: NormalRadiusDistribution
+              - name: LogNormalRadiusDistribution
             description: "type of initial particle radius assignment"
             required: false
-            default: "RadiusFromParticleMaterial"
-            choices:
-              - name: "LogNormalRadiusDistribution"
-              - name: "NormalRadiusDistribution"
-              - name: "RadiusFromParticleInput"
-              - name: "RadiusFromParticleMaterial"
+            default: RadiusFromParticleMaterial
           - name: RADIUSDISTRIBUTION_SIGMA
             type: double
             description: "sigma of random particle radius distribution"
@@ -29641,21 +29640,21 @@ sections:
             default: false
           - name: KERNEL
             type: enum
+            choices:
+              - name: CubicSpline
+              - name: QuinticSpline
             description: "type of smoothed particle hydrodynamics kernel"
             required: false
-            default: "CubicSpline"
-            choices:
-              - name: "CubicSpline"
-              - name: "QuinticSpline"
+            default: CubicSpline
           - name: KERNEL_SPACE_DIM
             type: enum
+            choices:
+              - name: Kernel1D
+              - name: Kernel2D
+              - name: Kernel3D
             description: "kernel space dimension number"
             required: false
-            default: "Kernel3D"
-            choices:
-              - name: "Kernel1D"
-              - name: "Kernel2D"
-              - name: "Kernel3D"
+            default: Kernel3D
           - name: INITIALPARTICLESPACING
             type: double
             description: "initial spacing of particles"
@@ -29663,80 +29662,80 @@ sections:
             default: 0
           - name: EQUATIONOFSTATE
             type: enum
+            choices:
+              - name: GenTait
+              - name: IdealGas
             description: "type of smoothed particle hydrodynamics equation of state"
             required: false
-            default: "GenTait"
-            choices:
-              - name: "GenTait"
-              - name: "IdealGas"
+            default: GenTait
           - name: MOMENTUMFORMULATION
             type: enum
+            choices:
+              - name: AdamiMomentumFormulation
+              - name: MonaghanMomentumFormulation
             description: "type of smoothed particle hydrodynamics momentum formulation"
             required: false
-            default: "AdamiMomentumFormulation"
-            choices:
-              - name: "AdamiMomentumFormulation"
-              - name: "MonaghanMomentumFormulation"
+            default: AdamiMomentumFormulation
           - name: DENSITYEVALUATION
             type: enum
+            choices:
+              - name: DensitySummation
+              - name: DensityIntegration
+              - name: DensityPredictCorrect
             description: "type of density evaluation scheme"
             required: false
-            default: "DensitySummation"
-            choices:
-              - name: "DensityIntegration"
-              - name: "DensityPredictCorrect"
-              - name: "DensitySummation"
+            default: DensitySummation
           - name: DENSITYCORRECTION
             type: enum
+            choices:
+              - name: NoCorrection
+              - name: InteriorCorrection
+              - name: NormalizedCorrection
+              - name: RandlesCorrection
             description: "type of density correction scheme"
             required: false
-            default: "NoCorrection"
-            choices:
-              - name: "InteriorCorrection"
-              - name: "NoCorrection"
-              - name: "NormalizedCorrection"
-              - name: "RandlesCorrection"
+            default: NoCorrection
           - name: BOUNDARYPARTICLEFORMULATION
             type: enum
+            choices:
+              - name: NoBoundaryFormulation
+              - name: AdamiBoundaryFormulation
             description: "type of boundary particle formulation"
             required: false
-            default: "NoBoundaryFormulation"
-            choices:
-              - name: "AdamiBoundaryFormulation"
-              - name: "NoBoundaryFormulation"
+            default: NoBoundaryFormulation
           - name: BOUNDARYPARTICLEINTERACTION
             type: enum
+            choices:
+              - name: NoSlipBoundaryParticle
+              - name: FreeSlipBoundaryParticle
             description: "type of boundary particle interaction"
             required: false
-            default: "NoSlipBoundaryParticle"
-            choices:
-              - name: "FreeSlipBoundaryParticle"
-              - name: "NoSlipBoundaryParticle"
+            default: NoSlipBoundaryParticle
           - name: WALLFORMULATION
             type: enum
+            choices:
+              - name: NoWallFormulation
+              - name: VirtualParticleWallFormulation
             description: "type of wall formulation"
             required: false
-            default: "NoWallFormulation"
-            choices:
-              - name: "NoWallFormulation"
-              - name: "VirtualParticleWallFormulation"
+            default: NoWallFormulation
           - name: TRANSPORTVELOCITYFORMULATION
             type: enum
+            choices:
+              - name: NoTransportVelocity
+              - name: StandardTransportVelocity
+              - name: GeneralizedTransportVelocity
             description: "type of transport velocity formulation"
             required: false
-            default: "NoTransportVelocity"
-            choices:
-              - name: "GeneralizedTransportVelocity"
-              - name: "NoTransportVelocity"
-              - name: "StandardTransportVelocity"
+            default: NoTransportVelocity
           - name: TEMPERATUREEVALUATION
             type: enum
+            choices:
+              - name: NoTemperatureEvaluation
+              - name: TemperatureIntegration
             description: "type of temperature evaluation scheme"
             required: false
-            default: "NoTemperatureEvaluation"
-            choices:
-              - name: "NoTemperatureEvaluation"
-              - name: "TemperatureIntegration"
+            default: NoTemperatureEvaluation
           - name: TEMPERATUREGRADIENT
             type: bool
             description: "evaluate temperature gradient"
@@ -29744,13 +29743,13 @@ sections:
             default: false
           - name: HEATSOURCETYPE
             type: enum
+            choices:
+              - name: NoHeatSource
+              - name: VolumeHeatSource
+              - name: SurfaceHeatSource
             description: "type of heat source"
             required: false
-            default: "NoHeatSource"
-            choices:
-              - name: "NoHeatSource"
-              - name: "SurfaceHeatSource"
-              - name: "VolumeHeatSource"
+            default: NoHeatSource
           - name: HEATSOURCE_FUNCT
             type: int
             description: "number of function governing heat source"
@@ -29808,12 +29807,12 @@ sections:
             default: 0
           - name: SURFACETENSIONFORMULATION
             type: enum
+            choices:
+              - name: NoSurfaceTension
+              - name: ContinuumSurfaceForce
             description: "type of surface tension formulation"
             required: false
-            default: "NoSurfaceTension"
-            choices:
-              - name: "ContinuumSurfaceForce"
-              - name: "NoSurfaceTension"
+            default: NoSurfaceTension
           - name: SURFACETENSION_RAMP_FUNCT
             type: int
             description: "number of function governing surface tension ramp"
@@ -29941,12 +29940,12 @@ sections:
             default: 0
           - name: DIRICHLETBOUNDARYTYPE
             type: enum
+            choices:
+              - name: NoDirichletOpenBoundary
+              - name: DirichletNormalToPlane
             description: "type of dirichlet open boundary"
             required: false
-            default: "NoDirichletOpenBoundary"
-            choices:
-              - name: "DirichletNormalToPlane"
-              - name: "NoDirichletOpenBoundary"
+            default: NoDirichletOpenBoundary
           - name: DIRICHLET_FUNCT
             type: int
             description: "number of function governing velocity condition on dirichlet open boundary"
@@ -29964,12 +29963,12 @@ sections:
             default: "0.0 0.0 0.0"
           - name: NEUMANNBOUNDARYTYPE
             type: enum
+            choices:
+              - name: NoNeumannOpenBoundary
+              - name: NeumannNormalToPlane
             description: "type of neumann open boundary"
             required: false
-            default: "NoNeumannOpenBoundary"
-            choices:
-              - name: "NeumannNormalToPlane"
-              - name: "NoNeumannOpenBoundary"
+            default: NoNeumannOpenBoundary
           - name: NEUMANN_FUNCT
             type: int
             description: "number of function governing pressure condition on neumann open boundary"
@@ -29987,14 +29986,14 @@ sections:
             default: "0.0 0.0 0.0"
           - name: PHASECHANGETYPE
             type: enum
+            choices:
+              - name: NoPhaseChange
+              - name: OneWayScalarBelowToAbovePhaseChange
+              - name: OneWayScalarAboveToBelowPhaseChange
+              - name: TwoWayScalarPhaseChange
             description: "type of phase change"
             required: false
-            default: "NoPhaseChange"
-            choices:
-              - name: "NoPhaseChange"
-              - name: "OneWayScalarAboveToBelowPhaseChange"
-              - name: "OneWayScalarBelowToAbovePhaseChange"
-              - name: "TwoWayScalarPhaseChange"
+            default: NoPhaseChange
           - name: PHASECHANGEDEFINITION
             type: string
             description: "phase change definition"
@@ -30002,12 +30001,12 @@ sections:
             default: "none"
           - name: RIGIDPARTICLECONTACTTYPE
             type: enum
+            choices:
+              - name: NoRigidParticleContact
+              - name: ElasticRigidParticleContact
             description: "type of rigid particle contact"
             required: false
-            default: "NoRigidParticleContact"
-            choices:
-              - name: "ElasticRigidParticleContact"
-              - name: "NoRigidParticleContact"
+            default: NoRigidParticleContact
           - name: RIGIDPARTICLECONTACTSTIFF
             type: double
             description: "rigid particle contact stiffness"
@@ -30448,12 +30447,12 @@ sections:
             default: 0.1
           - name: FDCHECK
             type: enum
+            choices:
+              - name: none
+              - name: global
             description: "flag for finite difference check: none, local, or global"
             required: false
-            default: "none"
-            choices:
-              - name: "global"
-              - name: "none"
+            default: none
           - name: FDCHECKEPS
             type: double
             description: "dof perturbation magnitude for finite difference check (1.e-6 seems to work very well, whereas smaller values don't)"
@@ -30768,12 +30767,12 @@ sections:
             default: -1
           - name: FDCHECK
             type: enum
+            choices:
+              - name: none
+              - name: global
             description: "flag for finite difference check: none or global"
             required: false
-            default: "none"
-            choices:
-              - name: "global"
-              - name: "none"
+            default: none
           - name: VECTORNORM_RESF
             type: enum
             description: "type of norm to be applied to residuals"
@@ -30901,13 +30900,13 @@ sections:
             default: 1
           - name: COUPALGO
             type: enum
+            choices:
+              - name: twoway_partitioned_nested
+              - name: twoway_partitioned_sequential
+              - name: twoway_monolithic
             description: "Coupling strategies for poroscatra solvers"
             required: false
-            default: "twoway_partitioned_nested"
-            choices:
-              - name: "twoway_monolithic"
-              - name: "twoway_partitioned_nested"
-              - name: "twoway_partitioned_sequential"
+            default: twoway_partitioned_nested
           - name: ARTERY_COUPLING
             type: bool
             description: "Coupling with 1D blood vessels."
@@ -30977,12 +30976,12 @@ sections:
             default: -1
           - name: FDCHECK
             type: enum
+            choices:
+              - name: none
+              - name: global
             description: "flag for finite difference check: none or global"
             required: false
-            default: "none"
-            choices:
-              - name: "global"
-              - name: "none"
+            default: none
           - name: EQUILIBRATION
             type: enum
             choices:
@@ -33093,13 +33092,13 @@ sections:
             default: 1e-08
           - name: DISSIPATION_MODE
             type: enum
+            choices:
+              - name: pl_multiplier
+              - name: pl_flow
+              - name: Taylor_Quinney
             description: "method to calculate the plastic dissipation"
             required: false
-            default: "pl_multiplier"
-            choices:
-              - name: "Taylor_Quinney"
-              - name: "pl_flow"
-              - name: "pl_multiplier"
+            default: pl_multiplier
   - name: SOLVER 1
     type: group
     description: solver parameters for solver block 1
@@ -34859,13 +34858,13 @@ sections:
               - name: "User Defined"
           - name: Inner Status Test Check Type
             type: enum
+            choices:
+              - name: Complete
+              - name: Minimal
+              - name: None
             description: "Specify the check type for the inner status tests."
             required: false
-            default: "Minimal"
-            choices:
-              - name: "Complete"
-              - name: "Minimal"
-              - name: "None"
+            default: Minimal
   - name: STRUCT NOX/Line Search/Backtrack
     type: group
     required: false
@@ -37061,14 +37060,14 @@ sections:
               - name: "xffsi_full_newton"
           - name: XFLUIDFLUID_TIMEINT
             type: enum
+            choices:
+              - name: Xff_TimeInt_FullProj
+              - name: Xff_TimeInt_ProjIfMoved
+              - name: Xff_TimeInt_KeepGhostValues
+              - name: Xff_TimeInt_IncompProj
             description: "The xfluidfluid-timeintegration approach"
             required: false
-            default: "Xff_TimeInt_FullProj"
-            choices:
-              - name: "Xff_TimeInt_FullProj"
-              - name: "Xff_TimeInt_IncompProj"
-              - name: "Xff_TimeInt_KeepGhostValues"
-              - name: "Xff_TimeInt_ProjIfMoved"
+            default: Xff_TimeInt_FullProj
           - name: XFLUID_TIMEINT
             type: enum
             description: "The xfluid time integration approach"
@@ -37086,12 +37085,12 @@ sections:
             default: false
           - name: INTERFACE_TERMS_PREVIOUS_STATE
             type: enum
+            choices:
+              - name: PreviousState_only_consistency
+              - name: PreviousState_full
             description: "how to treat interface terms from previous time step (new OST)"
             required: false
-            default: "PreviousState_only_consistency"
-            choices:
-              - name: "PreviousState_full"
-              - name: "PreviousState_only_consistency"
+            default: PreviousState_only_consistency
           - name: XFLUID_TIMEINT_CHECK_INTERFACETIPS
             type: bool
             description: "Xfluid TimeIntegration Special Check if node has changed the side!"
@@ -37111,13 +37110,13 @@ sections:
         specs:
           - name: COUPLING_METHOD
             type: enum
+            choices:
+              - name: Hybrid_LM_Cauchy_stress
+              - name: Hybrid_LM_viscous_stress
+              - name: Nitsche
             description: "method how to enforce embedded boundary/coupling conditions at the interface"
             required: false
-            default: "Nitsche"
-            choices:
-              - name: "Hybrid_LM_Cauchy_stress"
-              - name: "Hybrid_LM_viscous_stress"
-              - name: "Nitsche"
+            default: Nitsche
           - name: HYBRID_LM_L2_PROJ
             type: enum
             description: "perform the L2 projection between stress fields on whole element or on fluid part?"
@@ -42477,16 +42476,16 @@ legacy_element_specs:
                                       default: null
                                     - name: TECH
                                       type: enum
-                                      required: false
-                                      default: "none"
                                       choices:
-                                        - name: "eas_full"
-                                        - name: "eas_mild"
-                                        - name: "fbar"
-                                        - name: "none"
-                                        - name: "shell_ans"
-                                        - name: "shell_eas"
-                                        - name: "shell_eas_ans"
+                                        - name: none
+                                        - name: fbar
+                                        - name: eas_mild
+                                        - name: eas_full
+                                        - name: shell_ans
+                                        - name: shell_eas
+                                        - name: shell_eas_ans
+                                      required: false
+                                      default: none
                         - type: all_of
                           specs:
                             - name: NURBS27
@@ -43801,16 +43800,16 @@ legacy_element_specs:
                                       default: null
                                     - name: TECH
                                       type: enum
-                                      required: false
-                                      default: "none"
                                       choices:
-                                        - name: "eas_full"
-                                        - name: "eas_mild"
-                                        - name: "fbar"
-                                        - name: "none"
-                                        - name: "shell_ans"
-                                        - name: "shell_eas"
-                                        - name: "shell_eas_ans"
+                                        - name: none
+                                        - name: fbar
+                                        - name: eas_mild
+                                        - name: eas_full
+                                        - name: shell_ans
+                                        - name: shell_eas
+                                        - name: shell_eas_ans
+                                      required: false
+                                      default: none
                         - type: all_of
                           specs:
                             - name: NURBS27
