@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 9460e80bd54c9328a298361748ff448feffe8190
+  commit_hash: 06fbd9996334bf619b146d9321a610288d49d56c
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -24173,14 +24173,6 @@ sections:
                           type: double
                           description: "constant coefficient of linear thermal expansion"
                           required: true
-                        - name: CAPA
-                          type: double
-                          description: "capacity"
-                          required: true
-                        - name: CONDUCT
-                          type: double
-                          description: "conductivity"
-                          required: true
                         - name: INITTEMP
                           type: double
                           description: "initial temperature"
@@ -28269,16 +28261,23 @@ sections:
                           type: double
                           description: "volumetric heat capacity"
                           required: true
-                        - name: CONDUCT_PARA_NUM
-                          type: int
-                          description: "Parameter representing the relevant number of entries in the thermal conductivity tensor. Setting its value to 1 resembles a scalar conductivity, 2 or 3 a diagonal conductivity and 4 or 9 the full conductivity tensor in two and three dimensions respectively."
-                          required: true
                         - name: CONDUCT
-                          type: vector
-                          value_type:
-                            type: double
-                          description: "Vector of values representing the thermal conductivity tensor in a row-wise ordering, with the vector size given by CONDUCT_PARA_NUM."
+                          type: selection
+                          description: "entries in the thermal conductivity tensor. Setting one value resembles a scalar conductivity, 2 or 3 values a diagonal conductivity and 4 or 9 values the full conductivity tensor in two and three dimensions respectively."
                           required: true
+                          choices:
+                            - name: constant
+                              spec:
+                                name: constant
+                                type: vector
+                                value_type:
+                                  type: double
+                                required: true
+                            - name: from_file
+                              spec:
+                                name: from_file
+                                type: path
+                                required: true
             - type: all_of
               specs:
                 - name: MAT
@@ -28296,16 +28295,23 @@ sections:
                           type: double
                           description: "volumetric heat capacity"
                           required: true
-                        - name: CONDUCT_PARA_NUM
-                          type: int
-                          description: "Parameter representing the relevant number of entries in the thermal conductivity tensor. Setting its value to 1 resembles a scalar conductivity, 2 or 3 a diagonal conductivity and 4 or 9 the full conductivity tensor in two and three dimensions respectively."
-                          required: true
                         - name: CONDUCT
-                          type: vector
-                          value_type:
-                            type: double
-                          description: "Vector of values representing the thermal conductivity tensor in a row-wise ordering, with the vector size given by CONDUCT_PARA_NUM."
+                          type: selection
+                          description: "entries in the thermal conductivity tensor. Setting one value resembles a scalar conductivity, 2 or 3 values a diagonal conductivity and 4 or 9 values the full conductivity tensor in two and three dimensions respectively."
                           required: true
+                          choices:
+                            - name: constant
+                              spec:
+                                name: constant
+                                type: vector
+                                value_type:
+                                  type: double
+                                required: true
+                            - name: from_file
+                              spec:
+                                name: from_file
+                                type: path
+                                required: true
                         - name: SORET
                           type: double
                           description: "Soret coefficient"
