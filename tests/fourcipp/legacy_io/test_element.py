@@ -29,7 +29,7 @@ from fourcipp.legacy_io.element import (
     write_element,
 )
 
-from .utils import reference_value_from_group
+from .utils import iterate_all_of, reference_value_from_all_of
 
 
 def inline_element_from_spec(group, element_type):
@@ -42,30 +42,8 @@ def inline_element_from_spec(group, element_type):
     Returns:
         str: inline element
     """
-
     # Add additional whitespaces to check the reader
-    return f"42  {element_type} " + reference_value_from_group(group)
-
-
-def inline_element_from_cell(cell_spec, element_type):
-    """Generate inline element cell example.
-
-    Args:
-        spec (dict): Spec of the cell element combo
-        element_type (str): Name of element
-
-    Returns:
-        list: List of example elements
-    """
-    cells = []
-
-    if cell_spec["type"] == "one_of":
-        for one_of_branch in cell_spec["specs"]:
-            cells.append(inline_element_from_spec(one_of_branch, element_type))
-    else:
-        cells.append(inline_element_from_spec(cell_spec, element_type))
-
-    return cells
+    return f"42  {element_type} " + reference_value_from_all_of(group["specs"][0])
 
 
 def generate_elements_from_metadatafile():
@@ -74,20 +52,21 @@ def generate_elements_from_metadatafile():
     Returns:
         list: list of inline elements
     """
-    data = CONFIG["4C_metadata"]["legacy_element_specs"]["specs"]
+    data = CONFIG["4C_metadata"]["legacy_element_specs"]
 
     elements = []
-    for element_groups in data:
+    for element_groups in iterate_all_of(data):
+        # Skip positional argument
+        if element_groups.get("name", "") == "_positional_0_id":
+            continue
+
+        # Loop over the elements
+        element_type = element_groups["name"]
         for element in element_groups["specs"]:
-            element_type = element.get("name", "")
+            for cell in iterate_all_of(element):
+                ele = inline_element_from_spec(cell, element_type)
+                elements.append(ele)
 
-            # Positional parameters are handled differently
-            if element_type.startswith("_positional_"):
-                continue
-
-            # Loop over all elements
-            for ele in element["specs"]:
-                elements.extend(inline_element_from_cell(ele, element["name"]))
     return elements
 
 
