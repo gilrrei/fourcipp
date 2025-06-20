@@ -26,13 +26,17 @@ import pytest
 from fourcipp import CONFIG
 from fourcipp.legacy_io.particle import read_particle, write_particle
 
-from .utils import reference_value_from_group
+from .utils import iterate_all_of, reference_value_from_all_of
 
 
 @pytest.fixture(name="reference_particle")
 def fixture_reference_particle_line():
     """Reference particle."""
-    return reference_value_from_group(CONFIG["4C_metadata"]["legacy_particle_specs"])
+
+    particle = reference_value_from_all_of(
+        CONFIG["4C_metadata"]["legacy_particle_specs"]
+    )
+    return particle
 
 
 def test_particle_read_and_write(reference_particle):

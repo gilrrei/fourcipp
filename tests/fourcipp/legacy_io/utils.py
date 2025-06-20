@@ -27,11 +27,31 @@ from fourcipp.legacy_io.element import to_dat_string
 _TESTING_MAP = {"int": 4, "double": 2.11, "string": "text", "bool": True}
 
 
-def reference_value_from_group(group):
-    """Generate line from group.
+def iterate_all_of(all_of):
+    """Iterate over all_of and one_ofs.
 
     Args:
-        group (dict): Metadata dict for the group
+        all_of (dict): all_of dictionary
+
+    Yields:
+        dict: specs of the all_of
+    """
+    for spec in all_of["specs"]:
+        if spec["type"] == "all_of":
+            yield from iterate_all_of(spec)
+        elif spec["type"] == "one_of":
+            for spec in spec["specs"]:
+                yield from iterate_all_of(spec)
+        else:
+            yield spec
+    return
+
+
+def reference_value_from_all_of(all_of):
+    """Generate line from all_of.
+
+    Args:
+        all_of (dict): Metadata dict for the group
 
     Returns:
         str: inline
@@ -40,7 +60,7 @@ def reference_value_from_group(group):
     keyword_parameters = {}
     positional_parameters = {}
 
-    for parameter in group["specs"]:
+    for parameter in iterate_all_of(all_of):
         entry = None
         if parameter["type"] in _TESTING_MAP:
             entry = _TESTING_MAP[parameter["type"]]
