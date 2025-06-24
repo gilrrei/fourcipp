@@ -20,19 +20,25 @@ For a quick and easy start an Anaconda/Miniconda environment is highly recommend
 execute the following steps:
 
 - Create a new Anaconda environment:
-```bash
-conda create -n fourcipp python=3.12
-```
+  ```bash
+  conda create -n fourcipp python=3.12
+  ```
 
 - Activate your newly created environment:
-```bash
-conda activate fourcipp
-```
+  ```bash
+  conda activate fourcipp
+  ```
 
-- Install all requirements with:
-```
-pip install .
-```
+- Install all requirements without fixed versions via:
+  ```
+  pip install .
+  ```
+  > Note: This is the default behavior. This allows to use fourcipp within other projects without version conflicts.
+
+- Install all requirements with fixed versions with:
+  ```
+  pip install .[safe]
+  ```
 
 Now you are up and running 🎉
 

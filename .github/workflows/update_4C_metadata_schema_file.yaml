@@ -44,7 +44,7 @@ jobs:
         shell: bash -el {0}
         run: |
           conda activate fourcipp
-          pip install -e .[dev]
+          pip install -e .[dev,safe]
           pip install pre-commit
       # files need to be specified because they are not yet staged and therefore pre-commit cannot find them
       # pre-commit hook is run twice to not fail if the first run fails (due to formatting files)

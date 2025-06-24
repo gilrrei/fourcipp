@@ -18,7 +18,10 @@ dynamic = ["dependencies"]
 fourcipp-switch-profile = "fourcipp.utils.configuration:change_profile_cli"
 
 [tool.setuptools.dynamic]
-dependencies = { file = ["requirements.txt"] }
+dependencies = { file = ["requirements.in"] } # No versions fixed
+optional-dependencies = { safe = { file = [
+    "requirements.txt",
+] } } # Every package version is fixed
 
 [tool.setuptools.package-data]
 "fourcipp.config" = ["*.json", "*.yaml"]
