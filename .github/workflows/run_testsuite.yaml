@@ -37,7 +37,7 @@ jobs:
         shell: bash -el {0}
         run: |
           conda activate fourcipp
-          pip install -e .[dev]
+          pip install -e .[dev,safe]
       - name: Run pytest
         shell: bash -el {0}
         run: |
@@ -65,7 +65,7 @@ jobs:
         shell: bash -el {0}
         run: |
           conda activate fourcipp
-          pip install -e .[dev]
+          pip install -e .[dev,safe]
       - name: Run pytest using 4C_docker_main config
         run: |
           fourcipp-switch-profile 4C_docker_main
