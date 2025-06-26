@@ -1,6 +1,12 @@
-<h1 align="center">
-  FourCIPP 🐍
-</h1>
+<p align="center">
+  <picture>
+    <img
+      src="docs/assets/fourcipp_logo_black.svg"
+      width="300"
+      title="FourCIPP logo"
+      alt="FourCIPP logo">
+  </picture>
+</p>
 
 FourCIPP (**FourC** **I**nput **P**ython **P**arser) holds a Python Parser to simply interact with [4C](https://github.com/4C-multiphysics/4C) YAML input files. This tool provides a streamlined approach to data handling for third party tools.
 
