@@ -55,11 +55,20 @@ def read_knotvectors(list_of_lines: list) -> list[dict]:
     while list_of_lines:
         line = list_of_lines.pop(0)
 
-        # Empty line
-        if not line.strip():
+        # Knotvector lines can either be a string or float/int
+        # See https://github.com/4C-multiphysics/fourcipp/issues/71
+        if isinstance(line, str):
+            if not line.strip():
+                # Skip empty line
+                continue
+            else:
+                line_list = line.split()
+        elif isinstance(line, (int, float)):
+            line_list = [str(line)]
+        elif line is None:
             continue
-
-        line_list = line.split()
+        else:
+            raise TypeError(f"Error while parsing knotvectors line: {line}!")
 
         # Key value case
         if len(line_list) == 2:
