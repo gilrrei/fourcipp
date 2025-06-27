@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: cd0f205532042d62e80c168630d5aadb40e8c33b
+  commit_hash: 9cc62c9f4c5e012edfaadb9ba8edb702e639fec7
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -37411,114 +37411,6 @@ legacy_element_specs:
                       specs:
                         - type: all_of
                           specs:
-                            - name: HERM2LINE2
-                              type: group
-                              required: true
-                              specs:
-                                - type: all_of
-                                  specs:
-                                    - name: HERM2LINE2
-                                      type: vector
-                                      size: 2
-                                      value_type:
-                                        type: int
-                                      required: true
-                                    - name: MAT
-                                      type: int
-                                      required: true
-                                    - name: TRIADS
-                                      type: vector
-                                      size: 6
-                                      value_type:
-                                        type: double
-                                      required: true
-                                    - name: USE_FAD
-                                      type: bool
-                                      required: false
-                                      default: false
-                        - type: all_of
-                          specs:
-                            - name: HERM2LINE3
-                              type: group
-                              required: true
-                              specs:
-                                - type: all_of
-                                  specs:
-                                    - name: HERM2LINE3
-                                      type: vector
-                                      size: 3
-                                      value_type:
-                                        type: int
-                                      required: true
-                                    - name: MAT
-                                      type: int
-                                      required: true
-                                    - name: TRIADS
-                                      type: vector
-                                      size: 9
-                                      value_type:
-                                        type: double
-                                      required: true
-                                    - name: USE_FAD
-                                      type: bool
-                                      required: false
-                                      default: false
-                        - type: all_of
-                          specs:
-                            - name: HERM2LINE4
-                              type: group
-                              required: true
-                              specs:
-                                - type: all_of
-                                  specs:
-                                    - name: HERM2LINE4
-                                      type: vector
-                                      size: 4
-                                      value_type:
-                                        type: int
-                                      required: true
-                                    - name: MAT
-                                      type: int
-                                      required: true
-                                    - name: TRIADS
-                                      type: vector
-                                      size: 12
-                                      value_type:
-                                        type: double
-                                      required: true
-                                    - name: USE_FAD
-                                      type: bool
-                                      required: false
-                                      default: false
-                        - type: all_of
-                          specs:
-                            - name: HERM2LINE5
-                              type: group
-                              required: true
-                              specs:
-                                - type: all_of
-                                  specs:
-                                    - name: HERM2LINE5
-                                      type: vector
-                                      size: 5
-                                      value_type:
-                                        type: int
-                                      required: true
-                                    - name: MAT
-                                      type: int
-                                      required: true
-                                    - name: TRIADS
-                                      type: vector
-                                      size: 15
-                                      value_type:
-                                        type: double
-                                      required: true
-                                    - name: USE_FAD
-                                      type: bool
-                                      required: false
-                                      default: false
-                        - type: all_of
-                          specs:
                             - name: LINE2
                               type: group
                               required: true
@@ -37542,6 +37434,11 @@ legacy_element_specs:
                                       required: true
                                     - name: USE_FAD
                                       type: bool
+                                      required: false
+                                      default: false
+                                    - name: HERMITE_CENTERLINE
+                                      type: bool
+                                      description: "Use Hermite interpolation for centerline using the two end nodes of the element"
                                       required: false
                                       default: false
                         - type: all_of
@@ -37571,6 +37468,11 @@ legacy_element_specs:
                                       type: bool
                                       required: false
                                       default: false
+                                    - name: HERMITE_CENTERLINE
+                                      type: bool
+                                      description: "Use Hermite interpolation for centerline using the two end nodes of the element"
+                                      required: false
+                                      default: false
                         - type: all_of
                           specs:
                             - name: LINE4
@@ -37598,6 +37500,11 @@ legacy_element_specs:
                                       type: bool
                                       required: false
                                       default: false
+                                    - name: HERMITE_CENTERLINE
+                                      type: bool
+                                      description: "Use Hermite interpolation for centerline using the two end nodes of the element"
+                                      required: false
+                                      default: false
                         - type: all_of
                           specs:
                             - name: LINE5
@@ -37623,6 +37530,11 @@ legacy_element_specs:
                                       required: true
                                     - name: USE_FAD
                                       type: bool
+                                      required: false
+                                      default: false
+                                    - name: HERMITE_CENTERLINE
+                                      type: bool
+                                      description: "Use Hermite interpolation for centerline using the two end nodes of the element"
                                       required: false
                                       default: false
         - type: all_of
