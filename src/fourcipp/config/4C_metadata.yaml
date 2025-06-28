@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 9cc62c9f4c5e012edfaadb9ba8edb702e639fec7
+  commit_hash: 90a6040f9307adeb6ce9659ad38af013e22388d9
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -21588,10 +21588,10 @@ sections:
                       specs:
                         - name: PRESTRETCH
                           type: vector
-                          size: 9
+                          size: 6
                           value_type:
                             type: double
-                          description: "Definition of the prestretch as a 9x1 vector"
+                          description: "Definition of the prestretch as a 6x1 vector [xx, yy, zz, xy, yz, xz]"
                           required: true
             - type: all_of
               specs:
@@ -28823,7 +28823,6 @@ sections:
             required: false
             default: "Initial"
             choices:
-              - name: "Every_Timestep"
               - name: "Initial"
               - name: "None"
           - name: ALGORITHM
