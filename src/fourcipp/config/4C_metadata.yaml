@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 90a6040f9307adeb6ce9659ad38af013e22388d9
+  commit_hash: 4126f1134a9b9c10fdfbbf61c964bfa37e2f371e
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -4787,14 +4787,6 @@ sections:
             - name: "Beamtosolidcontact"
             - name: "Beamtosolidmeshtying"
             - name: "Solidcontact"
-        - name: DbcHandling
-          type: enum
-          choices:
-            - name: DoNothing
-            - name: RemoveDBCSlaveNodes
-          description: "DbcHandling"
-          required: false
-          default: DoNothing
         - name: TwoHalfPass
           type: double
           description: "optional two half pass approach"
@@ -10820,14 +10812,6 @@ sections:
             - name: "Beamtosolidcontact"
             - name: "Beamtosolidmeshtying"
             - name: "Solidcontact"
-        - name: DbcHandling
-          type: enum
-          choices:
-            - name: DoNothing
-            - name: RemoveDBCSlaveNodes
-          description: "DbcHandling"
-          required: false
-          default: DoNothing
         - name: TwoHalfPass
           type: double
           description: "optional two half pass approach"
