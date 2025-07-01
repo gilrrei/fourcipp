@@ -75,9 +75,6 @@ def dict_to_yaml_string(data: dict, sort_keys=False) -> str:
         if tree.has_key(node_id):
             tree.set_key_style(node_id, ryml.NOTYPE)
 
-        if tree.has_val(node_id):
-            tree.set_val_style(node_id, ryml.NOTYPE)
-
     return ryml.emit_yaml(tree)
 
 
