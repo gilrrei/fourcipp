@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 4126f1134a9b9c10fdfbbf61c964bfa37e2f371e
+  commit_hash: ad24d7317ad62cc53dce029542933fb01c7a0190
   version: 2025.3.0-dev
   description_section_name: TITLE
 sections:
@@ -19771,6 +19771,7 @@ sections:
             default: false
           - name: OUTPUT_SPRING
             type: bool
+            description: "Flag indicating whether quantities related to the spring dashpot conditions should be written to output."
             required: false
             default: false
           - name: OUTPUT_BIN
