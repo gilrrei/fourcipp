@@ -21,21 +21,54 @@
 # THE SOFTWARE.
 """Element io."""
 
+from collections.abc import Callable
+from typing import TypeAlias
+
 from fourcipp import CONFIG
 from fourcipp.legacy_io.inline_dat import (
+    _extract_vector,
     inline_dat_read,
     nested_casting_factory,
     to_dat_string,
 )
-from fourcipp.utils.typing import LineCastingDict, NestedCastingDict
+from fourcipp.utils.typing import LineCastingDict
 
-_elemeny_casting: NestedCastingDict = nested_casting_factory(
+ElementCastingDict: TypeAlias = dict[str, dict[str, LineCastingDict]]
+
+
+def element_data_casting_factory(
+    legacy_element_specs: dict,
+) -> ElementCastingDict:
+    """Create element data casting dict.
+
+    Args:
+        legacy_element_specs: Element data
+
+    Returns:
+        element casting dict
+    """
+    elements_data_casting_dict: ElementCastingDict = {}
+    for element_type, element_data in legacy_element_specs.items():
+        element_type_data: dict[str, LineCastingDict] = {}
+
+        for cell in element_data:
+            element_type_data[cell["cell_type"]] = nested_casting_factory(cell["spec"])  # type: ignore[assignment]
+
+        elements_data_casting_dict[element_type] = element_type_data
+
+    return elements_data_casting_dict
+
+
+_element_data_casting: ElementCastingDict = element_data_casting_factory(
     CONFIG["4C_metadata"]["legacy_element_specs"]
 )
 
 
+CELL_TYPES = CONFIG["4C_metadata"]["cell_types"]
+
+
 def read_element(
-    line: str, elements_casting: NestedCastingDict = _elemeny_casting
+    line: str, element_data_casting: ElementCastingDict = _element_data_casting
 ) -> dict:
     """Read a element line.
 
@@ -57,19 +90,25 @@ def read_element(
     # Third entry is the cell type
     cell_type = line_list.pop(0)
 
-    element_parameter_casting: LineCastingDict = elements_casting[element_type][  # type: ignore[index, assignment]
-        cell_type
-    ]
+    # The next entries are the nodes of the element
+    connectivity = _extract_vector(
+        line_list, int, CELL_TYPES[cell_type]["number_of_nodes"]
+    )
 
+    # Element
     element = {
         "id": element_id,
         "cell": {
             "type": cell_type,
-            "connectivity": element_parameter_casting[cell_type](line_list),
+            "connectivity": connectivity,
         },
-        "data": {"type": element_type}
-        | inline_dat_read(line_list, element_parameter_casting),
     }
+
+    # Element data
+    element["data"] = {"type": element_type} | inline_dat_read(
+        line_list, element_data_casting[element_type][cell_type]
+    )
+
     return element
 
 

@@ -29,21 +29,29 @@ from fourcipp.legacy_io.element import (
     write_element,
 )
 
-from .utils import iterate_all_of, reference_value_from_all_of
+CELL_TYPES = CONFIG["4C_metadata"]["cell_types"]
+from .utils import reference_value_from_all_of
 
 
-def inline_element_from_spec(group, element_type):
+def inline_element_from_spec(element_type, cell_type, element_data_specs):
     """Generate element line from specs.
 
     Args:
-        group (dict): Metadata dict for the element group
         element_type (str): Element type
+        cell_type (str): Cell type
+        element_data_specs (dict): Metadata for all element data and fields
 
     Returns:
         str: inline element
     """
+    cell_nodes = CELL_TYPES[cell_type]["number_of_nodes"]
+    connectivity = "42 " * cell_nodes
+
     # Add additional whitespaces to check the reader
-    return f"42  {element_type} " + reference_value_from_all_of(group["specs"][0])
+    return (
+        f"42 {element_type} {cell_type} {connectivity}"
+        + reference_value_from_all_of(element_data_specs)
+    )
 
 
 def generate_elements_from_metadatafile():
@@ -55,18 +63,15 @@ def generate_elements_from_metadatafile():
     data = CONFIG["4C_metadata"]["legacy_element_specs"]
 
     elements = []
-    for element_groups in iterate_all_of(data):
-        # Skip positional argument
-        if element_groups.get("name", "") == "_positional_0_id":
-            continue
-
-        # Loop over the elements
-        element_type = element_groups["name"]
-        for element in element_groups["specs"]:
-            for cell in iterate_all_of(element):
-                ele = inline_element_from_spec(cell, element_type)
-                elements.append(ele)
-
+    # Loop over element types
+    for element_type, element_specs in data.items():
+        # Loop over cell types
+        for element_data in element_specs:
+            cell_type = element_data["cell_type"]
+            ele = inline_element_from_spec(
+                element_type, cell_type, element_data["spec"]
+            )
+            elements.append(ele)
     return elements
 
 
