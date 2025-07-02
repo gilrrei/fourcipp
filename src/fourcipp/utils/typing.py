@@ -23,7 +23,7 @@
 
 import pathlib
 from collections.abc import Callable
-from typing import Any, TypeAlias, TypeVar
+from typing import TypeAlias, TypeVar
 
 # Generic type variable
 T = TypeVar("T")
