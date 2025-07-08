@@ -23,6 +23,7 @@
 
 import json
 import pathlib
+import re
 
 import ryml
 
@@ -43,11 +44,15 @@ def load_yaml(path_to_yaml_file: Path) -> dict:
        Loaded data
     """
 
-    data = json.loads(
-        ryml.emit_json(
-            ryml.parse_in_arena(pathlib.Path(path_to_yaml_file).read_bytes())
-        )
+    json_str = ryml.emit_json(
+        ryml.parse_in_arena(pathlib.Path(path_to_yaml_file).read_bytes())
     )
+
+    # Convert `inf` to a string to avoid JSON parsing errors, see https://github.com/biojppm/rapidyaml/issues/312
+    json_str = re.sub(r":\s*inf\b", r': "inf"', json_str)
+
+    data = json.loads(json_str)
+
     return data
 
 
