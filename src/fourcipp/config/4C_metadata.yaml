@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: f2b264e14cef3482b810b6a6992cf3f70500f457
+  commit_hash: 473bf4b5ad7f78489662fc7ab87c5c7c3e9eba94
   version: 2025.3.0-dev
   description_section_name: TITLE
 legacy_element_specs:
@@ -40,6 +40,13 @@ legacy_element_specs:
             type: int
             required: true
   ALE3:
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
     - cell_type: HEX20
       spec:
         type: all_of
@@ -54,14 +61,7 @@ legacy_element_specs:
           - name: MAT
             type: int
             required: true
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: PYRAMID5
+    - cell_type: TET4
       spec:
         type: all_of
         specs:
@@ -75,7 +75,7 @@ legacy_element_specs:
           - name: MAT
             type: int
             required: true
-    - cell_type: TET4
+    - cell_type: WEDGE6
       spec:
         type: all_of
         specs:
@@ -89,7 +89,7 @@ legacy_element_specs:
           - name: MAT
             type: int
             required: true
-    - cell_type: WEDGE6
+    - cell_type: PYRAMID5
       spec:
         type: all_of
         specs:
@@ -327,86 +327,6 @@ legacy_element_specs:
             required: false
             default: null
   FLUID:
-    - cell_type: HEX20
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: HEX27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: NURBS27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: NURBS4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: NURBS8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: NURBS9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: PYRAMID5
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -437,26 +357,6 @@ legacy_element_specs:
           - name: NA
             type: string
             required: true
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
     - cell_type: TRI3
       spec:
         type: all_of
@@ -477,7 +377,47 @@ legacy_element_specs:
           - name: NA
             type: string
             required: true
-    - cell_type: WEDGE15
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: HEX20
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: TET10
       spec:
         type: all_of
         specs:
@@ -488,6 +428,66 @@ legacy_element_specs:
             type: string
             required: true
     - cell_type: WEDGE6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: WEDGE15
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: PYRAMID5
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: NURBS4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: NURBS9
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: NURBS8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: NURBS27
       spec:
         type: all_of
         specs:
@@ -498,150 +498,6 @@ legacy_element_specs:
             type: string
             required: true
   FLUIDHDG:
-    - cell_type: HEX20
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: HEX27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: NURBS27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: NURBS4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: NURBS8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: NURBS9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: PYRAMID5
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -696,42 +552,6 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
     - cell_type: TRI3
       spec:
         type: all_of
@@ -768,7 +588,79 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: WEDGE15
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: HEX20
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: TET10
       spec:
         type: all_of
         specs:
@@ -787,6 +679,114 @@ legacy_element_specs:
             required: false
             default: null
     - cell_type: WEDGE6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: WEDGE15
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: PYRAMID5
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: NURBS4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: NURBS9
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: NURBS8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: NURBS27
       spec:
         type: all_of
         specs:
@@ -805,150 +805,6 @@ legacy_element_specs:
             required: false
             default: null
   FLUIDHDGWEAKCOMP:
-    - cell_type: HEX20
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: HEX27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: NURBS27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: NURBS4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: NURBS8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: NURBS9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: PYRAMID5
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -1003,42 +859,6 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
     - cell_type: TRI3
       spec:
         type: all_of
@@ -1075,7 +895,79 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: WEDGE15
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: HEX20
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: TET10
       spec:
         type: all_of
         specs:
@@ -1094,6 +986,114 @@ legacy_element_specs:
             required: false
             default: null
     - cell_type: WEDGE6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: WEDGE15
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: PYRAMID5
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: NURBS4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: NURBS9
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: NURBS8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: NURBS27
       spec:
         type: all_of
         specs:
@@ -1112,86 +1112,6 @@ legacy_element_specs:
             required: false
             default: null
   FLUIDPORO:
-    - cell_type: HEX20
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: HEX27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: NURBS27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: NURBS4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: NURBS8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: NURBS9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: PYRAMID5
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -1222,26 +1142,6 @@ legacy_element_specs:
           - name: NA
             type: string
             required: true
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: NA
-            type: string
-            required: true
     - cell_type: TRI3
       spec:
         type: all_of
@@ -1262,7 +1162,47 @@ legacy_element_specs:
           - name: NA
             type: string
             required: true
-    - cell_type: WEDGE15
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: HEX20
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: TET10
       spec:
         type: all_of
         specs:
@@ -1273,6 +1213,66 @@ legacy_element_specs:
             type: string
             required: true
     - cell_type: WEDGE6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: WEDGE15
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: PYRAMID5
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: NURBS4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: NURBS9
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: NURBS8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: NA
+            type: string
+            required: true
+    - cell_type: NURBS27
       spec:
         type: all_of
         specs:
@@ -1304,20 +1304,6 @@ legacy_element_specs:
             type: string
             required: true
   LUBRICATION:
-    - cell_type: LINE2
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: LINE3
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -1347,6 +1333,20 @@ legacy_element_specs:
             type: int
             required: true
     - cell_type: TRI6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: LINE2
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: LINE3
       spec:
         type: all_of
         specs:
@@ -1886,27 +1886,6 @@ legacy_element_specs:
             type: string
             required: true
   POROFLUIDMULTIPHASE:
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: LINE2
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: LINE3
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -1928,7 +1907,21 @@ legacy_element_specs:
           - name: MAT
             type: int
             required: true
-    - cell_type: TET10
+    - cell_type: TRI3
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: TRI6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: HEX8
       spec:
         type: all_of
         specs:
@@ -1942,14 +1935,21 @@ legacy_element_specs:
           - name: MAT
             type: int
             required: true
-    - cell_type: TRI3
+    - cell_type: TET10
       spec:
         type: all_of
         specs:
           - name: MAT
             type: int
             required: true
-    - cell_type: TRI6
+    - cell_type: LINE2
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: LINE3
       spec:
         type: all_of
         specs:
@@ -2854,6 +2854,88 @@ legacy_element_specs:
               type: int
             required: true
   SOLID:
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: PRESTRESS_TECH
+            type: enum
+            description: "The technology used for prestressing"
+            required: false
+            default: none
+            choices:
+              - name: none
+              - name: mulf
+          - name: RAD
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: AXI
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: CIR
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: TECH
+            type: enum
+            required: false
+            default: none
+            choices:
+              - name: none
+              - name: fbar
+              - name: eas_mild
+              - name: eas_full
+              - name: shell_ans
+              - name: shell_eas
+              - name: shell_eas_ans
     - cell_type: HEX18
       spec:
         type: all_of
@@ -3064,250 +3146,77 @@ legacy_element_specs:
               type: double
             required: false
             default: null
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: PRESTRESS_TECH
-            type: enum
-            description: "The technology used for prestressing"
-            required: false
-            default: none
-            choices:
-              - name: none
-              - name: mulf
-          - name: RAD
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: AXI
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: CIR
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: TECH
-            type: enum
-            required: false
-            default: none
-            choices:
-              - name: none
-              - name: fbar
-              - name: eas_mild
-              - name: eas_full
-              - name: shell_ans
-              - name: shell_eas
-              - name: shell_eas_ans
-    - cell_type: NURBS27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-    - cell_type: PYRAMID5
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: PRESTRESS_TECH
-            type: enum
-            description: "The technology used for prestressing"
-            required: false
-            default: none
-            choices:
-              - name: none
-              - name: mulf
-          - name: RAD
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: AXI
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: CIR
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: TECH
-            type: enum
-            required: false
-            default: "none"
-            choices:
-              - name: "fbar"
-              - name: "none"
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: PRESTRESS_TECH
-            type: enum
-            description: "The technology used for prestressing"
-            required: false
-            default: none
-            choices:
-              - name: none
-              - name: mulf
-          - name: RAD
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: AXI
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: CIR
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: FIBER3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
     - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: PRESTRESS_TECH
+            type: enum
+            description: "The technology used for prestressing"
+            required: false
+            default: none
+            choices:
+              - name: none
+              - name: mulf
+          - name: RAD
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: AXI
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: CIR
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: TET10
       spec:
         type: all_of
         specs:
@@ -3455,8 +3364,7 @@ legacy_element_specs:
               - name: "none"
               - name: "shell_ans"
               - name: "shell_eas_ans"
-  SOLIDPORO_PRESSURE_BASED:
-    - cell_type: HEX27
+    - cell_type: PYRAMID5
       spec:
         type: all_of
         specs:
@@ -3470,604 +3378,6 @@ legacy_element_specs:
             choices:
               - name: "linear"
               - name: "nonlinear"
-          - name: TYPE
-            type: enum
-            description: "Scalar transport implementation type"
-            required: false
-            default: "Undefined"
-            choices:
-              - name: "Advanced_Reaction"
-              - name: "CardMono"
-              - name: "Chemo_Reac"
-              - name: "Chemotaxis"
-              - name: "Loma"
-              - name: "Poro"
-              - name: "PoroMultiReac"
-              - name: "PoroReac"
-              - name: "PoroReacECM"
-              - name: "Std"
-              - name: "Undefined"
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: TYPE
-            type: enum
-            description: "Scalar transport implementation type"
-            required: false
-            default: "Undefined"
-            choices:
-              - name: "Advanced_Reaction"
-              - name: "CardMono"
-              - name: "Chemo_Reac"
-              - name: "Chemotaxis"
-              - name: "Loma"
-              - name: "Poro"
-              - name: "PoroMultiReac"
-              - name: "PoroReac"
-              - name: "PoroReacECM"
-              - name: "Std"
-              - name: "Undefined"
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: TYPE
-            type: enum
-            description: "Scalar transport implementation type"
-            required: false
-            default: "Undefined"
-            choices:
-              - name: "Advanced_Reaction"
-              - name: "CardMono"
-              - name: "Chemo_Reac"
-              - name: "Chemotaxis"
-              - name: "Loma"
-              - name: "Poro"
-              - name: "PoroMultiReac"
-              - name: "PoroReac"
-              - name: "PoroReacECM"
-              - name: "Std"
-              - name: "Undefined"
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: TYPE
-            type: enum
-            description: "Scalar transport implementation type"
-            required: false
-            default: "Undefined"
-            choices:
-              - name: "Advanced_Reaction"
-              - name: "CardMono"
-              - name: "Chemo_Reac"
-              - name: "Chemotaxis"
-              - name: "Loma"
-              - name: "Poro"
-              - name: "PoroMultiReac"
-              - name: "PoroReac"
-              - name: "PoroReacECM"
-              - name: "Std"
-              - name: "Undefined"
-  SOLIDPORO_PRESSURE_VELOCITY_BASED:
-    - cell_type: HEX27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: POROANISODIR1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: TYPE
-            type: enum
-            description: "Scalar transport implementation type"
-            required: false
-            default: "Undefined"
-            choices:
-              - name: "Advanced_Reaction"
-              - name: "CardMono"
-              - name: "Chemo_Reac"
-              - name: "Chemotaxis"
-              - name: "Loma"
-              - name: "Poro"
-              - name: "PoroMultiReac"
-              - name: "PoroReac"
-              - name: "PoroReacECM"
-              - name: "Std"
-              - name: "Undefined"
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: POROANISODIR1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: TYPE
-            type: enum
-            description: "Scalar transport implementation type"
-            required: false
-            default: "Undefined"
-            choices:
-              - name: "Advanced_Reaction"
-              - name: "CardMono"
-              - name: "Chemo_Reac"
-              - name: "Chemotaxis"
-              - name: "Loma"
-              - name: "Poro"
-              - name: "PoroMultiReac"
-              - name: "PoroReac"
-              - name: "PoroReacECM"
-              - name: "Std"
-              - name: "Undefined"
-          - name: POROANISONODALCOEFFS1
-            noneable: true
-            type: vector
-            size: 8
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS2
-            noneable: true
-            type: vector
-            size: 8
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS3
-            noneable: true
-            type: vector
-            size: 8
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: POROANISODIR1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: TYPE
-            type: enum
-            description: "Scalar transport implementation type"
-            required: false
-            default: "Undefined"
-            choices:
-              - name: "Advanced_Reaction"
-              - name: "CardMono"
-              - name: "Chemo_Reac"
-              - name: "Chemotaxis"
-              - name: "Loma"
-              - name: "Poro"
-              - name: "PoroMultiReac"
-              - name: "PoroReac"
-              - name: "PoroReacECM"
-              - name: "Std"
-              - name: "Undefined"
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: POROANISODIR1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: TYPE
-            type: enum
-            description: "Scalar transport implementation type"
-            required: false
-            default: "Undefined"
-            choices:
-              - name: "Advanced_Reaction"
-              - name: "CardMono"
-              - name: "Chemo_Reac"
-              - name: "Chemotaxis"
-              - name: "Loma"
-              - name: "Poro"
-              - name: "PoroMultiReac"
-              - name: "PoroReac"
-              - name: "PoroReacECM"
-              - name: "Std"
-              - name: "Undefined"
-          - name: POROANISONODALCOEFFS1
-            noneable: true
-            type: vector
-            size: 4
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS2
-            noneable: true
-            type: vector
-            size: 4
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS3
-            noneable: true
-            type: vector
-            size: 4
-            value_type:
-              type: double
-            required: false
-            default: null
-  SOLIDPORO_PRESSURE_VELOCITY_BASED_P1:
-    - cell_type: HEX27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: POROANISODIR1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: POROANISODIR1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS1
-            noneable: true
-            type: vector
-            size: 8
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS2
-            noneable: true
-            type: vector
-            size: 8
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS3
-            noneable: true
-            type: vector
-            size: 8
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: POROANISODIR1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: POROANISODIR1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR2
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISODIR3
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS1
-            noneable: true
-            type: vector
-            size: 4
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS2
-            noneable: true
-            type: vector
-            size: 4
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: POROANISONODALCOEFFS3
-            noneable: true
-            type: vector
-            size: 4
-            value_type:
-              type: double
-            required: false
-            default: null
-  SOLIDSCATRA:
-    - cell_type: HEX27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: enum
-            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
-            required: true
-            choices:
-              - name: "linear"
-              - name: "nonlinear"
-          - name: TYPE
-            type: string
-            required: true
           - name: PRESTRESS_TECH
             type: enum
             description: "The technology used for prestressing"
@@ -4124,6 +3434,623 @@ legacy_element_specs:
               type: double
             required: false
             default: null
+          - name: TECH
+            type: enum
+            required: false
+            default: "none"
+            choices:
+              - name: "fbar"
+              - name: "none"
+    - cell_type: NURBS27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+  SOLIDPORO_PRESSURE_BASED:
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: TYPE
+            type: enum
+            description: "Scalar transport implementation type"
+            required: false
+            default: "Undefined"
+            choices:
+              - name: "Advanced_Reaction"
+              - name: "CardMono"
+              - name: "Chemo_Reac"
+              - name: "Chemotaxis"
+              - name: "Loma"
+              - name: "Poro"
+              - name: "PoroMultiReac"
+              - name: "PoroReac"
+              - name: "PoroReacECM"
+              - name: "Std"
+              - name: "Undefined"
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: TYPE
+            type: enum
+            description: "Scalar transport implementation type"
+            required: false
+            default: "Undefined"
+            choices:
+              - name: "Advanced_Reaction"
+              - name: "CardMono"
+              - name: "Chemo_Reac"
+              - name: "Chemotaxis"
+              - name: "Loma"
+              - name: "Poro"
+              - name: "PoroMultiReac"
+              - name: "PoroReac"
+              - name: "PoroReacECM"
+              - name: "Std"
+              - name: "Undefined"
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: TYPE
+            type: enum
+            description: "Scalar transport implementation type"
+            required: false
+            default: "Undefined"
+            choices:
+              - name: "Advanced_Reaction"
+              - name: "CardMono"
+              - name: "Chemo_Reac"
+              - name: "Chemotaxis"
+              - name: "Loma"
+              - name: "Poro"
+              - name: "PoroMultiReac"
+              - name: "PoroReac"
+              - name: "PoroReacECM"
+              - name: "Std"
+              - name: "Undefined"
+    - cell_type: TET10
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: TYPE
+            type: enum
+            description: "Scalar transport implementation type"
+            required: false
+            default: "Undefined"
+            choices:
+              - name: "Advanced_Reaction"
+              - name: "CardMono"
+              - name: "Chemo_Reac"
+              - name: "Chemotaxis"
+              - name: "Loma"
+              - name: "Poro"
+              - name: "PoroMultiReac"
+              - name: "PoroReac"
+              - name: "PoroReacECM"
+              - name: "Std"
+              - name: "Undefined"
+  SOLIDPORO_PRESSURE_VELOCITY_BASED:
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: POROANISODIR1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: TYPE
+            type: enum
+            description: "Scalar transport implementation type"
+            required: false
+            default: "Undefined"
+            choices:
+              - name: "Advanced_Reaction"
+              - name: "CardMono"
+              - name: "Chemo_Reac"
+              - name: "Chemotaxis"
+              - name: "Loma"
+              - name: "Poro"
+              - name: "PoroMultiReac"
+              - name: "PoroReac"
+              - name: "PoroReacECM"
+              - name: "Std"
+              - name: "Undefined"
+          - name: POROANISONODALCOEFFS1
+            noneable: true
+            type: vector
+            size: 8
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS2
+            noneable: true
+            type: vector
+            size: 8
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS3
+            noneable: true
+            type: vector
+            size: 8
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: POROANISODIR1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: TYPE
+            type: enum
+            description: "Scalar transport implementation type"
+            required: false
+            default: "Undefined"
+            choices:
+              - name: "Advanced_Reaction"
+              - name: "CardMono"
+              - name: "Chemo_Reac"
+              - name: "Chemotaxis"
+              - name: "Loma"
+              - name: "Poro"
+              - name: "PoroMultiReac"
+              - name: "PoroReac"
+              - name: "PoroReacECM"
+              - name: "Std"
+              - name: "Undefined"
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: POROANISODIR1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: TYPE
+            type: enum
+            description: "Scalar transport implementation type"
+            required: false
+            default: "Undefined"
+            choices:
+              - name: "Advanced_Reaction"
+              - name: "CardMono"
+              - name: "Chemo_Reac"
+              - name: "Chemotaxis"
+              - name: "Loma"
+              - name: "Poro"
+              - name: "PoroMultiReac"
+              - name: "PoroReac"
+              - name: "PoroReacECM"
+              - name: "Std"
+              - name: "Undefined"
+          - name: POROANISONODALCOEFFS1
+            noneable: true
+            type: vector
+            size: 4
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS2
+            noneable: true
+            type: vector
+            size: 4
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS3
+            noneable: true
+            type: vector
+            size: 4
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: TET10
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: POROANISODIR1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: TYPE
+            type: enum
+            description: "Scalar transport implementation type"
+            required: false
+            default: "Undefined"
+            choices:
+              - name: "Advanced_Reaction"
+              - name: "CardMono"
+              - name: "Chemo_Reac"
+              - name: "Chemotaxis"
+              - name: "Loma"
+              - name: "Poro"
+              - name: "PoroMultiReac"
+              - name: "PoroReac"
+              - name: "PoroReacECM"
+              - name: "Std"
+              - name: "Undefined"
+  SOLIDPORO_PRESSURE_VELOCITY_BASED_P1:
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: POROANISODIR1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS1
+            noneable: true
+            type: vector
+            size: 8
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS2
+            noneable: true
+            type: vector
+            size: 8
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS3
+            noneable: true
+            type: vector
+            size: 8
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: POROANISODIR1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: POROANISODIR1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS1
+            noneable: true
+            type: vector
+            size: 4
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS2
+            noneable: true
+            type: vector
+            size: 4
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISONODALCOEFFS3
+            noneable: true
+            type: vector
+            size: 4
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: TET10
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: POROANISODIR1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: POROANISODIR3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+  SOLIDSCATRA:
     - cell_type: HEX8
       spec:
         type: all_of
@@ -4209,7 +4136,80 @@ legacy_element_specs:
               - name: shell_ans
               - name: shell_eas
               - name: shell_eas_ans
-    - cell_type: NURBS27
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: enum
+            description: "Whether to use linear kinematics (small displacements) or nonlinear kinematics (large displacements)"
+            required: true
+            choices:
+              - name: "linear"
+              - name: "nonlinear"
+          - name: TYPE
+            type: string
+            required: true
+          - name: PRESTRESS_TECH
+            type: enum
+            description: "The technology used for prestressing"
+            required: false
+            default: none
+            choices:
+              - name: none
+              - name: mulf
+          - name: RAD
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: AXI
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: CIR
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER2
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: FIBER3
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: TET4
       spec:
         type: all_of
         specs:
@@ -4355,7 +4355,7 @@ legacy_element_specs:
               type: double
             required: false
             default: null
-    - cell_type: TET4
+    - cell_type: NURBS27
       spec:
         type: all_of
         specs:
@@ -4429,69 +4429,6 @@ legacy_element_specs:
             required: false
             default: null
   THERMO:
-    - cell_type: HEX20
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: HEX27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: HEX8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: LINE2
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: LINE3
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: NURBS27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: NURBS4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: NURBS9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: PYRAMID5
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -4513,20 +4450,6 @@ legacy_element_specs:
           - name: MAT
             type: int
             required: true
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
     - cell_type: TRI3
       spec:
         type: all_of
@@ -4541,7 +4464,35 @@ legacy_element_specs:
           - name: MAT
             type: int
             required: true
-    - cell_type: WEDGE15
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: HEX20
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: HEX27
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: TET10
       spec:
         type: all_of
         specs:
@@ -4549,6 +4500,55 @@ legacy_element_specs:
             type: int
             required: true
     - cell_type: WEDGE6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: WEDGE15
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: PYRAMID5
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: LINE2
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: LINE3
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: NURBS4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: NURBS9
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+    - cell_type: NURBS27
       spec:
         type: all_of
         specs:
@@ -4567,6 +4567,114 @@ legacy_element_specs:
             type: string
             required: true
   TRANSP:
+    - cell_type: QUAD4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: QUAD8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: QUAD9
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: TRI3
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: TRI6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
     - cell_type: HEX20
       spec:
         type: all_of
@@ -4603,7 +4711,79 @@ legacy_element_specs:
               type: double
             required: false
             default: null
-    - cell_type: HEX8
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: TET10
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: WEDGE6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: WEDGE15
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+    - cell_type: PYRAMID5
       spec:
         type: all_of
         specs:
@@ -4675,24 +4855,6 @@ legacy_element_specs:
               type: double
             required: false
             default: null
-    - cell_type: NURBS27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
     - cell_type: NURBS3
       spec:
         type: all_of
@@ -4729,24 +4891,6 @@ legacy_element_specs:
               type: double
             required: false
             default: null
-    - cell_type: NURBS8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
     - cell_type: NURBS9
       spec:
         type: all_of
@@ -4765,7 +4909,7 @@ legacy_element_specs:
               type: double
             required: false
             default: null
-    - cell_type: PYRAMID5
+    - cell_type: NURBS8
       spec:
         type: all_of
         specs:
@@ -4783,151 +4927,7 @@ legacy_element_specs:
               type: double
             required: false
             default: null
-    - cell_type: QUAD4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: QUAD8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: QUAD9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: TRI3
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: TRI6
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: WEDGE15
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-    - cell_type: WEDGE6
+    - cell_type: NURBS27
       spec:
         type: all_of
         specs:
@@ -4946,6 +4946,162 @@ legacy_element_specs:
             required: false
             default: null
   TRANSPHDG:
+    - cell_type: QUAD4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: QUAD8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: QUAD9
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: TRI3
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: TRI6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: HEX8
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
     - cell_type: HEX20
       spec:
         type: all_of
@@ -4998,7 +5154,111 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: HEX8
+    - cell_type: TET4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: TET10
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: WEDGE6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: WEDGE15
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+          - name: FIBER1
+            noneable: true
+            type: vector
+            size: 3
+            value_type:
+              type: double
+            required: false
+            default: null
+          - name: DEG
+            type: int
+            required: true
+          - name: SPC
+            noneable: true
+            type: bool
+            required: false
+            default: null
+    - cell_type: PYRAMID5
       spec:
         type: all_of
         specs:
@@ -5102,32 +5362,6 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: NURBS27
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
     - cell_type: NURBS3
       spec:
         type: all_of
@@ -5180,32 +5414,6 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: NURBS8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
     - cell_type: NURBS9
       spec:
         type: all_of
@@ -5232,7 +5440,7 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: PYRAMID5
+    - cell_type: NURBS8
       spec:
         type: all_of
         specs:
@@ -5258,215 +5466,7 @@ legacy_element_specs:
             type: bool
             required: false
             default: null
-    - cell_type: QUAD4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: QUAD8
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: QUAD9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: TET10
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: TET4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: TRI3
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: TRI6
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: WEDGE15
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-          - name: FIBER1
-            noneable: true
-            type: vector
-            size: 3
-            value_type:
-              type: double
-            required: false
-            default: null
-          - name: DEG
-            type: int
-            required: true
-          - name: SPC
-            noneable: true
-            type: bool
-            required: false
-            default: null
-    - cell_type: WEDGE6
+    - cell_type: NURBS27
       spec:
         type: all_of
         specs:
@@ -5529,56 +5529,6 @@ legacy_element_specs:
         type: all_of
         specs: []
   WALL:
-    - cell_type: NURBS4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: string
-            required: true
-          - name: EAS
-            type: string
-            required: true
-          - name: THICK
-            type: double
-            required: true
-          - name: STRESS_STRAIN
-            type: string
-            required: true
-          - name: GP
-            type: vector
-            size: 2
-            value_type:
-              type: int
-            required: true
-    - cell_type: NURBS9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: string
-            required: true
-          - name: EAS
-            type: string
-            required: true
-          - name: THICK
-            type: double
-            required: true
-          - name: STRESS_STRAIN
-            type: string
-            required: true
-          - name: GP
-            type: vector
-            size: 2
-            value_type:
-              type: int
-            required: true
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -5680,6 +5630,56 @@ legacy_element_specs:
               type: int
             required: true
     - cell_type: TRI6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: string
+            required: true
+          - name: EAS
+            type: string
+            required: true
+          - name: THICK
+            type: double
+            required: true
+          - name: STRESS_STRAIN
+            type: string
+            required: true
+          - name: GP
+            type: vector
+            size: 2
+            value_type:
+              type: int
+            required: true
+    - cell_type: NURBS4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: string
+            required: true
+          - name: EAS
+            type: string
+            required: true
+          - name: THICK
+            type: double
+            required: true
+          - name: STRESS_STRAIN
+            type: string
+            required: true
+          - name: GP
+            type: vector
+            size: 2
+            value_type:
+              type: int
+            required: true
+    - cell_type: NURBS9
       spec:
         type: all_of
         specs:
@@ -6342,62 +6342,6 @@ legacy_element_specs:
             type: string
             required: true
   WALLSCATRA:
-    - cell_type: NURBS4
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: string
-            required: true
-          - name: EAS
-            type: string
-            required: true
-          - name: THICK
-            type: double
-            required: true
-          - name: STRESS_STRAIN
-            type: string
-            required: true
-          - name: GP
-            type: vector
-            size: 2
-            value_type:
-              type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
-    - cell_type: NURBS9
-      spec:
-        type: all_of
-        specs:
-          - name: MAT
-            type: int
-            required: true
-          - name: KINEM
-            type: string
-            required: true
-          - name: EAS
-            type: string
-            required: true
-          - name: THICK
-            type: double
-            required: true
-          - name: STRESS_STRAIN
-            type: string
-            required: true
-          - name: GP
-            type: vector
-            size: 2
-            value_type:
-              type: int
-            required: true
-          - name: TYPE
-            type: string
-            required: true
     - cell_type: QUAD4
       spec:
         type: all_of
@@ -6511,6 +6455,62 @@ legacy_element_specs:
             type: string
             required: true
     - cell_type: TRI6
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: string
+            required: true
+          - name: EAS
+            type: string
+            required: true
+          - name: THICK
+            type: double
+            required: true
+          - name: STRESS_STRAIN
+            type: string
+            required: true
+          - name: GP
+            type: vector
+            size: 2
+            value_type:
+              type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+    - cell_type: NURBS4
+      spec:
+        type: all_of
+        specs:
+          - name: MAT
+            type: int
+            required: true
+          - name: KINEM
+            type: string
+            required: true
+          - name: EAS
+            type: string
+            required: true
+          - name: THICK
+            type: double
+            required: true
+          - name: STRESS_STRAIN
+            type: string
+            required: true
+          - name: GP
+            type: vector
+            size: 2
+            value_type:
+              type: int
+            required: true
+          - name: TYPE
+            type: string
+            required: true
+    - cell_type: NURBS9
       spec:
         type: all_of
         specs:
