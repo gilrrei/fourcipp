@@ -67,7 +67,7 @@ class Converter:
     def register_numpy_types(self) -> Converter:
         """Register NumPy types and their converter functions."""
 
-        def convert_ndarray(converter: Converter, obj: np.ndarray):
+        def convert_ndarray(converter: Converter, obj: np.ndarray) -> list[Any]:
             """Convert a NumPy ndarray to a list.
 
             Args:
@@ -76,7 +76,9 @@ class Converter:
             """
             return converter(obj.tolist())
 
-        def convert_generic(converter: Converter, obj: np.generic):
+        def convert_generic(
+            converter: Converter, obj: np.generic
+        ) -> int | float | bool | str:
             """Convert a NumPy generic type to a native Python type.
 
             Args:

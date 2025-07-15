@@ -263,7 +263,7 @@ def get_entry(
 def remove(
     nested_dict: dict,
     keys: Sequence,
-):
+) -> None:
     """Remove entry.
 
     Args:
@@ -279,7 +279,7 @@ def replace_value(
     nested_dict: dict,
     keys: Sequence,
     new_value: Any,
-):
+) -> None:
     """Replace value.
 
     Args:
@@ -296,7 +296,7 @@ def make_default_explicit(
     nested_dict: dict,
     keys: Sequence,
     default_value: Any,
-):
+) -> None:
     """Make default explicit, i.e. set the value in the input.
 
     Args:
@@ -315,7 +315,7 @@ def make_default_implicit(
     nested_dict: dict,
     keys: Sequence,
     default_value: Any,
-):
+) -> None:
     """Make default implicit, i.e., removed it if set with the default value in
     the input.
 
@@ -335,7 +335,7 @@ def change_default(
     keys: Sequence,
     old_default: Any,
     new_default: Any,
-):
+) -> None:
     """Change default value.
 
     If default value is not provided the old default is set. Entries where the value equals the new default value is removed.
@@ -362,7 +362,7 @@ def rename_parameter(
     nested_dict: dict,
     keys: Sequence,
     new_name: str,
-):
+) -> None:
     """Rename parameter.
 
     Args:

@@ -21,7 +21,6 @@
 # THE SOFTWARE.
 """Element io."""
 
-from collections.abc import Callable
 from typing import TypeAlias
 
 from fourcipp import CONFIG

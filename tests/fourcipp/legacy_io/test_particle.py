@@ -26,7 +26,7 @@ import pytest
 from fourcipp import CONFIG
 from fourcipp.legacy_io.particle import read_particle, write_particle
 
-from .utils import iterate_all_of, reference_value_from_all_of
+from .utils import reference_value_from_all_of
 
 
 @pytest.fixture(name="reference_particle")

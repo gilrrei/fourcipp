@@ -21,7 +21,6 @@
 # THE SOFTWARE.
 """Read inline dat strings."""
 
-from collections.abc import Callable
 from functools import partial
 from typing import Any
 

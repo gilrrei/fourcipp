@@ -126,7 +126,7 @@ def write_knotvectors(patches: list) -> list[str]:
         List of lines
     """
 
-    def write_patch(patch):
+    def write_patch(patch: dict) -> list[str]:
         """Write patch lines.
 
         Args:

@@ -71,10 +71,10 @@ class FourCInput:
     known_sections: list = ALL_SECTIONS
     type_converter: Converter = CONVERTER
 
-    def convert_to_native_types(self):
+    def convert_to_native_types(self) -> None:
         """Convert all sections to native Python types."""
-        self._sections = self.type_converter(self._sections)
-        self._legacy_sections = self.type_converter(self._legacy_sections)
+        self._sections: dict = self.type_converter(self._sections)
+        self._legacy_sections: dict = self.type_converter(self._legacy_sections)
 
     def __init__(
         self,
@@ -451,7 +451,7 @@ class FourCInput:
         invert_sections: bool = False,
         sort_sections: bool = False,
         validate: bool = False,
-    ):
+    ) -> None:
         """Dump input and split using the includes function.
 
         Args:
