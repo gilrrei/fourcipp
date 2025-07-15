@@ -1,18 +1,17 @@
 ## Overall setup
 
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "setuptools_scm[toml]"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "FourCIPP"
-version = "0.1"
 authors = [{ name = "FourCIPP Authors" }]
 description = "A streamlined Python Parser for 4C input files"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
-dynamic = ["dependencies"]
+dynamic = ["dependencies", "version"]
 
 [project.scripts]
 fourcipp-switch-profile = "fourcipp.utils.configuration:change_profile_cli"
@@ -28,6 +27,11 @@ optional-dependencies = { safe = { file = [
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "pip-tools"]
+
+[tool.setuptools_scm]
+version_file = "src/fourcipp/version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
 
 ## Tools
 
