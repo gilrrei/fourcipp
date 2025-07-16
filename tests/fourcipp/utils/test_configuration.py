@@ -23,7 +23,7 @@
 
 import pytest
 
-from fourcipp.utils.configuration import _change_profile, list_profiles
+from fourcipp.utils.configuration import _change_profile
 
 
 def test_change_profile_failure():

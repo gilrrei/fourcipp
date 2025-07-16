@@ -56,7 +56,7 @@ def load_yaml(path_to_yaml_file: Path) -> dict:
     return data
 
 
-def dict_to_yaml_string(data: dict, sort_keys=False) -> str:
+def dict_to_yaml_string(data: dict, sort_keys: bool = False) -> str:
     """Dump dict as yaml.
 
     Args:

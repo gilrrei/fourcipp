@@ -50,7 +50,7 @@ def load_config() -> dict:
 
     config = {"profile": profile}
 
-    def load_yaml_for_config(config_data_name):
+    def load_yaml_for_config(config_data_name: str) -> None:
         """Load data from paths in config."""
         data = CONFIG["profiles"][profile][config_data_name + "_path"]
 
@@ -93,7 +93,7 @@ def profile_description() -> str:
     return string
 
 
-def _change_profile(profile: str):
+def _change_profile(profile: str) -> None:
     """Change config profile.
 
     Args:
@@ -108,7 +108,7 @@ def _change_profile(profile: str):
     dump_yaml(CONFIG, CONFIG_FILE)
 
 
-def change_profile_cli():
+def change_profile_cli() -> None:
     """Change Config profile using CLI."""
     parser = argparse.ArgumentParser()
 
