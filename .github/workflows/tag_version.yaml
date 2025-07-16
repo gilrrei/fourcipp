@@ -35,6 +35,7 @@ jobs:
           else
             echo "No version tag on this commit. Proceeding."
             echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Compute next version tag
         if: steps.check_tag.outputs.skip != 'true'
