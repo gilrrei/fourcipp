@@ -42,7 +42,8 @@ jobs:
         shell: bash -el {0}
         run: |
           conda activate fourcipp
-          pytest --color=yes -v
+          pytest --color=yes -v --performance-tests
+          cat timings.md >> $GITHUB_STEP_SUMMARY
 
   run_pytest_with_4C:
     runs-on: ubuntu-latest

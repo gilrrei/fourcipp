@@ -24,12 +24,18 @@
 import contextlib
 import pathlib
 import subprocess
+import time
+from collections.abc import Callable
 
 import pytest
 
 from fourcipp import CONFIG
 from fourcipp.fourc_input import FourCInput, UnknownSectionException
 from fourcipp.utils.validation import ValidationError
+
+from ..fourcipp.legacy_io.test_element import (  # noqa: TID252
+    generate_elements_from_metadatafile,
+)
 
 
 @pytest.fixture(name="section_names")
@@ -491,3 +497,128 @@ def test_validation(fourc_input, error_context, sections_only):
     """Test the validation."""
     with error_context:
         fourc_input.validate(sections_only=sections_only)
+
+
+def create_dummy_elements() -> dict:
+    """Create dummy elements for the performance test.
+
+    Loops over all elements from the metadata file and creates
+    3000 dummy elements for each element type.
+
+    Returns:
+        dict: Dictionary with dummy elements.
+    """
+
+    reference_elements = generate_elements_from_metadatafile()
+
+    dummy_elements: dict[str, list[str]] = {"STRUCTURE ELEMENTS": []}
+
+    for element in reference_elements:
+        for i in range(1, 3000):
+            dummy_elements["STRUCTURE ELEMENTS"].append(
+                f"{i} {' '.join(element.split()[1:])}"
+            )
+
+    return dummy_elements
+
+
+def create_dummy_knotvectors() -> dict:
+    """Create dummy knotvectors for the performance test.
+
+    Returns:
+        dict: Dictionary with dummy knotvectors.
+    """
+
+    dummy_knotvectors: dict[str, list[str]] = {"STRUCTURE KNOTVECTORS": []}
+
+    dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("NURBS_DIMENSION    1")
+
+    for i in range(1, 25001):
+        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("BEGIN    NURBSPATCH")
+        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append(f"ID       {i}")
+        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("NUMKNOTS 4")
+        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("DEGREE   2")
+        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("TYPE     Interpolated")
+
+        for j in range(4):
+            value = 0.001 + (i - 1) * 4 * 0.001 + j * 0.001
+            dummy_knotvectors["STRUCTURE KNOTVECTORS"].append(f"{value:.12f}")
+
+        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("END      NURBSPATCH")
+
+    return dummy_knotvectors
+
+
+def evaluate_execution_time(fct: Callable, args: dict) -> float:
+    """Evaluate execution time of a function.
+
+    Args:
+        fct: Function to test.
+        args: Arguments to pass to the function.
+
+    Returns:
+        float: Execution time in seconds.
+    """
+
+    start_time = time.time()
+    fct(**args)
+    end_time = time.time()
+
+    return end_time - start_time
+
+
+def save_timings(timings: dict, file: str) -> None:
+    """Save timings to a file.
+
+    Args:
+        timings: Dictionary with timings.
+        file: Name of the markdown file to save the timings.
+    """
+
+    if not file.endswith(".md"):
+        raise ValueError("File must be a markdown file ending with .md!")
+
+    with open(file, "w") as f:
+        f.write("# Performance Timings :rocket:\n\n")
+        f.write("| Operation         | Time (seconds)  |\n")
+        f.write("|-------------------|-----------------|\n")
+        for operation, time_taken in timings.items():
+            f.write(f"| {operation:<17} | {time_taken:10.6f}      |\n")
+
+
+@pytest.mark.performance
+def test_performance(tmp_path) -> None:
+    """Test performance of core functions of FourCInput."""
+
+    dummy_elements = create_dummy_elements()
+    dummy_knotvectors = create_dummy_knotvectors()
+
+    input = FourCInput()
+
+    timings = {}
+
+    # Evaluate execution time of adding elements and knotvectors to input file
+    timings["add_elements"] = evaluate_execution_time(
+        input.combine_sections, args={"other": dummy_elements}
+    )
+    timings["add_knotvectors"] = evaluate_execution_time(
+        input.combine_sections, args={"other": dummy_knotvectors}
+    )
+
+    # Evaluate execution time of validating the input file
+    timings["validate"] = evaluate_execution_time(
+        input.validate, args={"sections_only": True}
+    )
+
+    # Evaluate performance of dumping the input file
+    timings["dump"] = evaluate_execution_time(
+        input.dump, args={"input_file_path": tmp_path / "performance_test.4C.yaml"}
+    )
+
+    # Evaluate performance of loading the input file
+    timings["load_from_file"] = evaluate_execution_time(
+        FourCInput.from_4C_yaml,
+        args={"input_file_path": tmp_path / "performance_test.4C.yaml"},
+    )
+
+    save_timings(timings, "timings.md")
