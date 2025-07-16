@@ -1,5 +1,7 @@
 # Manually added files & folder
 
+# FourCIPP version file
+src/fourcipp/version.py
 
 # FourCIPP config file
 src/fourcipp/config/config.yaml
