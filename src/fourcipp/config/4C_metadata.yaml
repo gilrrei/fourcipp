@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 473bf4b5ad7f78489662fc7ab87c5c7c3e9eba94
+  commit_hash: efd8e3c3e79ff3bbed4af5c595baf4bcaaefae1d
   version: 2025.3.0-dev
   description_section_name: TITLE
 legacy_element_specs:
@@ -32250,11 +32250,19 @@ sections:
                               spec:
                                 name: constant
                                 type: double
+                                description: "Constant value for the field."
                                 required: true
                             - name: from_file
                               spec:
                                 name: from_file
                                 type: path
+                                description: "Path to a file containing the input field data."
+                                required: true
+                            - name: field_reference
+                              spec:
+                                name: field_reference
+                                type: string
+                                description: "Refer to a globally defined field by a name."
                                 required: true
             - type: all_of
               specs:
@@ -32530,7 +32538,7 @@ sections:
                           required: true
                         - name: PHASEID
                           type: int
-                          description: "ID of fluid phase the scalar is associated with"
+                          description: "ID of fluid phase the scalar is associated with. Starting with zero."
                           required: true
                         - name: REACOEFF
                           type: double
@@ -32749,7 +32757,7 @@ sections:
                           required: true
                         - name: PHASEID
                           type: int
-                          description: "ID of fluid phase the scalar is associated with"
+                          description: "ID of fluid phase the scalar is associated with. Starting with zero."
                           required: true
                         - name: REACOEFF
                           type: double
@@ -34919,11 +34927,19 @@ sections:
                                 type: vector
                                 value_type:
                                   type: double
+                                description: "Constant value for the field."
                                 required: true
                             - name: from_file
                               spec:
                                 name: from_file
                                 type: path
+                                description: "Path to a file containing the input field data."
+                                required: true
+                            - name: field_reference
+                              spec:
+                                name: field_reference
+                                type: string
+                                description: "Refer to a globally defined field by a name."
                                 required: true
             - type: all_of
               specs:
@@ -34952,11 +34968,19 @@ sections:
                                 type: vector
                                 value_type:
                                   type: double
+                                description: "Constant value for the field."
                                 required: true
                             - name: from_file
                               spec:
                                 name: from_file
                                 type: path
+                                description: "Path to a file containing the input field data."
+                                required: true
+                            - name: field_reference
+                              spec:
+                                name: field_reference
+                                type: string
+                                description: "Refer to a globally defined field by a name."
                                 required: true
                         - name: SORET
                           type: double
@@ -43232,6 +43256,31 @@ sections:
             description: "the extrapolation of the fluid stress in the contact zone is relaxed to zero after a certtain distance"
             required: false
             default: true
+  - name: fields
+    type: list
+    description: Define a field that can be used in the simulation. You can refer to a field by its name in other places.
+    required: false
+    spec:
+      type: all_of
+      specs:
+        - name: name
+          type: string
+          description: "Name of the field. This is used to refer to the field in other places. It is recommended to choose a descriptive name. The name must be unique across all fields."
+          required: true
+        - name: discretization
+          type: string
+          description: "Name of the discretization to which this field belongs."
+          required: true
+        - name: file
+          type: path
+          description: "(Relative) path to the file containing the field data."
+          required: true
+        - name: key
+          noneable: true
+          type: string
+          description: "The key under which the field data is stored in the file. If not specified, the key is assumed to be equal to the name."
+          required: false
+          default: null
   - name: porofluid_dynamic
     type: group
     required: false
