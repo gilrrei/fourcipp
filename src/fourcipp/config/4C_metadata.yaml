@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: efd8e3c3e79ff3bbed4af5c595baf4bcaaefae1d
+  commit_hash: 5e9337de82eda62ae81429e0911401311547a0ab
   version: 2025.3.0-dev
   description_section_name: TITLE
 legacy_element_specs:
@@ -28108,10 +28108,6 @@ sections:
                         - name: DENS
                           type: double
                           required: true
-                        - name: NUMCONST
-                          type: int
-                          description: "number of mixture constituents"
-                          required: true
                         - name: MASSFRAC
                           type: vector
                           value_type:
@@ -28133,39 +28129,31 @@ sections:
                         - name: DENS
                           type: double
                           required: true
-                        - name: NUMCONST
-                          type: int
-                          description: "number of mixture constituents"
-                          required: true
                         - name: MASSFRAC
-                          type: vector
-                          value_type:
-                            type: double
-                          description: "list mass fractions of the mixture constituents"
+                          type: selection
+                          description: "list of mass fractions of the mixture constituents"
                           required: true
-            - type: all_of
-              specs:
-                - name: MAT
-                  type: int
-                  required: true
-                - name: MIX_Rule_Map
-                  type: group
-                  description: A mixture rule where the mass fractions are defined elementwise as discrete values
-                  required: true
-                  specs:
-                    - type: all_of
-                      specs:
-                        - name: DENS
-                          type: double
-                          required: true
-                        - name: NUMCONST
-                          type: int
-                          description: "number of mixture constituents"
-                          required: true
-                        - name: MASSFRACMAPFILE
-                          type: path
-                          description: "file path of pattern file defining the massfractions as discrete values"
-                          required: true
+                          choices:
+                            - name: constant
+                              spec:
+                                name: constant
+                                type: vector
+                                value_type:
+                                  type: double
+                                description: "Constant value for the field."
+                                required: true
+                            - name: from_file
+                              spec:
+                                name: from_file
+                                type: path
+                                description: "Path to a file containing the input field data."
+                                required: true
+                            - name: field_reference
+                              spec:
+                                name: field_reference
+                                type: string
+                                description: "Refer to a globally defined field by a name."
+                                required: true
             - type: all_of
               specs:
                 - name: MAT
@@ -28180,10 +28168,6 @@ sections:
                       specs:
                         - name: DENS
                           type: double
-                          required: true
-                        - name: NUMCONST
-                          type: int
-                          description: "number of mixture constituents"
                           required: true
                         - name: MASSFRACFUNCT
                           type: vector
@@ -28703,10 +28687,6 @@ sections:
                   specs:
                     - type: all_of
                       specs:
-                        - name: NUMCONST
-                          type: int
-                          description: "number of mixture constituents"
-                          required: true
                         - name: MATIDMIXTURERULE
                           type: int
                           description: "material id of the mixturerule"
@@ -28715,7 +28695,7 @@ sections:
                           type: vector
                           value_type:
                             type: int
-                          description: "list material IDs of the mixture constituents"
+                          description: "list of material IDs of the mixture constituents"
                           required: true
             - type: all_of
               specs:
