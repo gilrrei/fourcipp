@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: 5e9337de82eda62ae81429e0911401311547a0ab
+  commit_hash: ac3ab52b526f242649afe068bfd87b36f6d02442
   version: 2025.3.0-dev
   description_section_name: TITLE
 legacy_element_specs:
@@ -42142,6 +42142,11 @@ sections:
           - name: TEMPERATURE
             type: bool
             description: "write temperature output"
+            required: false
+            default: false
+          - name: CONDUCTIVITY
+            type: bool
+            description: "write conductivity output"
             required: false
             default: false
           - name: HEATFLUX
