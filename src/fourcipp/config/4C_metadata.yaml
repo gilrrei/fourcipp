@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: ac3ab52b526f242649afe068bfd87b36f6d02442
+  commit_hash: ab9f358c518bdee8cf534ad91cda31a2af2a57c3
   version: 2025.3.0-dev
   description_section_name: TITLE
 legacy_element_specs:
@@ -11535,6 +11535,13 @@ sections:
             noneable: true
             type: int
           required: true
+          validator:
+            all_elements:
+              range:
+                minimum: 0
+                maximum: 2147483647
+                minimum_exclusive: true
+                maximum_exclusive: false
   - name: DESIGN LINE MIXED/HYBRID DIRICHLET CONDITIONS
     type: list
     required: false
@@ -13407,6 +13414,13 @@ sections:
             noneable: true
             type: int
           required: true
+          validator:
+            all_elements:
+              range:
+                minimum: 0
+                maximum: 2147483647
+                minimum_exclusive: true
+                maximum_exclusive: false
   - name: DESIGN POINT MOMENT EB CONDITIONS
     type: list
     required: false
@@ -17573,6 +17587,13 @@ sections:
             noneable: true
             type: int
           required: true
+          validator:
+            all_elements:
+              range:
+                minimum: 0
+                maximum: 2147483647
+                minimum_exclusive: true
+                maximum_exclusive: false
   - name: DESIGN SURF MODE FOR KRYLOV SPACE PROJECTION
     type: list
     required: false
@@ -36106,10 +36127,17 @@ sections:
               - name: NormalRadiusDistribution
               - name: LogNormalRadiusDistribution
           - name: RADIUSDISTRIBUTION_SIGMA
+            noneable: true
             type: double
-            description: "sigma of random particle radius distribution"
+            description: "Standard deviation sigma of random particle radius distribution"
             required: false
-            default: -1
+            default: null
+            validator:
+              range:
+                minimum: 0
+                maximum: 1.7976931348623157e+308
+                minimum_exclusive: true
+                maximum_exclusive: false
           - name: REL_PENETRATION
             type: double
             description: "maximum allowed relative penetration"
