@@ -120,7 +120,7 @@ class Converter:
                 return {k: self(v) for k, v in obj.items()}
 
             # Nothing to do here, since these are the accepted types
-            case int() | float() | bool() | str():
+            case int() | float() | bool() | str() | None:
                 return obj
 
             # Type was not registered and is not one of the standards one
