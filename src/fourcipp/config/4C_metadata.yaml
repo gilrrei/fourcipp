@@ -1,5 +1,5 @@
 metadata:
-  commit_hash: ab9f358c518bdee8cf534ad91cda31a2af2a57c3
+  commit_hash: 5aae6b823579a4608444853ba33479433472e1f7
   version: 2025.3.0-dev
   description_section_name: TITLE
 legacy_element_specs:
@@ -39150,9 +39150,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
@@ -39264,9 +39269,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
@@ -39378,9 +39388,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
@@ -39492,9 +39507,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
@@ -39606,9 +39626,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
@@ -39720,9 +39745,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
@@ -39834,9 +39864,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
@@ -39948,9 +39983,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
@@ -40062,9 +40102,14 @@ sections:
             default: 0
           - name: AZREUSE
             type: int
-            description: "The number specifying how often to recompute some preconditioners"
+            description: "Update preconditioner after this many nonlinear iterations. The preconditioner is recomputed at every start of a nonlinear solve."
             required: false
             default: 0
+          - name: REUSE_STALL_ITER
+            type: int
+            description: "Maximum number of linear iterations that triggers a nonlinear iteration to be declared stalled and thus force recomputation of the preconditioner."
+            required: false
+            default: 50
           - name: AZSUB
             type: int
             description: "The maximum size of the Krylov subspace used with \"GMRES\" before\n a restart is performed."
