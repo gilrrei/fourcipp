@@ -284,9 +284,9 @@ class FourCInput:
         else:
             raise TypeError(f"Cannot overwrite sections from {type(other)}.")
 
-
     def overwrite_values(self, other: dict | FourCInput) -> None:
-        """Combines two Inputs by overwriting current values by the other dict or FourCInput.
+        """Combines two Inputs by overwriting current values by the other dict
+        or FourCInput.
 
         This function checks whether values exist in both objects and overwrites the current by the other.
 
@@ -294,9 +294,13 @@ class FourCInput:
             other: dict/FourCInput to overwrite values from.
         """
 
-        def _check_common_keys(dict1, dict2) -> dict:
-            """Recursive routine to check common keys/values between two dictionaries.
-            If values are different, dict2 is the significant one to overrule dict1."""
+        def _check_common_keys(dict1: dict, dict2: dict) -> dict:
+            """Recursive routine to check common keys/values between two
+            dictionaries.
+
+            If values are different, dict2 is the significant one to
+            overrule dict1.
+            """
 
             common_dict = {}
             for dkey in dict1:
