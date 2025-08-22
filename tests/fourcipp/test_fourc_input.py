@@ -41,16 +41,16 @@ from ..fourcipp.legacy_io.test_element import (  # noqa: TID252
 @pytest.fixture(name="section_names")
 def fixture_section_names():
     """Section names."""
-    section_name_1 = CONFIG["4C_metadata"]["sections"][0]["name"]
-    section_name_2 = CONFIG["4C_metadata"]["sections"][1]["name"]
+    section_name_1 = CONFIG["4C_metadata"]["sections"]["specs"][0]["name"]
+    section_name_2 = CONFIG["4C_metadata"]["sections"]["specs"][1]["name"]
     return section_name_1, section_name_2
 
 
 @pytest.fixture(name="section_names_2")
 def fixture_section_names_2():
     """More section names."""
-    section_name_3 = CONFIG["4C_metadata"]["sections"][2]["name"]
-    section_name_4 = CONFIG["4C_metadata"]["sections"][3]["name"]
+    section_name_3 = CONFIG["4C_metadata"]["sections"]["specs"][2]["name"]
+    section_name_4 = CONFIG["4C_metadata"]["sections"]["specs"][3]["name"]
     return section_name_3, section_name_4
 
 
