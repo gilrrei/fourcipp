@@ -46,13 +46,13 @@ def read_particle(
         particle_casting: Particle casting dict.
 
     Returns:
-        Domain section as dict
+        Particle section as dict
     """
     return inline_dat_read(line.split(), particle_casting)
 
 
 def write_particle(particle: dict) -> str:
-    """Write domain section.
+    """Write particles section.
 
     Args:
         particle: Particle as dict
