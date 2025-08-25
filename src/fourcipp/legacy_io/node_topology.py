@@ -117,7 +117,8 @@ def _read_volume(line_list: list[str]) -> dict:
 
 
 def _read_domain_topology(line_list: list[str], extractor: str) -> dict:
-    """
+    """Read domain topology.
+
     Args:
         line_list: List to extract the entry
         extractor: Type of domain node topology
@@ -138,7 +139,7 @@ def _read_domain_topology(line_list: list[str], extractor: str) -> dict:
 
 
 def _read_d_topology(line_list: list[str]) -> dict:
-    """
+    """Read d topology.
     Args:
         line_list: List to extract the entries
 

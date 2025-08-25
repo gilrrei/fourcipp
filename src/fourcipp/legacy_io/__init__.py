@@ -24,7 +24,6 @@
 from collections.abc import Callable, Sequence
 
 from fourcipp import LEGACY_SECTIONS
-from fourcipp.legacy_io.domain import read_domain, write_domain
 from fourcipp.legacy_io.element import read_element, write_element
 from fourcipp.legacy_io.knotvectors import read_knotvectors, write_knotvectors
 from fourcipp.legacy_io.node import read_node, write_node
@@ -75,9 +74,6 @@ def interpret_legacy_section(legacy_section: str, section_data: list) -> dict | 
 
         case _ if legacy_section.endswith("NODE TOPOLOGY"):
             return _iterate_and_evaluate(read_node_topology, section_data)
-
-        case _ if legacy_section.endswith("DOMAIN"):
-            return read_domain(section_data)
 
         case _ if legacy_section.endswith("KNOTVECTORS"):
             return read_knotvectors(section_data)
@@ -142,11 +138,6 @@ def inline_legacy_section(legacy_section: str, section_data: dict | list) -> lis
             if not isinstance(section_data, Sequence):
                 raise TypeError("Expected the section data to be of type list.")
             return write_knotvectors(section_data)
-
-        case _ if legacy_section.endswith("DOMAIN"):
-            if not isinstance(section_data, dict):
-                raise TypeError("Expected a dictionary for the section data.")
-            return write_domain(section_data)
 
         case _:
             raise ValueError(
