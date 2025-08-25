@@ -271,7 +271,7 @@ class FourCInput:
     def overwrite_sections(self, other: dict | FourCInput) -> None:
         """Overwrite sections from dict or FourCInput.
 
-        This function always overwrites complete sections. Combining parameters within this
+        This function always overwrites complete sections. Combining parameters within
         sections has to be done manually.
 
 
@@ -284,49 +284,40 @@ class FourCInput:
         else:
             raise TypeError(f"Cannot overwrite sections from {type(other)}.")
 
-    def overwrite_values(self, other: dict | FourCInput) -> None:
-        """Combines two Inputs by overwriting current values by the other dict
-        or FourCInput.
+    def apply_user_defaults(self, default_path: Path) -> None:
+        """Combines two Inputs by overwriting current values by a file
+        containing user defaults.
 
         This function checks whether values exist in both objects and overwrites the current by the other.
+        At this time only top level section parameters of simple types (int, float, str, bool, None) are supported.
 
         Args:
-            other: dict/FourCInput to overwrite values from.
+            default_path: Path to the YAML file containing user defaults
         """
+        default_input = FourCInput.from_4C_yaml(default_path, header_only=True)
+        default_sections = default_input.sections
 
-        def _check_common_keys(dict1: dict, dict2: dict) -> dict:
-            """Recursive routine to check common keys/values between two
-            dictionaries.
-
-            If values are different, dict2 is the significant one to
-            overrule dict1.
-            """
-
-            common_dict = {}
-            for dkey in dict1:
-                if dkey in dict2:
-                    if type(dict1[dkey]) == dict:
-                        common_dict[dkey] = _check_common_keys(dict1[dkey], dict2[dkey])
-                    else:
-                        common_dict[dkey] = dict2[dkey]
-                else:
-                    common_dict[dkey] = dict1[dkey]
-            for dkey in dict2:
-                if dkey in dict1:
-                    continue
-                common_dict[dkey] = dict2[dkey]
-            return common_dict
-
-        if isinstance(other, FourCInput):
-            other_sec = other.sections
-        elif isinstance(other, dict):
-            other_sec = other
-        else:
-            raise TypeError(f"Cannot overwrite sections from {type(other)}.")
-
-        common_dict = _check_common_keys(self.sections, other_sec)
-
-        self.overwrite_sections(common_dict)
+        for sectionkey in default_sections:
+            if not isinstance(default_sections[sectionkey], dict):
+                continue
+            if sectionkey in self.sections:
+                # only check sections that are contained in the current object and in the default_sections
+                for parameter_key in default_sections[sectionkey]:
+                    if not isinstance(
+                        self[sectionkey][parameter_key],
+                        (int, float, str, bool, type(None)),
+                    ):
+                        print(
+                            "At this time, you should only use the default values for parameters in top level section!"
+                        )
+                        continue
+                    if parameter_key not in self[sectionkey]:
+                        self[sectionkey][parameter_key] = default_sections[sectionkey][
+                            parameter_key
+                        ]
+            else:
+                # take the other_sec section if it is not in the current object
+                self[sectionkey] = default_sections[sectionkey]
 
         return
 
