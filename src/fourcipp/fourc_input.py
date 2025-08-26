@@ -297,29 +297,36 @@ class FourCInput:
         default_input = FourCInput.from_4C_yaml(default_path, header_only=True)
         default_sections = default_input.sections
 
-        for sectionkey in default_sections:
-            if not isinstance(default_sections[sectionkey], dict):
-                continue
-            if sectionkey in self.sections:
+        for section_key in default_sections:
+            if not isinstance(default_sections[section_key], dict):
+                raise TypeError(f"Section {section_key} does not contain a dict.")
+            if section_key in self.sections:
                 # only check sections that are contained in the current object and in the default_sections
-                for parameter_key in default_sections[sectionkey]:
-                    if not isinstance(
-                        self[sectionkey][parameter_key],
-                        (int, float, str, bool, type(None)),
+                for parameter_key in default_sections[section_key]:
+                    if parameter_key not in self[section_key]:
+                        self[section_key][parameter_key] = default_sections[
+                            section_key
+                        ][parameter_key]
+                        logger.debug(
+                            "Setting user default value {default_sections[section_key]} to parameter {parameter_key} in section {section_key}"
+                        )
+                        continue
+                    if (
+                        not isinstance(
+                            self[section_key][parameter_key], (int, float, str, bool)
+                        )
+                        and self[section_key][parameter_key] is not None
                     ):
                         print(
                             "At this time, you should only use the default values for parameters in top level section!"
                         )
-                        continue
-                    if parameter_key not in self[sectionkey]:
-                        self[sectionkey][parameter_key] = default_sections[sectionkey][
-                            parameter_key
-                        ]
+                        raise TypeError(
+                            f"The value for parameter {parameter_key} in section {section_key} is not a primitive."
+                        )
             else:
-                # take the other_sec section if it is not in the current object
-                self[sectionkey] = default_sections[sectionkey]
-
-        return
+                # take the section content from default if it is not in the current object
+                self[section_key] = default_sections[section_key]
+                logger.debug("Adding user default section {section_key} to input file")
 
     @property
     def sections(self) -> dict:

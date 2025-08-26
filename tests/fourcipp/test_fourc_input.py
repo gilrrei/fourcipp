@@ -286,9 +286,6 @@ def test_apply_default(tmp_path):
     path_to_default = tmp_path / "default.4C.yaml"
     default_input = FourCInput({"PROBLEM TYPE": {"PROBLEMTYPE": "default problemtype"}})
     default_input["PROBLEM SIZE"] = {"DIM": 3}
-    default_input["MATERIALS"] = [
-        {"MAT": 1, "MAT_Struct_StVenantKirchhoff": {"YOUNG": 1, "NUE": 0.3}}
-    ]
     default_input.dump(path_to_default)
 
     # writing some entries to the current fourc_input
@@ -300,7 +297,7 @@ def test_apply_default(tmp_path):
 
     # Only in current input
     assert fourc_input["SOLVER 1"] == {"NAME": "current title"}
-    # Defined in default, overwritten by current input
+    # Defined in both default and current input -> do not overwrite with the default
     assert fourc_input["PROBLEM TYPE"] == {"PROBLEMTYPE": "current problemtype"}
     # Defined in default, not in current input -> should be taken
     assert fourc_input["PROBLEM SIZE"] == {"DIM": 3}
