@@ -242,10 +242,10 @@ class FourCInput:
     def combine_sections(self, other: dict | FourCInput) -> None:
         """Combine input files together.
 
-        Note: Every sections can only be defined in self or in other.
+        Note: Every section can only be defined in self or in other.
 
         Args:
-            other: Sections to be combine
+            other: Sections to be combined
         """
         other_sections_names: Any = None
 
@@ -271,7 +271,7 @@ class FourCInput:
     def overwrite_sections(self, other: dict | FourCInput) -> None:
         """Overwrite sections from dict or FourCInput.
 
-        This function always overwrites complete sections. Combining parameters within this
+        This function always overwrites complete sections. Combining parameters within
         sections has to be done manually.
 
 
@@ -283,6 +283,50 @@ class FourCInput:
                 self[key] = value
         else:
             raise TypeError(f"Cannot overwrite sections from {type(other)}.")
+
+    def apply_user_defaults(self, default_path: Path) -> None:
+        """Combines two Inputs by overwriting current values by a file
+        containing user defaults.
+
+        This function checks whether values exist in both objects and overwrites the current by the other.
+        At this time only top level section parameters of simple types (int, float, str, bool, None) are supported.
+
+        Args:
+            default_path: Path to the YAML file containing user defaults
+        """
+        default_input = FourCInput.from_4C_yaml(default_path, header_only=True)
+        default_sections = default_input.sections
+
+        for section_key in default_sections:
+            if not isinstance(default_sections[section_key], dict):
+                raise TypeError(f"Section {section_key} does not contain a dict.")
+            if section_key in self.sections:
+                # only check sections that are contained in the current object and in the default_sections
+                for parameter_key in default_sections[section_key]:
+                    if parameter_key not in self[section_key]:
+                        self[section_key][parameter_key] = default_sections[
+                            section_key
+                        ][parameter_key]
+                        logger.debug(
+                            "Setting user default value {default_sections[section_key]} to parameter {parameter_key} in section {section_key}"
+                        )
+                        continue
+                    if (
+                        not isinstance(
+                            self[section_key][parameter_key], (int, float, str, bool)
+                        )
+                        and self[section_key][parameter_key] is not None
+                    ):
+                        print(
+                            "At this time, you should only use the default values for parameters in top level section!"
+                        )
+                        raise TypeError(
+                            f"The value for parameter {parameter_key} in section {section_key} is not a primitive."
+                        )
+            else:
+                # take the section content from default if it is not in the current object
+                self[section_key] = default_sections[section_key]
+                logger.debug("Adding user default section {section_key} to input file")
 
     @property
     def sections(self) -> dict:
