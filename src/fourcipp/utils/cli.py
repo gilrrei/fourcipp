@@ -33,7 +33,7 @@ from fourcipp.utils.configuration import (
 )
 
 
-def main() -> None:
+def main() -> None:  # pragma: no cover
     """Main CLI interface."""
     # Set up the logger
     logger.enable("fourcipp")
