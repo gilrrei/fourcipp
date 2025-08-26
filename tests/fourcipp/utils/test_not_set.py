@@ -19,14 +19,26 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""Test configuration utils."""
+"""Not set tests."""
 
 import pytest
 
-from fourcipp.utils.configuration import change_profile
+from fourcipp.utils.not_set import NotSet, check_if_set, pop_arguments
 
 
-def test_change_profile_failure():
-    """Test for change profile failure."""
-    with pytest.raises(Exception, match="Profile"):
-        change_profile("non-existing")
+@pytest.mark.parametrize(
+    "obj, expected_result", [("a", True), (2, True), ({2: 3}, True), (NotSet, False)]
+)
+def test_check_if_set(obj, expected_result):
+    """Test check if set."""
+    assert check_if_set(obj) == expected_result
+
+
+def test_pop_arguments_without_default():
+    """Assert pop arguments without default."""
+    assert pop_arguments("key") == ("key",)
+
+
+def test_pop_arguments_with_default():
+    """Assert pop arguments with default."""
+    assert pop_arguments("key", "default") == ("key", "default")
