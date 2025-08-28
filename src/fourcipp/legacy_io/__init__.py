@@ -23,7 +23,7 @@
 
 from collections.abc import Callable, Sequence
 
-from fourcipp import LEGACY_SECTIONS
+from fourcipp.constants import LEGACY_SECTIONS
 from fourcipp.legacy_io.element import read_element, write_element
 from fourcipp.legacy_io.knotvectors import read_knotvectors, write_knotvectors
 from fourcipp.legacy_io.node import read_node, write_node

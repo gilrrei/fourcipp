@@ -22,10 +22,13 @@
 """CLI utils."""
 
 import argparse
+import pathlib
 import sys
 
 from loguru import logger
 
+from fourcipp import CONFIG
+from fourcipp.fourc_input import FourCInput
 from fourcipp.utils.configuration import (
     change_profile,
     change_user_defaults_path,
@@ -33,7 +36,32 @@ from fourcipp.utils.configuration import (
 )
 
 
-def main() -> None:  # pragma: no cover
+def modify_input_with_defaults(input_path: pathlib.Path, overwrite: bool) -> None:
+    """Apply user defaults to an input file located at input_path.
+
+    Args:
+         input_path: Input filename to apply user defaults to.
+         overwrite: Whether to overwrite the existing input file.
+                         By default, a new file with suffix '_mod.4C.yaml' is created.
+    """
+    output_appendix = "_mod"
+
+    if not input_path.is_file():
+        raise FileNotFoundError(f"Input file '{input_path}' does not exist.")
+    input_data = FourCInput.from_4C_yaml(input_path)
+    user_defaults_string = CONFIG["user_defaults_path"]
+    input_data.apply_user_defaults(user_defaults_string)
+    if overwrite:
+        output_filename = input_path
+    else:
+        names = input_path.name.split(".")
+        names[0] += output_appendix
+        output_filename = input_path.parent / ".".join(names)
+    input_data.dump(output_filename)
+    logger.info(f"Input file incl. user defaults is now '{output_filename}'.")
+
+
+def main() -> None:
     """Main CLI interface."""
     # Set up the logger
     logger.enable("fourcipp")
@@ -72,6 +100,25 @@ def main() -> None:  # pragma: no cover
         type=str,
     )
 
+    # Apply user defaults parser
+    apply_user_defaults_parser = subparsers.add_parser(
+        "apply-user-defaults",
+        help="Apply user defaults from the file given in the user defaults path.",
+    )
+
+    apply_user_defaults_parser.add_argument(
+        "-o",
+        "--overwrite",
+        action="store_true",
+        help=f"Overwrite existing input file.",
+    )
+
+    apply_user_defaults_parser.add_argument(
+        "input-file",
+        help=f"4C input file.",
+        type=str,
+    )
+
     # Replace "-" with "_" for variable names
     kwargs: dict = {}
     for key, value in vars(main_parser.parse_args(sys.argv[1:])).items():
@@ -86,3 +133,7 @@ def main() -> None:  # pragma: no cover
             change_profile(**kwargs)
         case "switch-user-defaults-path":
             change_user_defaults_path(**kwargs)
+        case "apply-user-defaults":
+            input_path = pathlib.Path(kwargs.pop("input_file"))
+            overwrite = kwargs.pop("overwrite")
+            modify_input_with_defaults(input_path, overwrite)
