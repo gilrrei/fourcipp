@@ -30,7 +30,11 @@ from collections.abc import Callable
 import pytest
 
 from fourcipp import CONFIG
-from fourcipp.fourc_input import FourCInput, UnknownSectionException
+from fourcipp.fourc_input import (
+    FourCInput,
+    UnknownSectionException,
+)
+from fourcipp.utils.cli import modify_input_with_defaults
 from fourcipp.utils.validation import ValidationError
 
 from ..fourcipp.legacy_io.test_element import (  # noqa: TID252
@@ -303,6 +307,26 @@ def test_apply_default(tmp_path):
     assert fourc_input["PROBLEM SIZE"] == {"DIM": 3}
     # should not be taken even though it is in the default file, because it is a list
     assert not "MATERIALS" in fourc_input
+
+
+def test_apply_user_defaults(
+    fourc_input, fourc_input_2, fourc_input_combined, tmp_path
+):
+    """Test for applying user defaults from the file assigned in the config."""
+
+    # change user_default_path to tmp_path/user_defaults.4C.yaml
+    # This cannot be done using the cli function change_user_defaults_path
+    CONFIG["user_defaults_path"] = str(tmp_path / "user_defaults.4C.yaml")
+    # dump fourc_input to tmp_path/current_input.4C.yaml
+    fourc_input.dump(tmp_path / "current_input.4C.yaml")
+    # dump fourc_input_2 to user_default_path
+    fourc_input_2.dump(tmp_path / "user_defaults.4C.yaml")
+    # Now comes the function to be tested:
+    # apply_user_defaults to fourc_input
+    modify_input_with_defaults(tmp_path / "current_input.4C.yaml", True)
+    # should result in fourc_input_combined
+    defaulted_input = FourCInput.from_4C_yaml(tmp_path / "current_input.4C.yaml")
+    assert defaulted_input == fourc_input_combined
 
 
 def test_add(fourc_input, fourc_input_2, fourc_input_combined):
