@@ -19,16 +19,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-"""FourCIPP."""
+"""Some constants used in 4C input file handler and general configuration."""
 
-from loguru import logger
+from fourcipp import CONFIG
 
-from fourcipp.utils.configuration import load_config, profile_description
-
-# Disable FourCIPP logging by default if desired enable it in your own project
-logger.disable("fourcipp")
-
-# Load the config
-CONFIG = load_config()
-
-logger.info(profile_description())
+DESCRIPTION_SECTION = CONFIG["4C_metadata"]["metadata"]["description_section_name"]
+SECTIONS = [
+    section["name"] for section in CONFIG["4C_metadata"]["sections"]["specs"]
+] + [DESCRIPTION_SECTION]
+LEGACY_SECTIONS = list(CONFIG["4C_metadata"]["legacy_string_sections"])
+ALL_SECTIONS = sorted(SECTIONS + LEGACY_SECTIONS)

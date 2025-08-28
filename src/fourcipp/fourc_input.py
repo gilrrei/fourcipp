@@ -25,12 +25,13 @@ from __future__ import annotations
 
 import copy
 import difflib
+import pathlib
 from collections.abc import Sequence
 from typing import Any
 
 from loguru import logger
 
-from fourcipp import ALL_SECTIONS, CONFIG, LEGACY_SECTIONS, SECTIONS
+from fourcipp.constants import ALL_SECTIONS, CONFIG, LEGACY_SECTIONS, SECTIONS
 from fourcipp.legacy_io import (
     inline_legacy_sections,
     interpret_legacy_section,
@@ -284,7 +285,9 @@ class FourCInput:
         else:
             raise TypeError(f"Cannot overwrite sections from {type(other)}.")
 
-    def apply_user_defaults(self, default_path: Path) -> None:
+    def apply_user_defaults(
+        self, default_path: str = CONFIG["user_defaults_path"]
+    ) -> None:
         """Combines two Inputs by overwriting current values by a file
         containing user defaults.
 
@@ -292,9 +295,13 @@ class FourCInput:
         At this time only top level section parameters of simple types (int, float, str, bool, None) are supported.
 
         Args:
-            default_path: Path to the YAML file containing user defaults
+            default_path: String containing the path to the YAML file with user defaults
         """
-        default_input = FourCInput.from_4C_yaml(default_path, header_only=True)
+        if default_path is None:
+            raise ValueError("User defaults path is not set in the config.")
+        logger.info(f"Applying user defaults from '{default_path}''.")
+        user_defaults_path = pathlib.Path(default_path)
+        default_input = FourCInput.from_4C_yaml(user_defaults_path, header_only=True)
         default_sections = default_input.sections
 
         for section_key in default_sections:
@@ -326,7 +333,7 @@ class FourCInput:
             else:
                 # take the section content from default if it is not in the current object
                 self[section_key] = default_sections[section_key]
-                logger.debug("Adding user default section {section_key} to input file")
+                logger.debug(f"Adding user default section {section_key} to input file")
 
     @property
     def sections(self) -> dict:

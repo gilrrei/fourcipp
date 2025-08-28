@@ -65,6 +65,13 @@ def load_config() -> dict:
     load_yaml_for_config("4C_metadata")
     load_yaml_for_config("json_schema")
 
+    user_defaults_string = CONFIG["user_defaults_path"]
+    if (user_defaults_string) and (not pathlib.Path(user_defaults_string).is_file()):
+        raise FileNotFoundError(
+            f"User defaults file '{user_defaults_string}' does not exist."
+        )
+    config["user_defaults_path"] = CONFIG["user_defaults_path"]
+
     return config
 
 
@@ -110,6 +117,8 @@ def change_profile(profile: str) -> None:
 
 def change_user_defaults_path(user_defaults_path: str) -> None:
     """Replace user defaults path."""
+    if not pathlib.Path(user_defaults_path).is_file():
+        raise FileNotFoundError(f"Input file '{user_defaults_path}' does not exist.")
     logger.info(f"Setting user defaults path to '{user_defaults_path}'")
     CONFIG["user_defaults_path"] = user_defaults_path
     dump_yaml(CONFIG, CONFIG_FILE)
