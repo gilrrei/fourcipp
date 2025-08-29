@@ -577,33 +577,6 @@ def create_dummy_elements() -> dict:
     return dummy_elements
 
 
-def create_dummy_knotvectors() -> dict:
-    """Create dummy knotvectors for the performance test.
-
-    Returns:
-        dict: Dictionary with dummy knotvectors.
-    """
-
-    dummy_knotvectors: dict[str, list[str]] = {"STRUCTURE KNOTVECTORS": []}
-
-    dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("NURBS_DIMENSION    1")
-
-    for i in range(1, 25001):
-        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("BEGIN    NURBSPATCH")
-        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append(f"ID       {i}")
-        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("NUMKNOTS 4")
-        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("DEGREE   2")
-        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("TYPE     Interpolated")
-
-        for j in range(4):
-            value = 0.001 + (i - 1) * 4 * 0.001 + j * 0.001
-            dummy_knotvectors["STRUCTURE KNOTVECTORS"].append(f"{value:.12f}")
-
-        dummy_knotvectors["STRUCTURE KNOTVECTORS"].append("END      NURBSPATCH")
-
-    return dummy_knotvectors
-
-
 def evaluate_execution_time(fct: Callable, args: dict) -> float:
     """Evaluate execution time of a function.
 
@@ -646,18 +619,14 @@ def test_performance(tmp_path) -> None:
     """Test performance of core functions of FourCInput."""
 
     dummy_elements = create_dummy_elements()
-    dummy_knotvectors = create_dummy_knotvectors()
 
     fourc_input = FourCInput()
 
     timings = {}
 
-    # Evaluate execution time of adding elements and knotvectors to input file
+    # Evaluate execution time of adding elements to input file
     timings["add_elements"] = evaluate_execution_time(
         fourc_input.combine_sections, args={"other": dummy_elements}
-    )
-    timings["add_knotvectors"] = evaluate_execution_time(
-        fourc_input.combine_sections, args={"other": dummy_knotvectors}
     )
 
     # Evaluate execution time of validating the input file
