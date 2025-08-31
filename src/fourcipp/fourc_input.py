@@ -42,7 +42,7 @@ from fourcipp.utils.dict_utils import (
     sort_by_key_order,
 )
 from fourcipp.utils.not_set import NotSet, check_if_set
-from fourcipp.utils.typing import Path
+from fourcipp.utils.type_hinting import Path
 from fourcipp.utils.validation import ValidationError, validate_using_json_schema
 from fourcipp.utils.yaml_io import dump_yaml, load_yaml
 

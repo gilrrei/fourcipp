@@ -27,6 +27,14 @@ from typing import Any
 class _NotSet:
     """Not set object."""
 
+    def __str__(self) -> str:
+        """String method."""
+        return "NotSet"
+
+    def __repr__(self) -> str:
+        """Representation method."""
+        return "NotSet"
+
 
 # Not set object
 NotSet = _NotSet()
