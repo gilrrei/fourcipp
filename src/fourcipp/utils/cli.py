@@ -33,7 +33,7 @@ from fourcipp.utils.configuration import (
     change_profile,
     show_config,
 )
-from fourcipp.utils.typing import Path
+from fourcipp.utils.type_hinting import Path
 
 
 def modify_input_with_defaults(input_path: Path, overwrite: bool) -> None:

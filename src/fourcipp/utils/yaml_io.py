@@ -27,7 +27,7 @@ import re
 
 import ryml
 
-from fourcipp.utils.typing import Path
+from fourcipp.utils.type_hinting import Path
 
 
 def load_yaml(path_to_yaml_file: Path) -> dict:

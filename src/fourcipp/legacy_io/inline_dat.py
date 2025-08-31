@@ -25,7 +25,7 @@ from functools import partial
 from typing import Any
 
 from fourcipp.utils.metadata import METADATA_TO_PYTHON
-from fourcipp.utils.typing import (
+from fourcipp.utils.type_hinting import (
     Extractor,
     LineCastingDict,
     LineListExtractor,
