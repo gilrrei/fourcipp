@@ -34,6 +34,8 @@ from fourcipp.utils.dict_utils import (
     remove,
     rename_parameter,
     replace_value,
+    sort_alphabetically,
+    sort_by_key_order,
 )
 
 
@@ -664,3 +666,30 @@ def test_get_dict_optional(nested_input_dict):
         result = entry
     # assert if nothing changed
     assert result == "some value"
+
+
+def test_sort_by_key_order_basic():
+    """Test sorting by key order."""
+
+    data = {"b": 2, "a": 1, "c": 3}
+
+    assert sort_by_key_order(data, ["a", "b", "c"]) == {"a": 1, "b": 2, "c": 3}
+
+
+def test_sort_by_key_order_error_mismatched_keys():
+    """Test sorting by key order with mismatched keys."""
+
+    data = {"b": 2, "a": 1, "c": 3}
+
+    with pytest.raises(
+        ValueError, match="'key_order' must include all keys in the dictionary!"
+    ):
+        sort_by_key_order(data, ["a", "b"])
+
+
+def test_sort_alphabetically():
+    """Test alphabetical sorting."""
+
+    data = {"A": 1, "b": 2, "a": 0, "B": 3, "c": 4, "C": 5}
+
+    assert sort_alphabetically(data) == {"a": 0, "A": 1, "b": 2, "B": 3, "c": 4, "C": 5}

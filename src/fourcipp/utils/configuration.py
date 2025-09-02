@@ -45,7 +45,7 @@ class Sections:
         """
         self.legacy_sections: list[str] = legacy_sections
         self.typed_sections: list[str] = typed_sections
-        self.all_sections: list[str] = legacy_sections + typed_sections
+        self.all_sections: list[str] = typed_sections + legacy_sections
 
     @classmethod
     def from_metadata(cls, fourc_metadata: dict) -> Sections:
@@ -58,9 +58,10 @@ class Sections:
             Sections: sections object
         """
         description_section = fourc_metadata["metadata"]["description_section_name"]
-        sections = [
+        sections = [description_section] + [
             section["name"] for section in fourc_metadata["sections"]["specs"]
-        ] + [description_section]
+        ]
+
         legacy_sections = list(fourc_metadata["legacy_string_sections"])
 
         return cls(legacy_sections, sections)

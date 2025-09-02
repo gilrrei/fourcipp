@@ -373,3 +373,35 @@ def rename_parameter(
 
     for entry, last_key in _split_off_last_key(nested_dict, keys):
         entry[new_name] = entry.pop(last_key)
+
+
+def sort_by_key_order(data: dict, key_order: list[str]) -> dict:
+    """Sort a dictionary by a specific key order.
+
+    Args:
+        data: Dictionary to sort.
+        key_order: List of keys in the desired order.
+
+    Returns:
+        Sorted dictionary.
+    """
+    if set(key_order) != set(data.keys()):
+        raise ValueError("'key_order' must include all keys in the dictionary!")
+
+    return {key: data[key] for key in key_order if key in data}
+
+
+def sort_alphabetically(
+    data: dict,
+) -> dict:
+    """Sort a dictionary alphabetically.
+
+    Args:
+        data: Dictionary to sort.
+
+    Returns:
+        Sorted dictionary.
+    """
+    return sort_by_key_order(
+        data, sorted(data.keys(), key=lambda s: (s.lower(), 0 if s.islower() else 1))
+    )

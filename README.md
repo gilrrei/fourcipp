@@ -124,7 +124,7 @@ input_4C["PROBLEM SIZE"]["NODES"] = 10_000_000
 removed_section = input_4C.pop("PROBLEM SIZE")
 
 # Dump to file
-input_4C.dump(input_file_path, sort_sections=True, validate=True)
+input_4C.dump(input_file_path, validate=True)
 ```
 <!--example, do not remove this comment-->
 

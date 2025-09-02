@@ -24,6 +24,7 @@
 import json
 import pathlib
 import re
+from typing import Callable
 
 import ryml
 
@@ -61,17 +62,21 @@ def load_yaml(path_to_yaml_file: Path) -> dict:
     return data
 
 
-def dict_to_yaml_string(data: dict, sort_keys: bool = False) -> str:
+def dict_to_yaml_string(
+    data: dict, sort_function: Callable[[dict], dict] | None = None
+) -> str:
     """Dump dict as yaml.
 
     Args:
         data: Data to dump.
-        sort_keys: If true sort the sections by section name
+        sort_function: Function to sort the data.
+
+    Returns:
+        YAML string representation of the data
     """
 
-    # Sort keys
-    if sort_keys:
-        data = {key: data[key] for key in sorted(data.keys())}
+    if sort_function is not None:
+        data = sort_function(data)
 
     # Convert dictionary into a ryml tree
     tree = ryml.parse_in_arena(bytearray(json.dumps(data).encode("utf8")))
@@ -88,14 +93,19 @@ def dict_to_yaml_string(data: dict, sort_keys: bool = False) -> str:
     return ryml.emit_yaml(tree)
 
 
-def dump_yaml(data: dict, path_to_yaml_file: Path, sort_keys: bool = False) -> None:
+def dump_yaml(
+    data: dict,
+    path_to_yaml_file: Path,
+    sort_function: Callable[[dict], dict] | None = None,
+) -> None:
     """Dump yaml to file.
 
     Args:
         data: Data to dump.
         path_to_yaml_file: Yaml file path
-        sort_keys: If true sort the sections by section name
+        sort_function: Function to sort the data.
     """
     pathlib.Path(path_to_yaml_file).write_text(
-        dict_to_yaml_string(data, sort_keys), encoding="utf-8"
+        dict_to_yaml_string(data, sort_function),
+        encoding="utf-8",
     )
