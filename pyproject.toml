@@ -13,6 +13,10 @@ license = { file = "LICENSE" }
 requires-python = ">=3.10"
 dynamic = ["dependencies", "version"]
 
+[project.urls]
+Repository = "https://github.com/4C-multiphysics/fourcipp/"
+Issues = "https://github.com/4C-multiphysics/fourcipp/issues/"
+
 [project.scripts]
 fourcipp = "fourcipp.utils.cli:main"
 
