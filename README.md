@@ -1,9 +1,12 @@
 <p align="center">
   <picture>
+    <source
+      srcset="https://raw.githubusercontent.com/4C-multiphysics/fourcipp/refs/heads/main/docs/assets/fourcipp_logo_white.svg"
+      media="(prefers-color-scheme: dark)">
     <img
-      src="docs/assets/fourcipp_logo_black.svg"
+      src="https://raw.githubusercontent.com/4C-multiphysics/fourcipp/refs/heads/main/docs/assets/fourcipp_logo_black.svg"
       width="300"
-      title="FourCIPP logo"
+      title="FourCIPP"
       alt="FourCIPP logo">
   </picture>
 </p>
@@ -12,41 +15,89 @@ FourCIPP (**FourC** **I**nput **P**ython **P**arser) holds a Python Parser to si
 
 ## Overview <!-- omit from toc -->
 - [Installation](#installation)
+  - [Python Environment](#python-environment)
+  - [Installation from PyPI](#installation-from-pypi)
+  - [Installation from Github (most recent version)](#installation-from-github-most-recent-version)
+  - [Installation from source](#installation-from-source)
 - [Quickstart example](#quickstart-example)
 - [Configuration](#configuration)
 - [Developing FourCIPP](#developing-fourcipp)
 - [Dependency Management](#dependency-management)
 - [License](#license)
 
-
-
 ## Installation
 
-For a quick and easy start an Anaconda/Miniconda environment is highly recommended. Other ways to install FourCIPP are possible but here the installation procedure is explained based on a conda install. After installing Anaconda/Miniconda
-execute the following steps:
+### Python Environment
 
-- Create a new Anaconda environment:
+FourCIPP is a Python project supporting Python versions 3.10 - 3.13. To use FourCIPP it is recommended to install it into a virtual Python environment such as [Conda](https://anaconda.org/anaconda/conda)/[Miniforge](https://conda-forge.org/download/) or [venv](https://docs.python.org/3/library/venv.html).
+
+An exemplary [Conda](https://anaconda.org/anaconda/conda)/[Miniforge](https://conda-forge.org/download/) environment can be created and loaded with
+
+```bash
+# Create the environment (this only has to be done once)
+conda create -n fourcipp python=3.13
+# Activate the environment
+conda activate fourcipp
+```
+
+To now install FourCIPP different ways exist.
+
+### Installation from PyPI
+
+FourCIPP is published on [PyPI](https://pypi.org/project/FourCIPP/) as a universal wheel, meaning you can install it on Windows, Linux and macOS with:
+
+```bash
+pip install fourcipp
+```
+
+or a specific version with:
+
+```bash
+pip install fourcipp==0.28.0
+```
+
+### Installation from Github (most recent version)
+
+Additionally, the latest `main` version of FourCIPP can be installed directly from Github via:
+
+```bash
+pip install git+https://github.com/4C-multiphysics/fourcipp.git@main
+```
+
+### Installation from source
+
+If you intend on developing FourCIPP it is crucial to install FourCIPP from source, i.e., cloning the repository from Github. You can then either install it in a non-editable or editable fashion.
+
+- Install all requirements without fixed versions in a non-editable fashion via:
+
   ```bash
-  conda create -n fourcipp python=3.12
-  ```
-
-- Activate your newly created environment:
-  ```bash
-  conda activate fourcipp
-  ```
-
-- Install all requirements without fixed versions via:
-  ```
+  # located at the root of the repository
   pip install .
   ```
+
+  and without fixed versions in an editable fashion via:
+
+  ```bash
+  # located at the root of the repository
+  pip install -e .
+  ```
+
   > Note: This is the default behavior. This allows to use fourcipp within other projects without version conflicts.
 
-- Install all requirements with fixed versions with:
-  ```
+- Alternatively, you can install all requirements with fixed versions in a non-editable fashion with:
+
+  ```bash
   pip install .[safe]
   ```
 
-Now you are up and running 🎉
+  and with fixed versions in an editable fashion via:
+
+  ```bash
+  # located at the root of the repository
+  pip install -e .[safe]
+  ```
+
+Once installed, FourCIPP is ready to be used 🎉
 
 ## Quickstart example
 <!--example, do not remove this comment-->
@@ -99,14 +150,15 @@ and select it using the `profile` entry.
 
 ## Developing FourCIPP
 
-If you plan on actively developing FourCIPP it is advisable to install in editable mode with the development requirements like
+If you plan on actively developing FourCIPP it is advisable to install in editable mode with the additional developer requirements like
 
 ```bash
 pip install -e .[dev]
 ```
 
-You can install the pre-commit hook with:
-```
+> Note: The developer requirements can also be installed in non-editable installs. Finally, you can install the pre-commit hook with:
+
+```bash
 pre-commit install
 ```
 
