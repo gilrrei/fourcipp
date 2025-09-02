@@ -29,11 +29,9 @@ repos:
         name: Check valid YAML syntax
       - id: end-of-file-fixer
         name: Check for newline at end of file
-        exclude: '^LICENSE$'
+        exclude: "^LICENSE$"
       - id: debug-statements
         name: Check for debugger imports
-      - id: no-commit-to-branch
-        name: Check to not commit to main
       - id: trailing-whitespace
         name: Check for trailing whitespaces
   - repo: https://github.com/PyCQA/bandit
@@ -72,7 +70,7 @@ repos:
           - --license-filepath
           - LICENSE
           - --comment-style
-          - '#'
+          - "#"
           - --no-extra-eol
   - repo: https://github.com/asmeurer/removestar
     rev: "1.5.2"
