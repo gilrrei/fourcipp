@@ -23,6 +23,7 @@
 
 import contextlib
 import pathlib
+import random
 import subprocess
 import time
 from collections.abc import Callable
@@ -33,6 +34,7 @@ from fourcipp import CONFIG
 from fourcipp.fourc_input import (
     FourCInput,
     UnknownSectionException,
+    _sort_by_section_names,
 )
 from fourcipp.utils.cli import modify_input_with_defaults
 from fourcipp.utils.validation import ValidationError
@@ -550,6 +552,53 @@ def test_validation(fourc_input, error_context, sections_only):
     """Test the validation."""
     with error_context:
         fourc_input.validate(sections_only=sections_only)
+
+
+def test_sort_by_section_names():
+    """Test sorting by section names."""
+
+    # create list of typed sections without title and required sections
+    typed_sections = [
+        sec
+        for sec in CONFIG.sections.typed_sections
+        if sec != CONFIG.fourc_metadata["metadata"]["description_section_name"]
+        and sec not in set(CONFIG.fourc_json_schema["required"])
+    ]
+
+    # also use end subset to also add some lowercase sections
+    typed_and_functions = (
+        typed_sections[:15]
+        + typed_sections[-15:]
+        + [f"FUNCT{i}" for i in [1, 2, 9, 10, 33]]
+    )
+
+    # sort with proper key: alphabetically for typed, numerically for FUNCT
+    typed_and_functions = sorted(
+        typed_and_functions,
+        key=lambda s: (
+            s.lower() if not s.startswith("FUNCT") else f"funct{s[5:].zfill(10)}"
+        ),
+    )
+
+    correct_section_order = (
+        [CONFIG.fourc_metadata["metadata"]["description_section_name"]]
+        + CONFIG.fourc_json_schema["required"]
+        + typed_and_functions
+        + CONFIG.sections.legacy_sections
+    )
+
+    shuffled_section_order = correct_section_order.copy()
+    random.seed(42)
+    random.shuffle(shuffled_section_order)
+
+    shuffled_data = {k: 1 for k in shuffled_section_order}
+
+    sorted_data = _sort_by_section_names(shuffled_data)
+
+    assert list(sorted_data.keys()) == correct_section_order
+
+
+## performance tests
 
 
 def create_dummy_elements() -> dict:

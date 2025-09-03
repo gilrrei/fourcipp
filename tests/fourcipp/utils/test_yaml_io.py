@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 """Test yaml io utils."""
 
+from fourcipp.utils.dict_utils import sort_alphabetically
 from fourcipp.utils.yaml_io import dump_yaml, load_yaml
 
 
@@ -33,10 +34,12 @@ def test_dump_not_sorted(tmp_path):
     assert reloaded_data == data
 
 
-def test_dump_sorted(tmp_path):
+def test_dump_sorted_alphabetically(tmp_path):
     """Test if key order is sorted."""
     data = {"c": 1, "b": 2, "a": 3}
     sorted_file_path = tmp_path / "sorted.yaml"
-    dump_yaml(data, path_to_yaml_file=sorted_file_path, sort_keys=True)
+    dump_yaml(
+        data, path_to_yaml_file=sorted_file_path, sort_function=sort_alphabetically
+    )
     reloaded_data = load_yaml(sorted_file_path)
     assert list(reloaded_data.keys()) == sorted(data.keys())

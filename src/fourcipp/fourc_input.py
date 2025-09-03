@@ -27,7 +27,7 @@ import copy
 import difflib
 import pathlib
 from collections.abc import Sequence
-from typing import Any
+from typing import Any, Callable
 
 from loguru import logger
 
@@ -37,7 +37,10 @@ from fourcipp.legacy_io import (
     interpret_legacy_section,
 )
 from fourcipp.utils.converter import Converter
-from fourcipp.utils.dict_utils import compare_nested_dicts_or_lists
+from fourcipp.utils.dict_utils import (
+    compare_nested_dicts_or_lists,
+    sort_by_key_order,
+)
 from fourcipp.utils.not_set import NotSet, check_if_set
 from fourcipp.utils.typing import Path
 from fourcipp.utils.validation import ValidationError, validate_using_json_schema
@@ -64,6 +67,75 @@ def is_section_known(section_name: str, known_section_names: list[str]) -> bool:
         True if section is known.
     """
     return section_name in known_section_names or section_name.startswith("FUNCT")
+
+
+def _sort_by_section_names(data: dict) -> dict:
+    """Sort a dictionary by its 4C sections.
+
+    This sorts the dictionary in the following style:
+
+        1. "TITLE" section
+        2. Alphabetically sorted sections
+        3. Alphabetically sorted legacy sections
+
+    Args:
+        data: Dictionary to sort.
+        section_names: List of all section names in the 4C style order.
+
+    Returns:
+        Dict sorted in 4C fashion
+    """
+
+    required_sections = CONFIG.fourc_json_schema["required"]
+    n_sections_splitter = len(CONFIG.sections.all_sections) * 1000
+
+    # collect typed sections + numeric FUNCT sections
+    typed_and_funct = sorted(
+        sorted(CONFIG.sections.typed_sections, key=str.lower)
+        + [s for s in data.keys() if s.startswith("FUNCT") and s[5:].isdigit()],
+        key=lambda s: (
+            s.lower() if not s.startswith("FUNCT") else f"funct{s[5:].zfill(10)}"
+        ),
+    )
+
+    def ordering_score(section: str) -> int:
+        """Get ordering score, small score comes first, larger comes later.
+
+        We offset the score by the number of sections multiplied by 1000. This way a score is guaranteed to never appear twice.
+
+        Args:
+            section: Section name to score
+
+        Returns:
+            ordering score
+        """
+        # Title sections
+        if section == CONFIG.fourc_metadata["metadata"]["description_section_name"]:
+            return 0
+        # Required sections
+        elif section in required_sections:
+            return 1 * n_sections_splitter + required_sections.index(section)
+        # Typed + FUNCT sections (alphabetical + case insensitive)
+        elif section in typed_and_funct:
+            return 2 * n_sections_splitter + typed_and_funct.index(section)
+        # Legacy sections
+        elif section in CONFIG.sections.legacy_sections:
+            return 3 * n_sections_splitter + CONFIG.sections.legacy_sections.index(
+                section
+            )
+        # Unknown section
+        else:
+            raise KeyError(f"Unknown section {section}")
+
+    unknown_sections = set(data.keys()) - set(CONFIG.sections.all_sections)
+
+    # Remove functions, these are a special case
+    if [section for section in unknown_sections if not section.startswith("FUNCT")]:
+        raise ValueError(
+            f"Sections {list(unknown_sections)} are not known in 'section_names'"
+        )
+
+    return sort_by_key_order(data, sorted(data.keys(), key=ordering_score))
 
 
 class FourCInput:
@@ -420,20 +492,20 @@ class FourCInput:
     def dump(
         self,
         input_file_path: Path,
-        sort_sections: bool = False,
         validate: bool = False,
         validate_sections_only: bool = False,
         convert_to_native_types: bool = True,
+        sort_function: Callable[[dict], dict] | None = _sort_by_section_names,
     ) -> None:
         """Dump object to yaml.
 
         Args:
             input_file_path: Path to dump the data to
-            sort_sections: Sort the sections alphabetically
             validate: Validate input data before dumping
             validate_sections_only: Validate each section independently.
                 Requiredness of the sections themselves is ignored.
             convert_to_native_types: Convert all sections to native Python types
+            sort_function: Function to sort the sections.
         """
 
         if validate or validate_sections_only:
@@ -448,7 +520,7 @@ class FourCInput:
         if convert_to_native_types:
             self.convert_to_native_types()
 
-        dump_yaml(self.inlined, input_file_path, sort_sections)
+        dump_yaml(self.inlined, input_file_path, sort_function)
 
     def validate(
         self,
