@@ -34,9 +34,12 @@ from fourcipp.utils.configuration import (
     show_config,
 )
 from fourcipp.utils.typing import Path
+from fourcipp.utils.yaml_io import dump_yaml, load_yaml
 
 
-def modify_input_with_defaults(input_path: Path, overwrite: bool) -> None:
+def modify_input_with_defaults(
+    input_path: Path, overwrite: bool
+) -> None:  # pragma: no cover
     """Apply user defaults to an input file located at input_path.
 
     Args:
@@ -60,6 +63,24 @@ def modify_input_with_defaults(input_path: Path, overwrite: bool) -> None:
         output_filename = input_path.parent / ".".join(names)
     input_data.dump(output_filename)
     logger.info(f"Input file incl. user defaults is now '{output_filename}'.")
+
+
+def format_file(
+    input_file: str, sort_sections: bool = False
+) -> None:  # pragma: no cover
+    """Formatting file.
+
+    Args:
+        input_file: File to format
+        sort_sections: Sort sections
+    """
+    if sort_sections:
+        # Requires reading the config
+        fourc_input = FourCInput.from_4C_yaml(input_file)
+        fourc_input.dump(input_file, use_fourcipp_yaml_style=True)
+    else:
+        # No config required, is purely a style question
+        dump_yaml(load_yaml(input_file), input_file, use_fourcipp_yaml_style=True)
 
 
 def main() -> None:
@@ -110,6 +131,23 @@ def main() -> None:
         type=str,
     )
 
+    # Format parser
+    format_parser = subparsers.add_parser(
+        "format",
+        help="Format the file in fourcipp style. This sorts the sections and uses the flow styles from FourCIPP",
+    )
+
+    format_parser.add_argument(
+        "input-file",
+        help=f"4C input file.",
+        type=str,
+    )
+
+    format_parser.add_argument(
+        "--sort-sections",
+        action="store_true",
+        help=f"Overwrite existing input file.",
+    )
     # Replace "-" with "_" for variable names
     kwargs: dict = {}
     for key, value in vars(main_parser.parse_args(sys.argv[1:])).items():
@@ -126,3 +164,5 @@ def main() -> None:
             input_path = pathlib.Path(kwargs.pop("input_file"))
             overwrite = kwargs.pop("overwrite")
             modify_input_with_defaults(input_path, overwrite)
+        case "format":
+            format_file(**kwargs)

@@ -496,6 +496,7 @@ class FourCInput:
         validate_sections_only: bool = False,
         convert_to_native_types: bool = True,
         sort_function: Callable[[dict], dict] | None = _sort_by_section_names,
+        use_fourcipp_yaml_style: bool = True,
     ) -> None:
         """Dump object to yaml.
 
@@ -506,6 +507,7 @@ class FourCInput:
                 Requiredness of the sections themselves is ignored.
             convert_to_native_types: Convert all sections to native Python types
             sort_function: Function to sort the sections.
+            use_fourcipp_yaml_style: If FourCIPP yaml style is to be used
         """
 
         if validate or validate_sections_only:
@@ -520,7 +522,7 @@ class FourCInput:
         if convert_to_native_types:
             self.convert_to_native_types()
 
-        dump_yaml(self.inlined, input_file_path, sort_function)
+        dump_yaml(self.inlined, input_file_path, sort_function, use_fourcipp_yaml_style)
 
     def validate(
         self,

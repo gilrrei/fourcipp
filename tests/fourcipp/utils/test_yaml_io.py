@@ -21,8 +21,10 @@
 # THE SOFTWARE.
 """Test yaml io utils."""
 
+import pytest
+
 from fourcipp.utils.dict_utils import sort_alphabetically
-from fourcipp.utils.yaml_io import dump_yaml, load_yaml
+from fourcipp.utils.yaml_io import dict_to_yaml_string, dump_yaml, load_yaml
 
 
 def test_dump_not_sorted(tmp_path):
@@ -43,3 +45,82 @@ def test_dump_sorted_alphabetically(tmp_path):
     )
     reloaded_data = load_yaml(sorted_file_path)
     assert list(reloaded_data.keys()) == sorted(data.keys())
+
+
+@pytest.mark.parametrize(
+    "use_fourcipp_yaml_style, expected",
+    [
+        (
+            False,
+            """SECTION:
+  - vector:
+      - 1.23
+      - 2
+      - 3
+    nested_vector:
+      - - 1
+        - 2.0
+        - 3
+      - - 4.5
+        - 5
+        - 2.333
+  - list_with_bool:
+      - 1
+      - true
+      - 3
+    list_with_null:
+      - 1
+      - null
+      - 4
+  - list_with_string:
+      - 1
+      - "abc"
+      - 5
+    nested_list_with_string:
+      - - 1
+        - 2.1
+      - - 2
+        - "def"
+""",
+        ),
+        (
+            True,
+            """SECTION:
+  - vector: [1.23,2,3]
+    nested_vector: [[1,2.0,3],[4.5,5,2.333]]
+  - list_with_bool:
+      - 1
+      - true
+      - 3
+    list_with_null:
+      - 1
+      - null
+      - 4
+  - list_with_string:
+      - 1
+      - "abc"
+      - 5
+    nested_list_with_string:
+      - [1,2.1]
+      - - 2
+        - "def"
+""",
+        ),
+    ],
+)
+def test_yaml_style(use_fourcipp_yaml_style, expected):
+    """Test yaml output style."""
+    data = {
+        "SECTION": [
+            {"vector": [1.23, 2, 3], "nested_vector": [[1, 2.0, 3], [4.5, 5, 2.333]]},
+            {"list_with_bool": [1, True, 3], "list_with_null": [1, None, 4]},
+            {
+                "list_with_string": [1, "abc", 5],
+                "nested_list_with_string": [[1, 2.1], [2, "def"]],
+            },
+        ]
+    }
+    assert (
+        dict_to_yaml_string(data, use_fourcipp_yaml_style=use_fourcipp_yaml_style)
+        == expected
+    )
