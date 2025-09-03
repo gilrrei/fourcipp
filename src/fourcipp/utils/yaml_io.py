@@ -143,7 +143,13 @@ def dict_to_yaml_string(
         if tree.has_key(node_id):
             tree.set_key_style(node_id, ryml.NOTYPE)
 
-    return ryml.emit_yaml(tree)
+    yaml_string = ryml.emit_yaml(tree)
+
+    if use_fourcipp_yaml_style:
+        # add spaces after commas in vectors
+        yaml_string = re.sub(r"(?<=\d),(?=\d)|(?<=\]),(?=\[)", ", ", yaml_string)
+
+    return yaml_string
 
 
 def dump_yaml(
