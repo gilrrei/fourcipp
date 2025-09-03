@@ -69,7 +69,7 @@ def is_section_known(section_name: str, known_section_names: list[str]) -> bool:
     return section_name in known_section_names or section_name.startswith("FUNCT")
 
 
-def _sort_by_section_names(data: dict) -> dict:
+def sort_by_section_names(data: dict) -> dict:
     """Sort a dictionary by its 4C sections.
 
     This sorts the dictionary in the following style:
@@ -495,7 +495,7 @@ class FourCInput:
         validate: bool = False,
         validate_sections_only: bool = False,
         convert_to_native_types: bool = True,
-        sort_function: Callable[[dict], dict] | None = _sort_by_section_names,
+        sort_function: Callable[[dict], dict] | None = sort_by_section_names,
         use_fourcipp_yaml_style: bool = True,
     ) -> None:
         """Dump object to yaml.

@@ -34,7 +34,7 @@ from fourcipp import CONFIG
 from fourcipp.fourc_input import (
     FourCInput,
     UnknownSectionException,
-    _sort_by_section_names,
+    sort_by_section_names,
 )
 from fourcipp.utils.cli import modify_input_with_defaults
 from fourcipp.utils.validation import ValidationError
@@ -593,7 +593,7 @@ def test_sort_by_section_names():
 
     shuffled_data = {k: 1 for k in shuffled_section_order}
 
-    sorted_data = _sort_by_section_names(shuffled_data)
+    sorted_data = sort_by_section_names(shuffled_data)
 
     assert list(sorted_data.keys()) == correct_section_order
 
