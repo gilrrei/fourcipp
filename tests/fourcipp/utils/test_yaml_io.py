@@ -86,8 +86,8 @@ def test_dump_sorted_alphabetically(tmp_path):
         (
             True,
             """SECTION:
-  - vector: [1.23,2,3]
-    nested_vector: [[1,2.0,3],[4.5,5,2.333]]
+  - vector: [1.23, 2, 3]
+    nested_vector: [[1, 2.0, 3], [4.5, 5, 2.333]]
   - list_with_bool:
       - 1
       - true
@@ -101,7 +101,7 @@ def test_dump_sorted_alphabetically(tmp_path):
       - "abc"
       - 5
     nested_list_with_string:
-      - [1,2.1]
+      - [1, 2.1]
       - - 2
         - "def"
 """,
