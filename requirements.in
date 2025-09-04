@@ -1,4 +1,5 @@
-rapidyaml
-loguru
 jsonschema-rs
+loguru
 numpy
+rapidyaml
+regex
