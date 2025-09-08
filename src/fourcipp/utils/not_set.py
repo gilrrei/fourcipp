@@ -21,26 +21,31 @@
 # THE SOFTWARE.
 """Not set utils."""
 
-from typing import Any
 
-
-class _NotSet:
+class NotSet:
     """Not set object."""
 
-    def __str__(self) -> str:
+    def __init__(self, expected: object = object) -> None:
+        """Not set object.
+
+        Args:
+            expected: Expected object to to display
+        """
+        self.expected = expected
+
+    def __str__(self) -> str:  # pragma: no cover
         """String method."""
-        return "NotSet"
+        return f"NotSet({self.expected})"
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> str:  # pragma: no cover
         """Representation method."""
-        return "NotSet"
+        return f"NotSet({self.expected})"
 
 
-# Not set object
-NotSet = _NotSet()
+NOT_SET = NotSet()
 
 
-def check_if_set(obj: Any) -> bool:
+def check_if_set(obj: object) -> bool:
     """Check if object or is NotSet.
 
     Args:
@@ -50,10 +55,10 @@ def check_if_set(obj: Any) -> bool:
         True if object is set
     """
     # Check if object is not of type _NotSet, i.e. it has a value
-    return not isinstance(obj, _NotSet)
+    return not isinstance(obj, NotSet)
 
 
-def pop_arguments(key: str, default: Any = NotSet) -> tuple:
+def pop_arguments(key: str, default: object = NOT_SET) -> tuple:
     """Create arguments for the pop method.
 
     We need this utility since pop is not implemented using kwargs, instead the default is checked
