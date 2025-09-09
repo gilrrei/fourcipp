@@ -362,13 +362,14 @@ class Primitive(InputSpec):
 class Enum(InputSpec):
     def __init__(
         self,
-        choices: Sequence[str],
+        choices: dict[str],
         name: NotSetAlias[str] = NotSetString,
         description: NotSetAlias[str] = NotSetString,
         required: bool = True,
         noneable: bool = False,
         validator: ValidatorAlias = None,
         default: NotSetAlias[str] = NotSet("default"),
+        choices_description: Sequence[str] = None,
     ) -> None:
         """Initialise enum.
 
@@ -380,6 +381,7 @@ class Enum(InputSpec):
             noneable: True if parameter can be None
             validator: Validator callable
             default: Default value
+            choices_description: Description for each choice
         """
         super().__init__("enum", name, description, required, noneable, validator)
         if check_if_set(default):
@@ -389,6 +391,7 @@ class Enum(InputSpec):
                 )
         self.choices = choices
         self.default = default
+        self.choices_description = choices_description
 
     @classmethod
     def from_4C_metadata(cls, data_dict: dict) -> Enum:
@@ -401,11 +404,14 @@ class Enum(InputSpec):
             enum
         """
         data_dict.pop("type", None)
-        choices = [c["name"] for c in data_dict.pop("choices")]
-        # TODO add description from choices
+        choices_data = data_dict.pop("choices")
+        choices = [c["name"] for c in choices_data]
+        choices_description = [c.get("description", None) for c in choices_data]
         if "validator" in data_dict:
             data_dict["validator"] = validator_from_dict(data_dict["validator"])
-        return cls(choices=choices, **data_dict)
+        return cls(
+            choices=choices, choices_description=choices_description, **data_dict
+        )
 
     def __str__(self) -> str:  # pragma: no cover
         """String method."""
