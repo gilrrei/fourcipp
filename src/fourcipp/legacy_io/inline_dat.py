@@ -121,12 +121,15 @@ def _entry_casting_factory(spec: dict) -> LineListExtractor:
     Returns:
         Casting function for the spec
     """
-    if spec["type"] in Primitive.PRIMITIVE_TYPES_TO_PYTHON:
-        return partial(
-            _extract_entry, extractor=Primitive.PRIMITIVE_TYPES_TO_PYTHON[spec["type"]]
-        )
+
+    primitive_extractors = Primitive.PRIMITIVE_TYPES_TO_PYTHON.copy()
+    primitive_extractors["bool"] = lambda v: {"true": True, "false": False}[v]
+
+    if spec["type"] in primitive_extractors:
+        extractor = primitive_extractors[spec["type"]]
+        return partial(_extract_entry, extractor=extractor)
     elif spec["type"] == "vector":
-        value_type = Primitive.PRIMITIVE_TYPES_TO_PYTHON[spec["value_type"]["type"]]
+        value_type = primitive_extractors[spec["value_type"]["type"]]
         return partial(_extract_vector, extractor=value_type, size=spec["size"])
     elif spec["type"] == "enum":
         choices = [s["name"] for s in spec["choices"]]

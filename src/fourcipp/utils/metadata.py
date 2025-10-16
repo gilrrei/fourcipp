@@ -295,7 +295,7 @@ class One_Of:
 
 class Primitive(InputSpec):
     PRIMITIVE_TYPES: list[str] = ["double", "bool", "int", "string", "path"]
-    PRIMITIVE_TYPES_TO_PYTHON: dict[str, type] = {
+    PRIMITIVE_TYPES_TO_PYTHON: dict[str, type | Callable] = {
         "double": float,
         "bool": bool,
         "int": int,
