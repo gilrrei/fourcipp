@@ -46,6 +46,27 @@ def test_entry_casting_factory_invalid_type():
         _entry_casting_factory({"type": "invalid"})
 
 
+def test_entry_casting_factory_bool_cast():
+    """Test bool casting."""
+    spec = {"type": "bool"}
+    cast_func = _entry_casting_factory(spec)
+
+    assert cast_func(["true"]) is True
+    assert cast_func(["false"]) is False
+
+
+@pytest.mark.parametrize(
+    "invalid_input", ["True", "False", "some text", "TRUE", "FALSE"]
+)
+def test_entry_casting_factory_invalid_bool_cast(invalid_input):
+    """Test invalid bool casting."""
+    spec = {"type": "bool"}
+    cast_func = _entry_casting_factory(spec)
+
+    with pytest.raises(KeyError):
+        cast_func([invalid_input])
+
+
 def test_casting_factory_invalid_type():
     """Test reading invalid types."""
     with pytest.raises(NotImplementedError, match="First entry has to be an all_of"):
