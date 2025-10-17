@@ -75,8 +75,12 @@ def sort_by_section_names(data: dict) -> dict:
     This sorts the dictionary in the following style:
 
         1. "TITLE" section
-        2. Alphabetically sorted sections
-        3. Alphabetically sorted legacy sections
+        2. Required sections (in schema order)
+        3. Typed sections (alphabetically, case-insensitive)
+            3.1 MATERIALS section
+            3.2 'DESIGN *' sections (alphabetically, case-insensitive)
+        4. FUNCT sections (numeric order)
+        5. Legacy sections (alphabetically)
 
     Args:
         data: Dictionary to sort.
@@ -89,10 +93,23 @@ def sort_by_section_names(data: dict) -> dict:
     required_sections = CONFIG.fourc_json_schema["required"]
     n_sections_splitter = len(CONFIG.sections.all_sections) * 1000
 
-    # collect typed sections + numeric FUNCT sections
-    typed_and_funct = sorted(
-        sorted(CONFIG.sections.typed_sections, key=str.lower)
-        + [s for s in data.keys() if s.startswith("FUNCT") and s[5:].isdigit()],
+    # typed sections (sorted alphabetically + case insensitive, 'DESIGN *' + 'MATERIALS' at the end)
+    design_sections = [
+        s for s in CONFIG.sections.typed_sections if s.startswith("DESIGN")
+    ]
+    remaining_typed_sections = list(
+        set(CONFIG.sections.typed_sections) - set(design_sections) - set(["MATERIALS"])
+    )
+
+    typed_sections = (
+        sorted(remaining_typed_sections, key=str.lower)
+        + ["MATERIALS"]
+        + sorted(design_sections, key=str.lower)
+    )
+
+    # function sections (sorted numerically)
+    functions = sorted(
+        [s for s in data.keys() if s.startswith("FUNCT") and s[5:].isdigit()],
         key=lambda s: (
             s.lower() if not s.startswith("FUNCT") else f"funct{s[5:].zfill(10)}"
         ),
@@ -115,12 +132,15 @@ def sort_by_section_names(data: dict) -> dict:
         # Required sections
         elif section in required_sections:
             return 1 * n_sections_splitter + required_sections.index(section)
-        # Typed + FUNCT sections (alphabetical + case insensitive)
-        elif section in typed_and_funct:
-            return 2 * n_sections_splitter + typed_and_funct.index(section)
+        # Typed sections (alphabetical + case insensitive)
+        elif section in typed_sections:
+            return 2 * n_sections_splitter + typed_sections.index(section)
+        # Function sections (numeric order)
+        elif section in functions:
+            return 3 * n_sections_splitter + functions.index(section)
         # Legacy sections
         elif section in CONFIG.sections.legacy_sections:
-            return 3 * n_sections_splitter + CONFIG.sections.legacy_sections.index(
+            return 4 * n_sections_splitter + CONFIG.sections.legacy_sections.index(
                 section
             )
         # Unknown section

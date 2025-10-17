@@ -566,24 +566,25 @@ def test_sort_by_section_names():
     ]
 
     # also use end subset to also add some lowercase sections
-    typed_and_functions = (
-        typed_sections[:15]
-        + typed_sections[-15:]
-        + [f"FUNCT{i}" for i in [1, 2, 9, 10, 33]]
-    )
+    typed_sections = typed_sections[:15] + typed_sections[-15:]
+    typed_sections = sorted(typed_sections, key=str.lower)
 
-    # sort with proper key: alphabetically for typed, numerically for FUNCT
-    typed_and_functions = sorted(
-        typed_and_functions,
-        key=lambda s: (
-            s.lower() if not s.startswith("FUNCT") else f"funct{s[5:].zfill(10)}"
-        ),
-    )
+    # use first 5 'DESIGN * ' sections
+    design_sections = [
+        s for s in CONFIG.sections.typed_sections if s.startswith("DESIGN")
+    ][:5]
+    design_sections = sorted(design_sections, key=str.lower)
+
+    # create some FUNCT sections
+    function_sections = [f"FUNCT{i}" for i in [1, 2, 9, 10, 33]]
 
     correct_section_order = (
         [CONFIG.fourc_metadata["metadata"]["description_section_name"]]
         + CONFIG.fourc_json_schema["required"]
-        + typed_and_functions
+        + typed_sections
+        + ["MATERIALS"]
+        + design_sections
+        + function_sections
         + CONFIG.sections.legacy_sections
     )
 
