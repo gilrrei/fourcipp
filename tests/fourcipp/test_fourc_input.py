@@ -469,6 +469,25 @@ def test_roundtrip_test(fourc_file, tmp_path):
         )
 
 
+@pytest.mark.skipif(CONFIG.name != "4C_docker_main", reason="Not using docker config.")
+@pytest.mark.parametrize(
+    "fourc_file",
+    [
+        str(f.resolve())
+        for f in pathlib.Path("/home/user/4C/tests/input_files").glob("*.4C.yaml")
+    ],
+)
+def test_readin_all_test_files(fourc_file):
+    """Read all known 4C files and check if valid."""
+    fourc_file = pathlib.Path(fourc_file)
+
+    # Load 4C input test file
+    fourc_input = FourCInput.from_4C_yaml(fourc_file)
+
+    # Check if it is valid
+    fourc_input.validate()
+
+
 def test_extract_header_sections(fourc_input, fourc_input_with_legacy_section):
     """Test the header extraction."""
 
