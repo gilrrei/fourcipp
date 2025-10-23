@@ -70,10 +70,10 @@ jobs:
       - name: Run pytest using 4C_docker_main config
         run: |
           fourcipp switch-config-profile 4C_docker_main
-          pytest --color=yes -v
+          pytest -n 4 --color=yes -v
       - name: Run pytest using default config
         # For this job coverage is turned off, otherwise the checks would fail.
         # Coverage is done in the 4C docker job, as here 4C test input files are available.
         run: |
           fourcipp switch-config-profile default
-          pytest --color=yes -v --no-cov
+          pytest -n 4 --color=yes -v --no-cov

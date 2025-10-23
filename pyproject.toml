@@ -30,7 +30,7 @@ optional-dependencies = { safe = { file = [
 "fourcipp.config" = ["*.json", "*.yaml"]
 
 [project.optional-dependencies]
-dev = ["pre-commit", "pytest", "pytest-cov", "pip-tools"]
+dev = ["pre-commit", "pytest", "pytest-cov", "pip-tools", "pytest-xdist"]
 
 [tool.setuptools_scm]
 version_file = "src/fourcipp/version.py"

@@ -46,13 +46,23 @@ def test_entry_casting_factory_invalid_type():
         _entry_casting_factory({"type": "invalid"})
 
 
-def test_entry_casting_factory_bool_cast():
+@pytest.mark.parametrize(
+    "value,expected_value",
+    [
+        ("true", True),
+        ("yes", True),
+        ("1", True),
+        ("false", False),
+        ("no", False),
+        ("0", False),
+    ],
+)
+def test_entry_casting_factory_bool_cast(value, expected_value):
     """Test bool casting."""
     spec = {"type": "bool"}
     cast_func = _entry_casting_factory(spec)
 
-    assert cast_func(["true"]) is True
-    assert cast_func(["false"]) is False
+    assert cast_func([value]) is expected_value
 
 
 @pytest.mark.parametrize(
