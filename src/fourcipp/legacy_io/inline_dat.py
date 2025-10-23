@@ -123,7 +123,14 @@ def _entry_casting_factory(spec: dict) -> LineListExtractor:
     """
 
     primitive_extractors = Primitive.PRIMITIVE_TYPES_TO_PYTHON.copy()
-    primitive_extractors["bool"] = lambda v: {"true": True, "false": False}[v]
+    primitive_extractors["bool"] = lambda v: {
+        "true": True,
+        "yes": True,
+        "1": True,
+        "false": False,
+        "no": False,
+        "0": False,
+    }[v]
 
     if spec["type"] in primitive_extractors:
         extractor = primitive_extractors[spec["type"]]
